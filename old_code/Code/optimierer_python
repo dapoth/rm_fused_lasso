@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 31 09:22:44 2019
+
+@author: christopher
+"""
+import numpy as np
+import random as rd
+from scipy.optimize import minimize
+import matplotlib.pyplot as plt
+
+
+np.random.seed(1)
+rd.seed(5)
+
+
+#Model Parameters
+n = 100
+p = 500
+mu_epsilon, sigma_epsilon = 0, 1
+mu_x, sigma_x = 0, 1
+
+lambda_1 = 100
+lambda_2 = 100
+
+#Data Generation
+epsilon = np.random.normal(mu_epsilon, sigma_epsilon, n)
+x = np.random.normal(mu_x,sigma_x,[n,p])
+
+beta = np.random.normal(0,1,p)
+beta[3:6] = 2
+beta[50:60] = -3
+beta[200:204] = 1
+beta[380:390] = 7
+
+y = np.dot(x,beta)+epsilon
+
+
+#Defining Loss Function
+def loss(beta,y,x,lambda_1,lambda_2):
+    
+    return 0.5*(np.sum((y-np.dot(x,beta))**2))+lambda_1*np.sum(np.abs(beta))+lambda_2*np.sum(np.abs(beta[1:p]-beta[0:p-1]))
+
+
+#Optimize
+x0 = np.zeros(p)
+beta_opt = minimize(loss, x0,args=(y,x,lambda_1,lambda_2), method='BFGS', options={'xtol': 1e-8, 'disp': True, 'maxiter' : 10000})
+
+
+#Ploting
+plt.plot(list(range(p)),beta)
+plt.plot(list(range(p)),beta_opt['x'])   
+
