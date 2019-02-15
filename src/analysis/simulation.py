@@ -1,13 +1,3 @@
-"""Run a Schelling (1969, :cite:`Schelling69`) segregation
-model and store a list with locations by type at each cycle.
-
-The scripts expects that a model name is passed as an
-argument. The model name must correspond to a file called
-``[model_name].json`` in the "IN_MODEL_SPECS" directory.
-
-"""
-
-
 import sys
 import json
 import logging
@@ -110,7 +100,7 @@ if __name__ == "__main__":
     model = json.load(open(ppj("IN_MODEL_SPECS", model_name + ".json"), encoding="utf-8"))
 
     logging.basicConfig(
-        filename=ppj("OUT_ANALYSIS", "log", "schelling_{}.log".format(model_name)),
+        filename=ppj("OUT_ANALYSIS", "log", "simulation_{}.log".format(model_name)),
         filemode="w",
         level=logging.INFO
     )
@@ -126,5 +116,5 @@ if __name__ == "__main__":
     beta = np.loadtxt(ppj("OUT_DATA", "beta.csv"), delimiter=",")
     eps = np.loadtxt(ppj("OUT_DATA", "eps.csv"), delimiter=",")
     aux = fused_lasso_primal(y,X,lambda1,lambda2)
-    with open(ppj("OUT_ANALYSIS", "schelling_{}.pickle".format(model_name)), "wb") as out_file:
+    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(model_name)), "wb") as out_file:
         pickle.dump(aux, out_file)

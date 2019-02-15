@@ -6,7 +6,7 @@ def build(ctx):
     # Illustrate simple use of run_py_script
     ctx(
         features='run_py_script',
-        source='get_simulation_draws.py',
+        source='data_generation.py',
         target=ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),
 	
         name1='y'
@@ -14,7 +14,7 @@ def build(ctx):
     )
     ctx(
         features='run_py_script',
-        source='get_simulation_draws.py',
+        source='data_generation.py',
         
 	target=ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
 	
@@ -26,7 +26,7 @@ def build(ctx):
     )
     ctx(
         features='run_py_script',
-        source='get_simulation_draws.py',
+        source='data_generation.py',
         
 	target=ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
 	
@@ -36,7 +36,7 @@ def build(ctx):
     )
     ctx(
         features='run_py_script',
-        source='get_simulation_draws.py',
+        source='data_generation.py',
         
 	target=ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
         

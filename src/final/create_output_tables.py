@@ -16,7 +16,7 @@ def plot_locations(aux, model_name):
     #fig = plt.subplot(np.linspace(0, 10, 10),aux)
     fig = plt.figure()
     plt.plot(range(1,11),aux)
-    fig.savefig(ppj("OUT_FIGURES", "schelling_{}.png".format(model_name)))
+    fig.savefig(ppj("OUT_FIGURES", "simulation_{}.png".format(model_name)))
 
 
 if __name__ == "__main__":
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     model = json.load(open(ppj("IN_MODEL_SPECS", model_name + ".json"), encoding="utf-8"))
 
     # Load locations after each round
-    with open(ppj("OUT_ANALYSIS", "schelling_{}.pickle".format(model_name)), "rb") as in_file:
+    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(model_name)), "rb") as in_file:
         aux = pickle.load(in_file)
 
     plot_locations(aux, model_name)
