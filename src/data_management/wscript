@@ -7,6 +7,38 @@ def build(ctx):
     ctx(
         features='run_py_script',
         source='get_simulation_draws.py',
-        target=ctx.path_to(ctx, 'OUT_DATA', 'initial_locations.csv'),
-        name='get_simulation_draws'
+        target=ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),
+	
+        name1='y'
+	
+    )
+    ctx(
+        features='run_py_script',
+        source='get_simulation_draws.py',
+        
+	target=ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
+	
+	
+        
+	name='X'
+	
+	
+    )
+    ctx(
+        features='run_py_script',
+        source='get_simulation_draws.py',
+        
+	target=ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
+	
+        
+	name='beta'
+	
+    )
+    ctx(
+        features='run_py_script',
+        source='get_simulation_draws.py',
+        
+	target=ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
+        
+	name='eps'
     )
