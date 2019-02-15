@@ -3,14 +3,17 @@
 
 def build(ctx):
 
-    for model in 'baseline', 'max_moves_2':
+    for model in 'primal', 'dual':
 
         # Illustrate use of run_py_script with automatic model specification.
         ctx(
             features='run_py_script',
             source='schelling.py',
             deps=[
-                ctx.path_to(ctx, 'OUT_DATA', 'initial_locations.csv'),
+                ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),
+                ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
+                ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
+                ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
                 ctx.path_to(ctx, 'IN_MODEL_CODE', 'agent.py'),
                 ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(model)),
             ],

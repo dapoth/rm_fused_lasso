@@ -14,20 +14,37 @@ from bld.project_paths import project_paths_join as ppj
 
 np.random.seed(12345)
 
-n_types = 2
-n_draws = 30000
+n = 100
+p = 10
 
 
-def draw_sample():
-    shape = (2, n_types, n_draws)
-    s = np.random.uniform(size=np.product(shape))
-    return s.reshape(shape)
+def generate_data():
+    beta = np.zeros(p)
+    eps = np.random.randn(n)
+    mean = np.ones(p)
+    cov = np.identity(p)
+    x = np.random.multivariate_normal(mean, cov,n)
+    y = np.matmul(x,beta)+eps
+    return y,x,beta,eps
 
 
-def save_data(sample):
-    sample.tofile(ppj("OUT_DATA", "initial_locations.csv"), sep=",")
+def save_y(y):
+    y.tofile(ppj("OUT_DATA", "y.csv"), sep=",")
+    #np.savetxt(ppj("OUT_DATA", "y.csv"),y)
+def save_x(x):
+    x.tofile(ppj("OUT_DATA", "x.csv"), sep=",")
+def save_beta(beta):
+    beta.tofile(ppj("OUT_DATA", "beta.csv"), sep=",")
+def save_eps(eps):
+    eps.tofile(ppj("OUT_DATA", "eps.csv"), sep=",")    
+    
+    
+    
 
 
 if __name__ == "__main__":
-    sample = draw_sample()
-    save_data(sample)
+    y,x,beta,eps = generate_data()
+    save_y(y)
+    save_x(x)
+    save_beta(beta)
+    save_eps(eps)
