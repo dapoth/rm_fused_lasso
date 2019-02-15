@@ -109,13 +109,13 @@ if __name__ == "__main__":
     model_name = sys.argv[1]
     model = json.load(open(ppj("IN_MODEL_SPECS", model_name + ".json"), encoding="utf-8"))
 
-    #logging.basicConfig(
-    #    filename=ppj("OUT_ANALYSIS", "log", "schelling_{}.log".format(model_name)),
-    #    filemode="w",
-    #    level=logging.INFO
-    #)
+    logging.basicConfig(
+        filename=ppj("OUT_ANALYSIS", "log", "schelling_{}.log".format(model_name)),
+        filemode="w",
+        level=logging.INFO
+    )
     #np.random.seed(1) #model["rng_seed"]
-    #logging.info(model[1]) #"rng_seed"
+    logging.info(model['penalty1']) #"rng_seed"
 
     
     lambda1 = model['penalty1']
