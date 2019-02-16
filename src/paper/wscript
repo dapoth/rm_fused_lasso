@@ -7,7 +7,7 @@ def build(ctx):
         ctx(
             features='tex',
             source=s + '.tex',
-            prompt=1,
+            prompt=0,
             name=s
         )
         # Install to the project root.

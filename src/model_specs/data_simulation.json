@@ -1,0 +1,13 @@
+{
+    "n": 100,
+    "p": 10,
+    "positive_betas": 10,
+    "number_of_blocks":10,
+    "amplitude":10,
+    "length_blocks":2,
+    "spike_level":3,
+    "levels":1,
+    "s1":50,
+    "s2":50
+
+}
