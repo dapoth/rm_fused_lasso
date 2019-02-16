@@ -28,3 +28,7 @@ if __name__ == "__main__":
         aux = pickle.load(in_file)
 
     plot_locations(aux, model_name)
+    
+     
+
+    

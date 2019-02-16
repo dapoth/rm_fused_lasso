@@ -17,7 +17,16 @@ def build(ctx):
             name='create_output_tables_{}'.format(model)
         )
 
-
+        
     # from src.final.project_dependency_graph import make_project_dependency_graph
 
     # ctx.add_post_fun(make_project_dependency_graph)
+
+
+    ctx(
+	 features='run_py_script',
+	 source='plot_results.py',
+	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),   
+	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),
+	 name='red_line'
+      )
