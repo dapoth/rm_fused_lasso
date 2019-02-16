@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Feb 16 08:42:40 2019
+
+@author: christopher
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from bld.project_paths import project_paths_join as ppj
@@ -16,4 +24,12 @@ if __name__ == "__main__":
     plt.plot(cgh_data,zorder = 1)
 
     plt.savefig(ppj("OUT_FIGURES", "red_line.pdf"))
+
     
+    # Plot normball corresponding to absolute value
+    fig = plt.figure()
+    plt.scatter([1,0,-1,0,1],[0,1,0,-1,0])
+    plt.plot([1,0,-1,0,1],[0,1,0,-1,0])
+    plt.fill([1,0,-1,0,1],[0,1,0,-1,0],color='blue', alpha=0.5)
+    
+    plt.savefig(ppj("OUT_FIGURES", "penalty.pdf"))

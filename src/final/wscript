@@ -27,6 +27,6 @@ def build(ctx):
 	 features='run_py_script',
 	 source='plot_results.py',
 	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),   
-	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),
+	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),ctx.path_to(ctx, 'OUT_FIGURES', 'penalty.pdf')],
 	 name='red_line'
       )
