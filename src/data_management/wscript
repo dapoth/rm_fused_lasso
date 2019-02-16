@@ -3,42 +3,25 @@
 
 def build(ctx):
 
-    # Illustrate simple use of run_py_script
+
     ctx(
         features='run_py_script',
         source='data_generation.py',
-        target=ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),
-	
-        name1='y'
-	
-    )
-    ctx(
-        features='run_py_script',
-        source='data_generation.py',
-        
-	target=ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
-	
-	
-        
-	name='X'
-	
-	
-    )
-    ctx(
-        features='run_py_script',
-        source='data_generation.py',
-        
-	target=ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
-	
-        
-	name='beta'
-	
-    )
-    ctx(
-        features='run_py_script',
-        source='data_generation.py',
-        
-	target=ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
-        
-	name='eps'
-    )
+        deps=ctx.path_to(ctx,'IN_MODEL_SPECS', 'data_simulation.json'),
+        target=[ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),ctx.path_to(ctx, 'OUT_DATA',
+        'beta.csv'),ctx.path_to(ctx, 'OUT_DATA', 'eps.csv')]
+
+        )
+def build(ctx):
+
+    for sim in 'one_block', 'two_blocks':
+
+
+        ctx(
+            features='run_py_script',
+            source='data_generation1.py',
+            deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+            target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
+            append=sim,
+            name='simulation_{}'.format(sim)
+        )

@@ -14,7 +14,7 @@ import json
 import pickle
 import math
 import random as rd
-
+import sys
 
 np.random.seed(12345)
 
@@ -59,26 +59,6 @@ def generate_blocks(p, number_blocks, length_blocks, amplitude,  spike_level, le
     return container
 
 
-def generate_data():
-    beta = np.zeros(p)
-    eps = np.random.randn(n)
-    mean = np.ones(p)
-    cov = np.identity(p)
-    x = np.random.multivariate_normal(mean, cov,n)
-    y = np.matmul(x,beta)+eps
-    return y,x,beta,eps
-
-
-def save_y(y):
-    y.tofile(ppj("OUT_DATA", "y.csv"), sep=",")
-    #np.savetxt(ppj("OUT_DATA", "y.csv"),y)
-def save_x(x):
-    x.tofile(ppj("OUT_DATA", "x.csv"), sep=",")
-def save_beta(beta):
-    beta.tofile(ppj("OUT_DATA", "beta.csv"), sep=",")
-def save_eps(eps):
-    eps.tofile(ppj("OUT_DATA", "eps.csv"), sep=",")
-
 def generate_data1(n,p,number_blocks, length_blocks, amplitude,  spike_level, levels = False, spikes = 0):
 
     beta = np.zeros([p,num_simulations])
@@ -101,13 +81,21 @@ def generate_data1(n,p,number_blocks, length_blocks, amplitude,  spike_level, le
 
 
 if __name__ == "__main__":
-    data_simulation = json.load(open(ppj("IN_MODEL_SPECS", "data_simulation.json"), encoding="utf-8"))
-    n = data_simulation['n']
-    p = data_simulation['p']
-    y,x,beta,eps = generate_data()
-    save_y(y)
-    save_x(x)
-    save_beta(beta)
-    save_eps(eps)
+    sim_name = sys.argv[1]
+    sim = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"), encoding="utf-8"))
 
-    
+    num_simulations = sim['num_simulations']
+    p = sim['p']
+    n = sim['n']
+    number_blocks = sim['number_of_blocks']
+    length_blocks = sim['length_blocks']
+    amplitude = sim['amplitude']
+    spike_level = sim['spike_level']
+    levels = sim['levels']
+
+    [beta,beta_hat,X,X_t,epsilon,Y] = generate_data1(n,p,number_blocks, length_blocks, amplitude,  spike_level, levels, spikes = 0)
+
+    aux = [beta,beta_hat,X,X_t,epsilon,Y]
+
+    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "wb") as out_file:
+        pickle.dump(aux, out_file)
