@@ -299,8 +299,8 @@ where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta
 \section{Fused Lasso}
 \subsection{Definition and set-up}
 
-Consider the same $Y=X\beta+\varepsilon$ setting as for the lasso, but with one extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values.\\
-In that case, Lasso does not exploit the structural information within the features. However this structure can be exploited by adding a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. Adding this penalty term to Lasso's objective function, leads to the fused lasso estimator 
+Consider the same $Y=X\beta+\varepsilon$ setting as for the lasso with the following extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only have a few, that means much less than $n$, blocks with nonzero coefficients. So the sparsity assumption of the lasso setting is relaxed.\\
+Lasso does not use structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
 	\begin{equation}
 		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
