@@ -5,6 +5,7 @@
 \contentsline {todo}{Man k\IeC {\"o}nnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.}{4}
 \contentsline {todo}{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erw\IeC {\"a}hnen.}{6}
 \contentsline {todo}{N\IeC {\"a}her erkl\IeC {\"a}ren warum Lasso es erf\IeC {\"u}llt und was cross-validation \IeC {\"u}berhaupt ist}{6}
+\contentsline {todo}{Die penalties beeinflussen sich auch gegenseitig, m\IeC {\"u}ssen wir noch was zu schreiben.}{7}
 \contentsline {todo}{speak about prior information that is incorporated.}{7}
 \contentsline {todo}{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, au\IeC {\ss }erdem m\IeC {\"u}ssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}{7}
 \contentsline {todo}{In der Mathematik hei\IeC {\ss }t eine Funktion $f\penalty \@M \mskip 2mu\mathpunct {}\nonscript \mkern -\thinmuskip {:}\mskip 6muplus1mu\relax T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn f\IeC {\"u}r jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}{7}

@@ -309,8 +309,11 @@ Lasso does not use structural information within the features for the estimation
 \subsection{Properties}
 
 \subsubsection{The penalty constants} \label{subsec: penalties}
-In contrast to the lasso case, we have two penalty constants. $lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function is only minimized if $\sum_{j=2}^p|\beta_j- \beta_{j-1}|$.\\
-As for the lasso, the penalty constants have to be chosen by the researcher. A possible approach could be crossvalidation on a two dimensional grid, as proposed by \citep{fused}. In that case an upperbound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
+In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. \todo{Die penalties beeinflussen sich auch gegenseitig, müssen wir noch was zu schreiben.} For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, so all coefficients get the same value.\\
+As for the lasso, the penalty constants have to be chosen by the researcher.
+Chosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes that the true $\beta$ vector is very sparse or the blocks where coefficients are equal are large. \\
+A possible approach for chosing the penalty constants could be cross validation on a two dimensional grid. This can optionally be combined with a search strategy on the grid, for example a greedy strategy or meaningful starting points combined with fixed directions as proposed by \citep{fused}. Which method to use strongly depends on run time of the used algorithm as the problem can become computationally unfeasible. 
+When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
 \subsubsection{Properties of the solution}
 
