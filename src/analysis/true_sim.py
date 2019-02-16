@@ -15,10 +15,9 @@ if __name__ == "__main__":
     with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "rb") as in_file:
         data = pickle.load(in_file)
 
-
     beta = data[0]
     beta_hat = data[1]
-    X =data[2]
+    X = data[2]
     X_T = data[3]
     epsilion = data[4]
     y = data[5]
@@ -27,7 +26,7 @@ if __name__ == "__main__":
     s_2 = sim_dict['s2']
 
     for sim in range(num_simulations):
-        beta_hat[:,sim] = fused_lasso_primal(y[:,sim],X, s_1, s_2)
+        beta_hat[:, sim] = fused_lasso_primal(y[:, sim], X, s_1, s_2)
 
     y_hat = np.matmul(X, beta_hat)
     epsilon_hat = y - y_hat
