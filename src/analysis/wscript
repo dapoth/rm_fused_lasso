@@ -24,3 +24,18 @@ def build(ctx):
             append=model,
             name='simulation_{}'.format(model)
         )
+
+def build(ctx):
+
+    for sim in 'one_block', 'two_blocks':
+        ctx(
+            features='run_py_script',
+            source='true_sim.py',
+            deps=[
+                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
+                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
+                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+            ],
+
+            append=sim
+        )
