@@ -1,17 +1,17 @@
-\contentsline {todo}{Write the introduction with a more detailed description of the historical context (elements of statistical learning) and a more detailed description of the steps in the paper}{4}
-\contentsline {todo}{Add non-redundancy conditions.}{7}
-\contentsline {todo}{Besonders hilfreich, da gewisse Model Selection Verfahren bei sehr gro\IeC {\ss }em p nicht mehr anwendbar sind bzw. technisch nicht mehr m\IeC {\"o}glich (bei best subset selection) siehe Einleitung Diplomarbeit}{7}
-\contentsline {todo}{Wir m\IeC {\"u}ssen \IeC {\"u}ber Shrinkage sprechen}{8}
-\contentsline {todo}{Man k\IeC {\"o}nnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.}{8}
-\contentsline {todo}{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erw\IeC {\"a}hnen.}{10}
-\contentsline {todo}{N\IeC {\"a}her erkl\IeC {\"a}ren warum Lasso es erf\IeC {\"u}llt und was cross-validation \IeC {\"u}berhaupt ist}{10}
-\contentsline {todo}{speak about prior information that is incorporated.}{11}
-\contentsline {todo}{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, au\IeC {\ss }erdem m\IeC {\"u}ssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}{11}
-\contentsline {todo}{In der Mathematik hei\IeC {\ss }t eine Funktion $f\penalty \@M \mskip 2mu\mathpunct {}\nonscript \mkern -\thinmuskip {:}\mskip 6muplus1mu\relax T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn f\IeC {\"u}r jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}{11}
-\contentsline {todo}{Describe this further.}{12}
-\contentsline {todo}{think about different structures of the beta-vector (which supports using one of the estimators)}{16}
-\contentsline {todo}{Insert images from simulation and evaluation. M\IeC {\"u}ssen package booktabs benutzen.}{16}
-\contentsline {todo}{look for other application with $p>n$, e.g. Spectral Data or datasets from Elements of Statistical Learning}{16}
-\contentsline {todo}{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}{24}
-\contentsline {todo}{Diese Aussage l\IeC {\"a}sst sich verallgemeinern, sodass $\beta _1$ und $\beta _2$ Sch\IeC {\"a}tzer mit verschiedenen Lambdas sein k\IeC {\"o}nnen, w\IeC {\"u}rde ich auch machen, da es ein sehr spezieller Fall ist, dass es zwei L\IeC {\"o}sungen f\IeC {\"u}r das gleiche Lambda gibt}{24}
-\contentsline {todo}{Ich finde die Notation in dem Beweis nicht gelungen, f\IeC {\"u}r Fused Lasso hatten wir die Lambdas bisher unten und nicht oben, einige Typos m\IeC {\"u}ssen korrigiert werden.}{24}
+\contentsline {todo}{Write the introduction with a more detailed description of the historical context (elements of statistical learning) and a more detailed description of the steps in the paper}{1}
+\contentsline {todo}{Add non-redundancy conditions.}{3}
+\contentsline {todo}{Besonders hilfreich, da gewisse Model Selection Verfahren bei sehr gro\IeC {\ss }em p nicht mehr anwendbar sind bzw. technisch nicht mehr m\IeC {\"o}glich (bei best subset selection) siehe Einleitung Diplomarbeit}{3}
+\contentsline {todo}{Wir m\IeC {\"u}ssen \IeC {\"u}ber Shrinkage sprechen}{4}
+\contentsline {todo}{Man k\IeC {\"o}nnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.}{4}
+\contentsline {todo}{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erw\IeC {\"a}hnen.}{6}
+\contentsline {todo}{N\IeC {\"a}her erkl\IeC {\"a}ren warum Lasso es erf\IeC {\"u}llt und was cross-validation \IeC {\"u}berhaupt ist}{6}
+\contentsline {todo}{speak about prior information that is incorporated.}{7}
+\contentsline {todo}{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, au\IeC {\ss }erdem m\IeC {\"u}ssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}{7}
+\contentsline {todo}{In der Mathematik hei\IeC {\ss }t eine Funktion $f\penalty \@M \mskip 2mu\mathpunct {}\nonscript \mkern -\thinmuskip {:}\mskip 6muplus1mu\relax T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn f\IeC {\"u}r jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}{7}
+\contentsline {todo}{Describe this further.}{8}
+\contentsline {todo}{think about different structures of the beta-vector (which supports using one of the estimators)}{12}
+\contentsline {todo}{Insert images from simulation and evaluation. M\IeC {\"u}ssen package booktabs benutzen.}{12}
+\contentsline {todo}{look for other application with $p>n$, e.g. Spectral Data or datasets from Elements of Statistical Learning}{12}
+\contentsline {todo}{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}{19}
+\contentsline {todo}{Diese Aussage l\IeC {\"a}sst sich verallgemeinern, sodass $\beta _1$ und $\beta _2$ Sch\IeC {\"a}tzer mit verschiedenen Lambdas sein k\IeC {\"o}nnen, w\IeC {\"u}rde ich auch machen, da es ein sehr spezieller Fall ist, dass es zwei L\IeC {\"o}sungen f\IeC {\"u}r das gleiche Lambda gibt}{19}
+\contentsline {todo}{Ich finde die Notation in dem Beweis nicht gelungen, f\IeC {\"u}r Fused Lasso hatten wir die Lambdas bisher unten und nicht oben, einige Typos m\IeC {\"u}ssen korrigiert werden.}{19}
