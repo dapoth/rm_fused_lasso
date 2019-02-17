@@ -41,7 +41,7 @@
 	\center % Centre everything on the page
 	
 	%------------------------------------------------
-	%	Headings
+	%  Headings
 	%------------------------------------------------
 	
 	\textsc{\LARGE University of Bonn}\\[1.5cm] % Main heading such as the name of your university/college
@@ -132,12 +132,9 @@ This paper examines one of the famous methods for dealing with this kind of set-
 
 NUR ZUM  VERANSCHAULICHUNG 
 
-
 \includegraphics[width=\textwidth]{../../out/figures/simulation_dual}
 
 \includegraphics[width=\textwidth]{../../out/figures/simulation_primal}
-
-
 
 % Historical context
 The Lasso was introduced by \citet{lasso}. Thereafter a lot of extensions were and still are being proposed. The most prominent are the elastic net by \citet{zou2005regularization}, the fused lasso by \citet{fused}, the adaptive lasso by \citet{zou2006adaptive} and  the group lasso by \citet{meier2008group}. Recent literature combines these extensions for example  \citet{bleakley2011group} present the grouped fused lasso.
@@ -228,12 +225,12 @@ This is often a corner of the set which corresponds to one component of the $\be
 \todo{Wir müssen über Shrinkage sprechen}
 
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.5\textwidth]{../../out/figures/penalty.pdf}
-	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
-	\label{lassopenalty}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering
+%	\includegraphics[width=0.5\textwidth]{../../out/figures/penalty.pdf}
+%	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
+%	\label{lassopenalty}
+%\end{figure}
 
 \subsubsection{Drawbacks}
 %Problems with Lasso
@@ -303,8 +300,8 @@ where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta
 \section{Fused Lasso}
 \subsection{Definition and set-up}
 
-Consider the same $Y=X\beta+\varepsilon$ setting as for the lasso, but with one extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values.\\
-In that case, Lasso does not exploit the structural information within the features. However this structure can be exploited by adding a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. Adding this penalty term to Lasso's objective function, leads to the fused lasso estimator 
+Consider the same $Y=X\beta+\varepsilon$ setting as for the lasso with the following extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only have a few, that means much less than $n$, blocks with nonzero coefficients. So the sparsity assumption of the lasso setting is relaxed.\\
+Lasso does not use structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
 	\begin{equation}
 		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
@@ -312,9 +309,12 @@ In that case, Lasso does not exploit the structural information within the featu
 	
 \subsection{Properties}
 
-\subsubsection{The penalty constants}
-In contrast to the lasso case, we have two penalty constants. $lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function is only minimized if $\sum_{j=2}^p|\beta_j- \beta_{j-1}|$.\\
-As for the lasso, the penalty constants have to be chosen by the researcher. A possible approach could be crossvalidation on a two dimensional grid, as proposed by \citep{fused}. In that case an upperbound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
+\subsubsection{The penalty constants} \label{subsec: penalties}
+In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. \todo{Die penalties beeinflussen sich auch gegenseitig, müssen wir noch was zu schreiben.} For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, so all coefficients get the same value.\\
+As for the lasso, the penalty constants have to be chosen by the researcher.
+Chosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes that the true $\beta$ vector is very sparse or the blocks where coefficients are equal are large. \\
+A possible approach for chosing the penalty constants could be cross validation on a two dimensional grid. This can optionally be combined with a search strategy on the grid, for example a greedy strategy or meaningful starting points combined with fixed directions as proposed by \citep{fused}. Which method to use strongly depends on run time of the used algorithm as the problem can become computationally unfeasible. 
+When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
 \subsubsection{Properties of the solution}
 
@@ -447,7 +447,14 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \newpage
 \section{Simulation}
 
-In this section we want to illustrate the theory that was elaborated on above.
+In this section we want to illustrate the theory that was elaborated on above. Therefore we apply the lasso and fused lasso estimator to different simulated data sets.
+
+The data sets were generated according to three different data generating processes. In all three processes we use the same fixed design matrix $X$, but we vary the coefficient structure of $\beta$. \ldots
+
+We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}. \footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.} The package enables a fast calculation of the estimators even for large $p$ and $n$.
+
+As described in subsection \ref{subsec: penalties} there are various methods to calculate the two penalty constants. Since we are able to do cross validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for search in \citep{fused} was only justified by “empirical experimentation", which did not seem very clear to us. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.
+
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
 
 
@@ -478,12 +485,12 @@ CGH provides an overview of changes in DNA sequence copy number in a tumor sampl
 %and maps these changes on normal chrosomosomes
 relative to a control sample, i.e. normal chromosomes. Changes can be in form of losses, deletions, gains and amplifications\citep{cghmain}. The DNA  sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. This can for example look as in figure (\ref{cghdata}).
 hi
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{../../out/figures/red_line.pdf}
-	\caption{CGH Data}
-	\label{cghdata}
-\end{figure}
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=\textwidth]{../../out/figures/red_line.pdf}
+%	\caption{CGH Data}
+%	\label{cghdata}
+%\end{figure}
 
 The CGH data are coming from an experiment and are very noisy. This renders some kind of smoothing necessary before analysing the data. \\
 Biological considerations dictate that it is typically segments of a chromosome — rather than individual genes — that are replicated, Consequently, we might expect that the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome.
