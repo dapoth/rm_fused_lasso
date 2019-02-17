@@ -87,7 +87,7 @@ if __name__ == "__main__":
     [beta, beta_hat, X, X_t, epsilon, Y] = generate_data1(n, p, number_blocks,
                                                           length_blocks, amplitude,  spike_level, levels, spikes=0)
 
-    aux = [beta, beta_hat, X, X_t, epsilon, Y]
+    aux1 = [beta, beta_hat, X, X_t, epsilon, Y]
 
-    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "wb") as out_file:
-        pickle.dump(aux, out_file)
+    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "wb") as out12_file:
+        pickle.dump(aux1, out12_file)

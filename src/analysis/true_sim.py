@@ -12,8 +12,8 @@ if __name__ == "__main__":
     sim_name = sys.argv[1]
     model = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"), encoding="utf-8"))
     sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"), encoding="utf-8"))
-    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "rb") as in_file:
-        data = pickle.load(in_file)
+    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "rb") as in12_file:
+        data = pickle.load(in12_file)
 
     beta = data[0]
     beta_hat = data[1]

@@ -9,24 +9,18 @@ def build(ctx):
             features='run_py_script',
             source='create_output_tables.py',
             deps=[
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(model)),
+                ctx.path_to(ctx, 'OUT_ANALYSIS', 'sim123_{}.pickle'.format(model)),
                 ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(model))
             ],
-            target=ctx.path_to(ctx, 'OUT_FIGURES', 'simulation_{}.png'.format(model)),
-            append=model,
-            name='create_output_tables_{}'.format(model)
+            target=ctx.path_to(ctx, 'OUT_FIGURES', 'sim1234_{}.png'.format(model)),
+            append=model
+
         )
-
-        
-    # from src.final.project_dependency_graph import make_project_dependency_graph
-
-    # ctx.add_post_fun(make_project_dependency_graph)
 
 
     ctx(
 	 features='run_py_script',
 	 source='plot_results.py',
-	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),   
-	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),ctx.path_to(ctx, 'OUT_FIGURES', 'penalty.pdf')],
-	 name='red_line'
+	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),
+	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),ctx.path_to(ctx, 'OUT_FIGURES', 'penalty.pdf')]
       )
