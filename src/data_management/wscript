@@ -12,7 +12,7 @@ def build(ctx):
         'beta.csv'),ctx.path_to(ctx, 'OUT_DATA', 'eps.csv')]
 
         )
-def build(ctx):
+
 
     for sim in 'one_block', 'two_blocks':
 
@@ -22,6 +22,5 @@ def build(ctx):
             source='data_generation1.py',
             deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
             target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
-            append=sim,
-            name='simulation_{}'.format(sim)
+            append=sim
         )
