@@ -9,6 +9,10 @@
     "levels":1,
     "s1":50,
     "s2":50,
-    "num_simulations": 50
+    "s1_min":5,
+    "s1_max":100,
+    "s2_min":0,
+    "s2_max":50,
+    "num_simulations": 200
 
 }
