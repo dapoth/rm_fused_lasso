@@ -122,7 +122,7 @@
 
 
 \section{Introduction}
-TEST1234Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
+Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
 
 When analyzing high-dimensional data traditional methods as ordinary least squares turn out not to be appropriate. With traditional methods one is likely to encounter infeasible computation times, non-unique solutions and overfitting. Without constraints the OLS estimator would for example fit the data perfectly for $p=n$, resulting in probably weak out-of-sample forecasts. The reason is that the fit “captures not only the signal about how predictor variables may be used to forecast the outcome, but also fits the noise that is present in the given sample”, i.e. the model is overfit.
 Therefore in order to analyze high-dimensional data “regularization” becomes necessary. This means one needs a dimension reduction, i.e. the estimates need to be constrained in order to avoid overfitting.  \citep{belloni2014}.
@@ -189,7 +189,7 @@ As the penalty constant $\lambda$ enters positively we can think about it as a c
 \begin{equation}
 	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{ \frac{1}{2n}  \sum_{i=1}^{N}(Y_{i}-x_{i}'\beta)^2\right \},
 \end{equation}
-which would be equal to the OLS-solution in a setting with $p\leq N$.
+which would be equal to the OLS-solution in a setting with $p\leq N$. This means that the penalty constant controls the complexity of the model, i.e. the degrees of freedom of the estimator.
 
 \subsubsection{The solution}
 
@@ -288,7 +288,9 @@ Since the optimization problem consists of sums of convex functions, computing t
 %
 % lambda
 \subsubsection{Coordinate descent} \label{Sec: Coordinate Lasso}
-For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate descent algorithm. We can use coordinate descent because the objective function has the structure which is necessary for the algorithm to converge to the global minimum. The structure is
+For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate descent algorithm.
+Coordinate descent is an optimization method applicable in various contexts. It follows the idea that in some cases the minimization of a multivariate function can be conducted by successively solving univariate optimization problems for each variable. In a chronological order one minimizes over the current coordinate while fixing all other coordinates. For the lasso this means that we start for example with $\hat{\beta}_i =0$ for all $i$, then minimize over $\hat{\beta}_1$ while fixing the other coordinates, then minimize $\hat{\beta}_2$ fixing the other coordinates included the new estimate for $\hat{\beta}_1$. This procedure is done so long until the estimates barely change any more.
+We can use coordinate descent because the objective function has the structure which is necessary for the algorithm to converge to the global minimum. The structure is
 \begin{equation}
 g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
@@ -455,10 +457,6 @@ We implemented the fused lasso estimator with the cvxpy package for convex optim
 As described in subsection \ref{subsec: penalties} there are various methods to calculate the two penalty constants. Since we are able to do cross validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for search in \citep{fused} was only justified by “empirical experimentation", which did not seem very clear to us. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.
 
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
-
-
-
-\newpage
 
 \todo{think about different structures of the beta-vector (which supports using one of the estimators)}
 Possible structures of coefficients for the simulation:
