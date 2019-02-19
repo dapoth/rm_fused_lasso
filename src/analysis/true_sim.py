@@ -77,12 +77,14 @@ if __name__ == "__main__":
 
     for i in range(num_simulations):
         beta_hat[:,i] = fle(penalty_cv[0], penalty_cv[1]).fit(X, y[:,i])
-        y_hat[:,i] = fle(penalty_cv[0], penalty_cv[1]).predict(X, y[:,i])
+        y_hat[:,i] = np.matmul(X,beta_hat[:,i])
         residuals[:,i] = y[:,i] - y_hat[:,i]
 
     container = [beta_hat, beta, penalty_cv, y_hat, residuals]
     with open(ppj("OUT_ANALYSIS", "beta_hat_{}.pickle".format(sim_name)), "wb") as out_file:
         pickle.dump(container, out_file)
+        
+
 
     """analysis of estimator properties and how the true beta got estimated"""
 
