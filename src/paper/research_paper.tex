@@ -113,10 +113,20 @@
 \addcontentsline{toc}{section}{List of Figures}
 
 \listoffigures
+penaty term lasso \\
+soft thresholding lasso \\
+cgh mit Schätzer drin \\
+Simulationsbilder: 4 Stück jeweils mit lasso und fused lasso \\
+solution path \\
+cross validation bild wie im classification paper
 
 \addcontentsline{toc}{section}{List of Tables}
 
-\listoftables \newpage
+\listoftables 
+Auswertung der Simulation \\
+Erstellung der betas \\
+Laufzeiten
+\newpage 
 
 \pagenumbering{arabic}
 
@@ -178,21 +188,19 @@ The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term 
 % This result comes from convex optimization theory and we can apply it because $\frac{1}{n}||Y-X\beta||_2^2$ is convex in $\beta$ and $||\beta||_1\leq R$ a convex set.
 
 Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
-
-
-\subsection{Properties}
 %Lasso sets to zero
 
-\subsubsection{The penalty constant}
+\subsection{The penalty constant}
 
 The penalty constant is a user-specified parameter, which is often chosen by a model selection procedure such as cross-validation \citep{sparsity}.
-As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$'s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
+As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
 \begin{equation} \label{eq: lasso}
 	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2\right \},
 \end{equation}
-which would be equal to the OLS-solution in a setting with $p\leq N$. This means that the penalty constant controls the complexity of the model, i.e. the degrees of freedom of the estimator.
+which would be equal to the OLS-solution in a setting with $p\leq N$. This means that the penalty constant controls the complexity of the model, i.e. the degrees of freedom of the estimator. Not only the complexity of the model is controlled by the penalty constant, but also the amount of shrinkage of the estimates in comparison to an OLS solution.
 \todo{incorporate prior information}
-\subsubsection{The solution}
+
+\subsection{Properties of the solution}
 
 \begin{theorem}
 	\begin{enumerate}
@@ -201,6 +209,9 @@ which would be equal to the OLS-solution in a setting with $p\leq N$. This means
 		\item \textbf{Convexity of solution set} Let $\hat{\beta}$ and $\tilde{\beta}$ be solutions of the minimization problem and let $\alpha\in[0,1]$.\\
 		Then also any linear combination $\beta =\alpha \hat{\beta} + (1-\alpha) \tilde{\beta}$ is a solution. 
 	\end{enumerate}
+
+\bigskip
+\noindent The proof of this theorem can be found in the appendix. Convexity of the solution set can be helpful when one has calculated the lasso solution for two different penalty terms. Then ...
 	
 \end{theorem}
 \begin{theorem}[Sparsity of Lasso] \label{theo: sparsity_lasso}
@@ -221,8 +232,6 @@ The further we move away from the OLS solution the larger the bias of our estima
 Feasible estimators for our problem are those within the blue set.
 Since we want to chose the closest possible contour line to the OLS solution we will chose one where the line and the set touch.
 This is often a corner of the set which corresponds to one component of the $\beta$ vector being equal to zero. This two-dimensional example generalizes to higher dimensions in which the region defined by the $\ell^1$-norm is a cross-polytope, i.e. it has many corners. \newline
-
-\todo{Wir müssen über Shrinkage sprechen}
 
 
 %\begin{figure}[h!]
@@ -290,8 +299,12 @@ We can write this more compactly as
 
 \noindent In general we call $S_\lambda(z) := \sgn(z)(|z|-\frac{\lambda}{2})_+$ the soft-thresholding operator. In the orthonormal setting the lasso is thus the soft-thresholded OLS solution.
 \todo{Könnten ein Bild einfügen.}
-An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that contribute more than $\frac{n\lambda}{2}$ to explaining $y$ are unequal to zero.\\ 
+An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that contribute more than $\frac{n\lambda}{2}$ to explaining $y$ are unequal to zero. The coefficients that are unequal to zero are shrinked OLS estimates. The shrinkage is not proportional to the size of $y_j$, for all $y_j$ with $|y_j|\leq \frac{n\lambda}{2}$ the shrinkage of the absolute coefficient is by $\frac{n\lambda}{2}$.
+\bigskip
+\todo{Brauchen wir diesen Abschnitt?}
+
 More formally, if we define $f_j(b)=\frac{1}{n}\sum^n_{i=1}(\varepsilon_i)x_{ij}=\frac{1}{n}\sum^n_{i=1}(y_i-x_i^Tb)x_{ij}$, then if $\beta_\lambda \in \arg\min_{b\in \mathbb{R}^p}$ this implies that for all $b_{\lambda,j}=0$, $|f_j(b_\lambda)|\leq \frac{1}{2}\lambda$. \\
+
 
 
 
@@ -309,18 +322,15 @@ Lasso does not use structural information within the features for the estimation
 	\begin{equation}\label{eq: fusedlasso}
 		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
-	
-	
-\subsection{Properties}
 
-\subsubsection{The penalty constants} \label{subsec: penalties}
+\subsection{The penalty constants} \label{subsec: penalties}
 In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. \todo{Die penalties beeinflussen sich auch gegenseitig, müssen wir noch was zu schreiben.} For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, so all coefficients get the same value.\\
 As for the lasso, the penalty constants have to be chosen by the researcher.
 Chosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes that the true $\beta$ vector is very sparse or the blocks where coefficients are equal are large. \\
 A possible approach for chosing the penalty constants could be cross validation on a two dimensional grid. This can optionally be combined with a search strategy on the grid, for example a greedy strategy or meaningful starting points combined with fixed directions as proposed by \citep{fused}. Which method to use strongly depends on run time of the used algorithm as the problem can become computationally unfeasible. 
 When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
-\subsubsection{The solution}
+\subsection{Properties of the solution}
 
 Similar to the Lasso, we can define the following properties of the Fused Lasso estimator.
 \todo{speak about prior information that is incorporated.}
@@ -343,7 +353,7 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 \end{theorem}
 
 
-\subsection{Solution methods/algorithms}
+\subsection{Solution methods}
 
 With the same argument as above for the lasso, computing the fused lasso estimator is a convex optimization problem. In contrast to the lasso problem the penalty term in the fused lasso problem is not separable in the single coefficients due to the second penalty. This makes the computation more complicated and coordinate descent is not an appropriate method any more as we will see now.
 
