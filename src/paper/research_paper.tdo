@@ -1,15 +1,22 @@
 \contentsline {todo}{Write the introduction with a more detailed description of the historical context (elements of statistical learning) and a more detailed description of the steps in the paper}{1}
+\contentsline {todo}{konkreter}{2}
+\contentsline {todo}{incorporate prior information}{3}
 \contentsline {todo}{Add non-redundancy conditions.}{3}
 \contentsline {todo}{Besonders hilfreich, da gewisse Model Selection Verfahren bei sehr gro\IeC {\ss }em p nicht mehr anwendbar sind bzw. technisch nicht mehr m\IeC {\"o}glich (bei best subset selection) siehe Einleitung Diplomarbeit}{3}
 \contentsline {todo}{Wir m\IeC {\"u}ssen \IeC {\"u}ber Shrinkage sprechen}{4}
 \contentsline {todo}{Man k\IeC {\"o}nnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.}{4}
-\contentsline {todo}{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erw\IeC {\"a}hnen.}{6}
-\contentsline {todo}{N\IeC {\"a}her erkl\IeC {\"a}ren warum Lasso es erf\IeC {\"u}llt und was cross-validation \IeC {\"u}berhaupt ist}{6}
-\contentsline {todo}{Die penalties beeinflussen sich auch gegenseitig, m\IeC {\"u}ssen wir noch was zu schreiben.}{7}
+\contentsline {todo}{Anstelle von if eventuell lieber "for"}{4}
+\contentsline {todo}{Brauchen eine Zitierung f\IeC {\"u}r die Subderivatives und Kuhn-Tucker Bedingungen.}{5}
+\contentsline {todo}{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erw\IeC {\"a}hnen.}{5}
+\contentsline {todo}{Brauchen eine Zitierung dieser Bedingungen}{5}
+\contentsline {todo}{N\IeC {\"a}her erkl\IeC {\"a}ren warum Lasso es erf\IeC {\"u}ll}{5}
+\contentsline {todo}{K\IeC {\"o}nnten ein Bild einf\IeC {\"u}gen.}{6}
+\contentsline {todo}{Die penalties beeinflussen sich auch gegenseitig, m\IeC {\"u}ssen wir noch was zu schreiben.}{6}
 \contentsline {todo}{speak about prior information that is incorporated.}{7}
-\contentsline {todo}{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, au\IeC {\ss }erdem m\IeC {\"u}ssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}{8}
-\contentsline {todo}{In der Mathematik hei\IeC {\ss }t eine Funktion $f\penalty \@M \mskip 2mu\mathpunct {}\nonscript \mkern -\thinmuskip {:}\mskip 6muplus1mu\relax T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn f\IeC {\"u}r jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}{8}
-\contentsline {todo}{Describe this further.}{8}
+\contentsline {todo}{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, au\IeC {\ss }erdem m\IeC {\"u}ssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}{7}
+\contentsline {todo}{In der Mathematik hei\IeC {\ss }t eine Funktion $f\penalty \@M \mskip 2mu\mathpunct {}\nonscript \mkern -\thinmuskip {:}\mskip 6muplus1mu\relax T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn f\IeC {\"u}r jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}{7}
+\contentsline {todo}{Formel erkl\IeC {\"a}ren}{9}
+\contentsline {todo}{Describe this further.}{10}
 \contentsline {todo}{think about different structures of the beta-vector (which supports using one of the estimators)}{11}
 \contentsline {todo}{Insert images from simulation and evaluation. M\IeC {\"u}ssen package booktabs benutzen.}{11}
 \contentsline {todo}{look for other application with $p>n$, e.g. Spectral Data or datasets from Elements of Statistical Learning}{12}
