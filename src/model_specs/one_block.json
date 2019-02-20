@@ -1,14 +1,23 @@
 {
+<<<<<<< HEAD
     "n": [10,100, 1000],
     "p": 200,
     "positive_betas": 10,
     "number_of_blocks":1,
     "amplitude":3,
     "length_blocks":50,
+=======
+    "n": 100,
+    "p": 1000,
+    "number_of_blocks":1,
+    "amplitude":3,
+    "length_blocks":30,
+>>>>>>> ChristopherTh
     "spike_level":0,
     "levels":1,
     "s1":50,
     "s2":50,
+<<<<<<< HEAD
     "s1_min":50,
     "s1_max":300,
     "s2_min":12,
@@ -16,4 +25,11 @@
     "num_simulations": 200,
     "num_simulations_mont": 10
 
+=======
+    "s1_min":5,
+    "s1_max":200,
+    "s2_min":0,
+    "s2_max":20,
+    "num_simulations": 200
+>>>>>>> ChristopherTh
 }

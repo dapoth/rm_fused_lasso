@@ -18,8 +18,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
              sum(|b_i-b_{i-1]|) <= s2
     Technically this is a Convex optimization problem that is solved by cvxpy.
     """
-
-
+    
     def __init__( self, s1, s2):
         """ Called when initializing the Fused Lasso Estimator. """
         self.s1 = s1

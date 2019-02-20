@@ -85,6 +85,8 @@ if __name__ == "__main__":
     container = [beta_hat, beta, penalty_cv, y_hat, residuals]
     with open(ppj("OUT_ANALYSIS", "beta_hat_{}.pickle".format(sim_name)), "wb") as out_file:
         pickle.dump(container, out_file)
+        
+
 
     """analysis of estimator properties and how the true beta got estimated"""
 

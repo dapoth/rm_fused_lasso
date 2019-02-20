@@ -1,10 +1,18 @@
 {
+<<<<<<< HEAD
     "n": [10,100, 1000],
     "p": 200,
     "positive_betas": 20,
     "number_of_blocks":10,
     "amplitude":3,
     "length_blocks":10,
+=======
+    "n": 20,
+    "p": 100,
+    "number_of_blocks":3,
+    "amplitude":3,
+    "length_blocks":4,
+>>>>>>> ChristopherTh
     "spike_level":0,
     "levels":1,
     "s1":50,
