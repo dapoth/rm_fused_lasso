@@ -18,14 +18,15 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
              sum(|b_i-b_{i-1]|) <= s2
     Technically this is a Convex optimization problem that is solved by cvxpy.
     """
-    self.beta = beta
+
+
     def __init__( self, s1, s2):
         """ Called when initializing the Fused Lasso Estimator. """
         self.s1 = s1
         self.s2 = s2
 
 
-    def fit( self, X, y):
+    def fit( self, X, y = None):
         """
         The code for the fused lasso estimator. The penalties s1 and s2 are
         included as additional restriction equations.
@@ -50,56 +51,18 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         prob = cp.Problem(obj, constraints)
         prob.solve()
 
+
         self.beta = b.value
 
         return b.value
 
 
 
-    def predict( self, X, y = None):
+    def predict( self, X, beta = None):
         #try:
         #    getattr(self, "treshold_")
         #except AttributeError:
         #    raise RuntimeError("You must train classifer before predicting data!")
 
+
         return np.matmul(X, self.beta)
-
-def generate_blocks(p, number_blocks, length_blocks, amplitude,  spike_level, levels = False, spikes = 0):
-    """
-    generate beta's for simulation purpose.
-    """
-
-    container = np.zeros(p)
-    max_blocks = math.floor(p/ length_blocks)
-
-    #blocks = np.linspace(1, number_blocks, number_blocks)
-    start_blocks = rd.sample(range(max_blocks),number_blocks)
-
-#    if max_blocks < number_blocks:
-#        break
-
-    amplitudes = [amplitude, amplitude*2]
-
-    if levels == True :
-        """
-        If the Blocks should not all have equal levels, we will randomly chose
-        the level of each block as either amplitude or amplitude times 2.
-        """
-
-        for block in start_blocks :
-            amp = rd.choice(amplitudes)
-            for i in range(p) :
-                if ( i > ( block-1)* length_blocks) and ( i <= block* length_blocks):
-                    container [i] = amp
-
-    else:
-        for block in start_blocks :
-            #amp = rd.choice(amplitudes)
-            for i in range(p) :
-                if ( i > ( block-1)* length_blocks) and ( i <= block* length_blocks):
-                    container [i] = amplitude
-
-    #if spikes != 0 :
-     #   rd.choice(container[:]==0, spikes) = spike_level
-
-    return container

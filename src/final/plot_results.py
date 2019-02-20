@@ -9,9 +9,12 @@ Created on Sat Feb 16 08:42:40 2019
 import matplotlib.pyplot as plt
 import numpy as np
 from bld.project_paths import project_paths_join as ppj
+import sys
+import pickle
+
 
 if __name__ == "__main__":
-    cgh_data = np.loadtxt(ppj("IN_DATA", "cgh.txt"))  
+    cgh_data = np.loadtxt(ppj("IN_DATA", "cgh.txt"))
 
     fig2, ax2 = plt.subplots()
     plt.plot(cgh_data)
@@ -25,11 +28,35 @@ if __name__ == "__main__":
 
     plt.savefig(ppj("OUT_FIGURES", "red_line.pdf"))
 
-    
+
     # Plot normball corresponding to absolute value
     fig = plt.figure()
     plt.scatter([1,0,-1,0,1],[0,1,0,-1,0])
     plt.plot([1,0,-1,0,1],[0,1,0,-1,0])
     plt.fill([1,0,-1,0,1],[0,1,0,-1,0],color='blue', alpha=0.5)
-    
+
     plt.savefig(ppj("OUT_FIGURES", "penalty.pdf"))
+
+
+
+    NEW
+    sim_name = sys.argv[1]
+    /home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis
+    with open(ppj("OUT_ANALYSIS", "beta_hat_monte_Carlo_{}.pickle".format(sim_name)), "rb") as in123_file:
+        aux1234 = pickle.load(in123_file)
+
+    with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/beta_hat_monte_Carlo_two_blocks.pickle", "rb") as in123_file:
+        aux1234 = pickle.load(in123_file)
+
+    beta = aux1234[0]
+    beta_container = aux1234[1]
+    s_opt_container = aux1234[2]
+
+    plt.hist(beta_container[89,:,2], bins='auto')
+    plt.plot(beta)
+    beta[88:100]
+
+    393 in 392 out
+    np.shape(beta_container)
+
+    plt.plot(beta_container[:,9,2])

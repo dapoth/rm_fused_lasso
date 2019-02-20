@@ -14,49 +14,9 @@ import json
 import pickle
 import math
 import random as rd
-
+from src.model_code.functions import generate_blocks
 
 np.random.seed(12345)
-
-def generate_blocks(p, number_blocks, length_blocks, amplitude,  spike_level, levels = False, spikes = 0):
-    """
-    generate beta's for simulation purpose.
-    """
-
-    container = np.zeros(p)
-    max_blocks = math.floor(p/ length_blocks)
-
-    #blocks = np.linspace(1, number_blocks, number_blocks)
-    start_blocks = rd.sample(range(max_blocks),number_blocks)
-
-#    if max_blocks < number_blocks:
-#        break
-
-    amplitudes = [amplitude, amplitude*2]
-
-    if levels == True :
-        """
-        If the Blocks should not all have equal levels, we will randomly chose
-        the level of each block as either amplitude or amplitude times 2.
-        """
-
-        for block in start_blocks :
-            amp = rd.choice(amplitudes)
-            for i in range(p) :
-                if ( i > ( block-1)* length_blocks) and ( i <= block* length_blocks):
-                    container [i] = amp
-
-    else:
-        for block in start_blocks :
-            #amp = rd.choice(amplitudes)
-            for i in range(p) :
-                if ( i > ( block-1)* length_blocks) and ( i <= block* length_blocks):
-                    container [i] = amplitude
-
-    #if spikes != 0 :
-     #   rd.choice(container[:]==0, spikes) = spike_level
-
-    return container
 
 
 def generate_data():
@@ -109,5 +69,3 @@ if __name__ == "__main__":
     save_x(x)
     save_beta(beta)
     save_eps(eps)
-
-    

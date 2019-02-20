@@ -1,18 +1,19 @@
 {
-    "n": 100,
-    "p": 10,
+    "n": [10,100, 1000],
+    "p": 200,
     "positive_betas": 10,
     "number_of_blocks":1,
-    "amplitude":10,
-    "length_blocks":2,
+    "amplitude":3,
+    "length_blocks":50,
     "spike_level":0,
     "levels":1,
     "s1":50,
     "s2":50,
-    "s1_min":5,
-    "s1_max":100,
-    "s2_min":0,
-    "s2_max":50,
-    "num_simulations": 200
+    "s1_min":50,
+    "s1_max":300,
+    "s2_min":12,
+    "s2_max":90,
+    "num_simulations": 200,
+    "num_simulations_mont": 10
 
 }
