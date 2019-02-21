@@ -496,7 +496,7 @@ The data sets were generated according to three different data generating proces
 We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}. \footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.} The package enables a fast calculation of the estimators even for large $p$ and $n$.
 
 As described in subsection \ref{subsec: penalties} there are various methods to calculate the two penalty constants. Since we are able to do cross validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for search in \citep{fused} was only justified by “empirical experimentation", which did not seem very clear to us. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.
-
+We implemented the grid search via the scikit learn package \citep{scikit-learn}. We used the function sklearn.model\_selection.GridSearchCV.
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
 
 \todo{think about different structures of the beta-vector (which supports using one of the estimators)}
