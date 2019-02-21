@@ -202,25 +202,24 @@ which would be equal to the OLS-solution in a setting with $p\leq N$. This means
 
 \subsection{Properties of the solution}
 
+In this section we want to analyze the properties of the lasso estimator, including existence and uniqueness and the advantages and drawbacks of the estimator. In order to state the uniqueness result we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{n\times p}$ are in general position if the affine span of any $k+1$ points $\sigma_1X_{i1}$ \ldots $\sigma_{k+1}X_{ik+1}$, for $k < \min \{n,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k+1} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k+1} \}$. 
+
 \begin{theorem}
 	\begin{enumerate}
 		\item []
 		\item \textbf{Existence} A solution of the minimization problem in (\ref{eq: lasso}) always exists.
-		\item \textbf{Uniqueness} Under 'non-redundancy' conditions on the design matrix $X$, the lasso solution $\hat{\beta}$ is unique 
+		\item \textbf{Uniqueness} \citep{tibshirani2013lasso} If the columns of the design matrix $X$ are in general position, then for any $y$ and $\lambda > 0$ the lasso solution is unique.
 	\end{enumerate}
 
 \bigskip
-\noindent The proof of this theorem can be found in the appendix.
+Note that when the predictor variables are drawn from a continuous distribution, the regressor matrix $X$ is in general position with probability one regardless of the sizes of $n$ and $p$.
+\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}.
 	
 \end{theorem}
 
-see \citep{rosset2004boosting}
-
-\todo{Add non-redundancy conditions.}
-
 \noindent\textbf{Advantages}
 
-We want to start with the main advantage of the Lasso estimator, its sparsity.
+\noindent We want to begin by stating the main advantage of the Lasso estimator, its sparsity.
 
 \begin{theorem}[Sparsity of Lasso] \label{theo: sparsity_lasso}
 	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} \mathbbm{1} \{\beta_i \neq 0\}$.
@@ -311,8 +310,6 @@ We can write this more compactly as
 \noindent In general we call $S_\lambda(z) := \sgn(z)(|z|-\frac{\lambda}{2})_+$ the soft-thresholding operator. In the orthonormal setting the lasso is thus the soft-thresholded OLS solution.
 \todo{Könnten ein Bild einfügen.}
 An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that contribute more than $\frac{n\lambda}{2}$ to explaining $y$ are unequal to zero. The coefficients that are unequal to zero are shrinked OLS estimates. The shrinkage is not proportional to the size of $y_j$, for all $y_j$ with $|y_j|\leq \frac{n\lambda}{2}$ the shrinkage of the absolute coefficient is by $\frac{n\lambda}{2}$.
-\bigskip
-\todo{Brauchen wir diesen Abschnitt?}
 
 \section{Fused Lasso}
 
