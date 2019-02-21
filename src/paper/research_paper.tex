@@ -206,25 +206,31 @@ which would be equal to the OLS-solution in a setting with $p\leq N$. This means
 	\begin{enumerate}
 		\item []
 		\item \textbf{Existence} A solution of the minimization problem in (\ref{eq: lasso}) always exists.
-		\item \textbf{Convexity of solution set} Let $\hat{\beta}$ and $\tilde{\beta}$ be solutions of the minimization problem and let $\alpha\in[0,1]$.\\
-		Then also any linear combination $\beta =\alpha \hat{\beta} + (1-\alpha) \tilde{\beta}$ is a solution. 
+		\item \textbf{Uniqueness} Under 'non-redundancy' conditions on the design matrix $X$, the lasso solution $\hat{\beta}$ is unique 
 	\end{enumerate}
 
 \bigskip
-\noindent The proof of this theorem can be found in the appendix. Convexity of the solution set can be helpful when one has calculated the lasso solution for two different penalty terms. Then ...
+\noindent The proof of this theorem can be found in the appendix.
 	
-\end{theorem}
-\begin{theorem}[Sparsity of Lasso] \label{theo: sparsity_lasso}
-	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} \mathbbm{1} \{\beta_i \neq 0\}$.
-	Then under 'non-redundancy' conditions on the design matrix $X$, the lasso solution $\hat{\beta}$ is unique and we have $n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N$.
 \end{theorem}
 
 see \citep{rosset2004boosting}
 
 \todo{Add non-redundancy conditions.}
 
-\subsubsection{Advantages}
-One advantage of the lasso estimator, in comparison to other regularization methods is, that it sets some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. \\
+\noindent\textbf{Advantages}
+
+We want to start with the main advantage of the Lasso estimator, its sparsity.
+
+\begin{theorem}[Sparsity of Lasso] \label{theo: sparsity_lasso}
+	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} \mathbbm{1} \{\beta_i \neq 0\}$.
+	Then under 'non-redundancy' conditions on the design matrix $X$ we have 
+	\begin{equation}
+		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N
+	\end{equation}.
+\end{theorem}
+
+This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. \\
 \todo{Besonders hilfreich, da gewisse Model Selection Verfahren bei sehr großem p nicht mehr anwendbar sind bzw. technisch nicht mehr möglich (bei best subset selection) siehe Einleitung Diplomarbeit}
 The reason for this property are visualized in Figure \ref{lassopenalty}, heuristically speaking the kinks of the contour lines of the penalty.
 The elliptic lines are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}. 
@@ -241,7 +247,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 %	\label{lassopenalty}
 %\end{figure}
 
-\subsubsection{Drawbacks}
+\noindent\textbf{Drawbacks}
 %Problems with Lasso
 \begin{enumerate}
 	\item If two variables are highly correlated Lasso tends to pick only one of them and which one sometimes depends on minor changes. \todo{Man könnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.} If both variables are supposed to be selected, the estimation can be done via the elastic net. The elastic net was developed to overcome the problem of lasso not identifying highly correlated covariates. It minimizes the objective function $\| Y-X\beta\|_2^2+\lambda_1 \| \beta\|_1 +\lambda_2\|\beta\|_2^2$. The additional penalty has the advantage that it makes the objective function strictly convex.
@@ -269,6 +275,11 @@ This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimator
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. \todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
+
+\textbf{Convexity of solutions} Let $\hat{\beta}$ and $\tilde{\beta}$ be solutions of the minimization problem and let $\alpha\in[0,1]$.\\
+Then also any linear combination $\beta =\alpha \hat{\beta} + (1-\alpha) \tilde{\beta}$ is a solution. 
+
+Convexity of the solution set can be helpful when one has calculated the lasso solution for two different penalty terms. Then ...
 
 \subsubsection{Coordinate descent} \label{Sec: Coordinate Lasso}
 For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate descent algorithm.
@@ -303,16 +314,6 @@ An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that cont
 \bigskip
 \todo{Brauchen wir diesen Abschnitt?}
 
-More formally, if we define $f_j(b)=\frac{1}{n}\sum^n_{i=1}(\varepsilon_i)x_{ij}=\frac{1}{n}\sum^n_{i=1}(y_i-x_i^Tb)x_{ij}$, then if $\beta_\lambda \in \arg\min_{b\in \mathbb{R}^p}$ this implies that for all $b_{\lambda,j}=0$, $|f_j(b_\lambda)|\leq \frac{1}{2}\lambda$. \\
-
-
-
-
-%algorith for estiumation lasso
-%
-%
-% lambda
-
 \section{Fused Lasso}
 
 \subsection{Definition and set-up}
@@ -333,25 +334,30 @@ When considering grids an upper bound for $\lambda_1$ should be the optimal $\la
 \subsection{Properties of the solution}
 
 Similar to the Lasso, we can define the following properties of the Fused Lasso estimator.
-\todo{speak about prior information that is incorporated.}
 
 \begin{theorem}
 	\begin{enumerate}
 		\item[]
 		\item \textbf{Existence} A solution of the minimization problem in \ref{eq: fusedlasso} always exists.
-		\item \textbf{Piecewise Constant}
-		
-\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+		\item \textbf{Uniqueness} Under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique 
 	\end{enumerate}
 \end{theorem}
-\todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
-\todo{In der Mathematik heißt eine Funktion $f\colon T\to M$ von einem topologischen Raum $T$ in eine Menge $M$ lokal konstant, wenn für jedes $x\in T$ eine Umgebung $U$ von $x$ existiert, auf der $f$ konstant ist.}
 
+\noindent\textbf{Advantages}
 
+\noindent Piecewise constant
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
-	Let $n_{seq}(\beta) = \sum_{j=1}^{p} \mathbbm{1} \{\beta_j \neq \beta_{j-1}\}$, i.e. the number of sequences of identical non-zero coefficients. Then under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique and we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
+	Let $n_{seq}(\beta) = \sum_{j=1}^{p} \mathbbm{1} \{\beta_j \neq \beta_{j-1}\}$, i.e. the number of sequences of identical non-zero coefficients. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
 
+\todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
+\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+
+\noindent\textbf{Drawbacks}
+\begin{enumerate}
+	\item The fused lasso estimator is not robust to model misspecifications, that means if it is applied to a setting, where we do not have a sparse block structure in the coefficients, it will not perform well.
+	\item The penalization is the same for all the coefficients no matter what the block length is. A smaller block needs a stronger penalization since it is more difficult to detect, a larger block needs less regularization. One way to overcome this problem is a modification of the fused lasso, namely the adaptive fused lasso (see \citep{rinaldoproperties}).
+\end{enumerate}
 
 \subsection{Solution methods}
 
@@ -391,20 +397,25 @@ A special case of the fused lasso occurs when the predictor matrix is the $N \ti
 
 We can interpret the estimator as an approximator of an unknown signal which is blocky and sparse in its nature and corrupted by an additive noise. (cf. \citep{rinaldoproperties})
 
+%\begin{lemma}[Soft thresholding property] \label{sa: soft thresholding} (cf. \cite{sparsity})
+%	For any $\lambda_1' > \lambda_1$, we have
+%		\begin{equation}
+%		\hat{\beta_i}(\lambda_1', \lambda_2) = S_{\lambda_1'-\lambda_1} (\hat{\beta_i}(\lambda_1, \lambda_2)) \text{ for each } i = 1, \ldots, N,
+%		\end{equation}
+%	where $S$ is the soft-thresholding operator $S_\lambda(z) := \sgn(z)(|z|-\lambda)_+.$
+%\end{lemma}
+
 \begin{lemma}[Soft thresholding property] \label{sa: soft thresholding} (cf. \cite{sparsity})
-	For any $\lambda_1' > \lambda_1$, we have
-		\begin{equation}
-		\hat{\beta_i}(\lambda_1', \lambda_2) = S_{\lambda_1'-\lambda_1} (\hat{\beta_i}(\lambda_1, \lambda_2)) \text{ for each } i = 1, \ldots, N,
-		\end{equation}
-	where $S$ is the soft-thresholding operator $S_\lambda(z) := \sgn(z)(|z|-\lambda)_+.$
+	For any $\lambda_1 > 0$, we have
+	
+\begin{equation}
+	\hat{\beta_i}(\lambda_1, \lambda_2) = S_{\lambda_1} (\hat{\beta_i}(0, \lambda_2)) \text{ for each } i = 1, \ldots, N.\footnote{Proofs of lemma \ref{monotone_fusion} and lemma \ref{sa: soft thresholding} can be found in the appendix.}
+\end{equation}
+
+\noindent where $S_\lambda$ is the soft-thresholding operator $S_\lambda(z) := \sgn(z)(|z|-\lambda)_+.$
 \end{lemma}
-	\noindent	One important special case of Lemma \ref{sa: soft thresholding} is the following equality, on which a lot of path algorithms for the solution are based.
 	
-	\begin{equation}
-		\hat{\beta_i}(\lambda_1, \lambda_2) = S_{\lambda_1} (\hat{\beta_i}(0, \lambda_2)) \text{ for each } i = 1, \ldots, N.\footnote{Proofs of lemma \ref{monotone_fusion} and lemma \ref{sa: soft thresholding} can be found in the appendix.}
-	\end{equation}
-	
-The fused lasso is therefore a soft thresholded version of the fusion estimator. This fact can be exploited, when analyzing for example the asymptotics.
+The fused lasso is therefore a soft thresholded version of the fusion estimator. This fact can be exploited, when analyzing for example the asymptotics or writing algorithms for the solution.
 \bigskip
 	
 Another useful property of the fused lasso estimator (only) in this easy setting is that of monotone fusion.
