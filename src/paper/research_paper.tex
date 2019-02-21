@@ -32,6 +32,46 @@
 \DeclareMathOperator*{\sgn}{sgn}
 \bibliographystyle{ecta}
 
+% python
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{8}  % for normal
+
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\usepackage{listings}
+
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+}}
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
 \begin{document}
 
 
@@ -143,9 +183,9 @@ This paper examines one of the famous methods for dealing with this kind of set-
 
 NUR ZUM  VERANSCHAULICHUNG 
 
-\includegraphics[width=\textwidth]{../../out/figures/simulation_dual}
+%\includegraphics[width=\textwidth]{../../out/figures/simulation_dual}
 
-\includegraphics[width=\textwidth]{../../out/figures/simulation_primal}
+%\includegraphics[width=\textwidth]{../../out/figures/simulation_primal}
 
 % Historical context
 The Lasso was introduced by \citet{lasso}. Thereafter a lot of extensions were and still are being proposed. The most prominent are the elastic net by \citet{zou2005regularization}, the fused lasso by \citet{fused}, the adaptive lasso by \citet{zou2006adaptive} and  the group lasso by \citet{meier2008group}. Recent literature combines these extensions for example  \citet{bleakley2011group} present the grouped fused lasso.
@@ -560,308 +600,27 @@ As seen above the fused lasso signal approximator is designed for cases like the
 \section{Code}
 
 
-\lstset{language=Python}
-\lstset{frame=lines}
-\lstset{caption={Fused Lasso Signal Approximator}}
-\lstset{label={lst:code_direct}}
-\lstset{basicstyle=\footnotesize}
-\begin{lstlisting}
-import numpy as np
-import pandas as pd
-import random as rd
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-from scipy.optimize import minimize
-import time
 
 
-start_time = time.time()
-np.random.seed(1)
-rd.seed(5)
+%beispiel für manuelle eingabe
+%\lstset{title={Titile}}
+%\begin{python}
+%import numpy as np%
+%
+%log_of_two = np.log(2)
 
+%string = 'hello world'
 
-y = np.random.normal(0, 5, 30)
+%def square(x)
 
-y[5:8] = y[5:8]-y[5:8] + 10 + np.random.normal(0,1,3)
+%	return x**2
+	
+%class MyClass():
+%\end{python}
 
-
-#y[15:18] = y[15:18]-y[15:18] - 20 + np.random.normal(0,1,3)
-
-data = np.loadtxt("cgh.txt", delimiter=',')
-
-#y = [1,2,3,4,5,6,7,8,9,10,10.001]
-
-#y = [1,-3,5,-7,9,-11,11.001]
-
-def group_minimize_np(a,b,y,lambda2,p):
-    
-    container12 = np.ones((len(b),2))
-    
-    container12[:,0] = a
-    container12[:,1] = b
-    
-   # beta123 = np.ones(p)
-    
-    number_of_groups2 = len(container12)
-    
-    
-    beta123 = np.repeat(a,b.astype(int))
-    
-   
-            
-            
-    return 0.5*(np.sum((y-beta123)**2))+lambda2 * 
-    np.sum(
-    np.abs(
-    container12[:,0][0:number_of_groups2-1]-container12[:,0][1:number_of_groups2]
-    ))
-        
-
-
-
-def fused_signal_approximation(y):
-   
-    
-  
-    # Initialization
-    p = len(y)
-    beta = np.array(y)
-    
-    container = np.ones((p,2))
-    container[:,0] = y
-    container[:,1] = np.ones(p)
-    
-    beta_matrix = np.ones((p,1))
-    beta_matrix[:,0] = y
-    
-    
-    lambda_vector = np.array([])
-    
-    lambda2 = 0
-    lambda_vector = np.append(lambda_vector,[lambda2])
-    
-    
-    
-    while lambda2 < 5000:#for i in list(range(40)):#len(container[:,0]) > 1:
-    
-        
-        group_count = len(container[:,1])
-        
-        ##Calculating hitting time
-        
-        # Calculating differences
-        difference = beta[0:group_count-1] - beta[1:group_count]
-        
-        
-        #calculate derivatives
-        beta_deriv_container = np.ones(group_count)
-        
-        for j in list(range(group_count)):
-            
-            
-            
-            if j == 0:
-                beta_deriv_container[j] = (-1/container[j,1]) * 
-                (np.sign(container[j,0]-np.sign(container[j+1,0])))
-            elif j == len(container[:,1])-1:
-                beta_deriv_container[j] = (-1/container[j,1]) * 
-                (np.sign(container[j,0]-np.sign(container[j-1,0])))
-            else:
-                beta_deriv_container[j] = (-1/container[j,1])* 
-                (np.sign(container[j,0]-np.sign(container[j-1,0])+ 
-                np.sign(container[j,0]-np.sign(container[j+1,0]))))
-         
-            
-        ## Calculating differences in derivatives    (Nenner)
-        difference_clean_deriv = beta_deriv_container[1:group_count] - 
-        beta_deriv_container[0:group_count-1]
-        
-        ##calculating hitting time
-        h = np.divide(difference,difference_clean_deriv) + lambda2
-        
-        
-        min nur ueber Werte groesser als das alte lambda sind
-        
-        h[h < lambda2] = 10000
-        
-        lambda2 = np.amin(h)
-        
-        
-        
-        #sammeln der lambdas in jeder iteration
-        lambda_vector = np.append(lambda_vector,[lambda2])
-        
-        
-        
-        ## hitting time indices
-        fuse_set_1 = np.argmin(h)
-        fuse_set_2 = np.argmin(h) + 1
-        
-        
-        ## update container group column
-        container[fuse_set_1,1] = container[fuse_set_1,1]   + container[fuse_set_2,1]
-        
-        container = np.delete(container, (fuse_set_2), axis=0)
-        #print(container)
-        
-        # startwert fuer den optimierer
-        
-        #x0 = np.ones(len(container[:,1]))
-        x0 = container[:,0]
-        
-        ##update beta
-        beta_opt = minimize(
-        group_minimize_np, x0,args=(container[:,1],y,lambda2,p), method='Nelder-Mead', 
-        options={'xtol': 1e-8, 'disp': True, 'maxiter' : 1000000}) 
-        
-        
-       
-        ## add new beta to container
-        container[:,0] = beta_opt['x']
-        
-        
-        ### For given updated container fill beta_matrix
-        
-        aux = np.array([np.repeat(container[:,0],container[:,1].astype(int))]).T
-        
-        beta_matrix = np.concatenate((beta_matrix,aux),axis =1)
-        
-        
-
-    
-    # PLot 
-    beta_matrix = pd.DataFrame(beta_matrix)
-    lambda_vector = pd.DataFrame(lambda_vector)
-    y = pd.DataFrame(y)
-    for i in list(range(len(lambda_vector))):
-        
-        
-        
-        d = beta_matrix.iloc[i,0:len(lambda_vector)-1]
-        c = lambda_vector.iloc[0:-1]
-        s = UnivariateSpline(c, d,k=1)
-        
-        plt.plot(c, d, '.-')
-        
-    return plt.plot(c, d, '.-'), beta_matrix,lambda_vector, container
-        
-      
-Plot, beta_Matrix,lambda_vector, container = fused_signal_approximation(data[0:100])
-
-#fused_signal_approximation(data[0:100])
-
-
-print(Plot)      
- 
-print(lambda_vector)
-
-print(pd.DataFrame(beta_Matrix))
-
-print(container)   
-                                                            
-print("My program took", time.time() - start_time, "to run"  )  
-
-
-plt.plot(data[0:100])
-plt.plot(beta_Matrix.iloc[:,40])
-\end{lstlisting}
-\lstset{caption={Solution Path Lasso}}
-
-\begin{lstlisting}
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
-import random as rd
-
-
-def easy_lasso(y,l):
-    y = np.array(y)
-    n = len(y)
-    
-    y[y>n*l/2] = y[y>n*l/2] - n*l/2
-    y[y<-n*l/2] = y[y<-n*l/2] + n*l/2
-    y[np.abs(y) <= n*l/2] = 0
-    
-    b = y
-    
-    return b
-
-y = np.random.normal(0, 100, 10)
-#data = np.loadtxt("cgh.txt", delimiter=',')
-
-def solution_path(y):
-    
-    n = len(y)
-    
-    lambda_container = np.array([])
-    
-    lambda1 = 0
-    lambda_container = np.append(lambda_container,[lambda1])
-    
-    beta_matrix = np.ones((n,1))
-    beta_matrix[:,0] = y
-    
-    
-    
-    while sum(y) != 0:
-        
-        lambda_container_loop = np.ones(n)
-        
-        for i in list(range(n)):
-            
-            if y[i] > n*lambda1/2:
-                
-                lambda_container_loop[i] = y[i]*2/n
-                
-                
-                
-            elif y[i] <-n* lambda1 /2:
-                
-                lambda_container_loop[i] = -y[i]*2/n
-                
-                
-            else:
-                lambda_container_loop[i] = 10000
-                
-                
-        lambda_container_loop[lambda_container_loop < lambda1] = 10000
-        lambda1 = np.amin(lambda_container_loop)
-        lambda_container = np.append(lambda_container,[lambda1])
-        
-        y = np.array(easy_lasso(y,lambda1))
-        y = np.reshape(y, (-1, n)).T
-        beta_matrix = np.concatenate((beta_matrix,y),axis = 1)
-        
-        
-        beta_matrix123 = pd.DataFrame(beta_matrix)
-        lambda_container = pd.DataFrame(lambda_container)
-        for i in list(range(len(lambda_container))):
-            
-            
-            
-            d = beta_matrix123.iloc[i,0:len(lambda_container)]
-            c = lambda_container
-            #s = UnivariateSpline(c, d,k=1)
-            
-            plt.plot(c, d, '.-')
-        
-        
-        
-        
-    return beta_matrix, lambda_container
-    
-Beta_Matrix, Lambda_Container = solution_path(y)
-
-#for i in list(range(63)):
-
-    #plt.plot(Beta_Matrix[:,i])
-
-
-    
-    
-
-\end{lstlisting}
+%so ist es wohl am einfachsten
+\lstset{title={flestimator.py}}
+\pythonexternal{/home/christopher/Dokumente/rm_fused_lasso/src/model_code/flestimator.py}
 
 \todo{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}
 

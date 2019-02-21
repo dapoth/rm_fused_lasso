@@ -20,11 +20,11 @@ def plot_locations(aux1234, model_name):
 
 
 if __name__ == "__main__":
-    model_name = sys.argv[1]
-    model = json.load(open(ppj("IN_MODEL_SPECS", model_name + ".json"), encoding="utf-8"))
-
-    # Load locations after each round
-    with open(ppj("OUT_ANALYSIS", "sim123_{}.pickle".format(model_name)), "rb") as in123_file:
-        aux1234 = pickle.load(in123_file)
-
-    plot_locations(aux1234, model_name)
+    # model_name = sys.argv[1]
+    # model = json.load(open(ppj("IN_MODEL_SPECS", model_name + ".json"), encoding="utf-8"))
+    #
+    # # Load locations after each round
+    # with open(ppj("OUT_ANALYSIS", "sim123_{}.pickle".format(model_name)), "rb") as in123_file:
+    #     aux1234 = pickle.load(in123_file)
+    #
+    # plot_locations(aux1234, model_name)

@@ -4,22 +4,14 @@
 def build(ctx):
 
 
-    ctx(
-        features='run_py_script',
-        source='data_generation.py',
-        deps=ctx.path_to(ctx,'IN_MODEL_SPECS', 'data_simulation.json'),
-        target=[ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),ctx.path_to(ctx, 'OUT_DATA',
-        'beta.csv'),ctx.path_to(ctx, 'OUT_DATA', 'eps.csv')]
-
-        )
+    
 
 
-    for sim in 'one_block', 'two_blocks':
-
+    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
 
         ctx(
             features='run_py_script',
-            source='data_generation1.py',
+            source='data_generation.py',
             deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
             target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
             append=sim
