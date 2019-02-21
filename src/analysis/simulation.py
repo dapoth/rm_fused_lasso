@@ -5,7 +5,7 @@ import pickle
 import numpy as np
 import cvxpy as cp
 from bld.project_paths import project_paths_join as ppj
-
+import matplotlib.pyplot as plt
 
 
 
@@ -114,5 +114,5 @@ if __name__ == "__main__":
     beta = np.loadtxt(ppj("OUT_DATA", "beta.csv"), delimiter=",")
     eps = np.loadtxt(ppj("OUT_DATA", "eps.csv"), delimiter=",")
     aux = fused_lasso_primal(y,X,lambda1,lambda2)
-    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(model_name)), "wb") as out_file:
-        pickle.dump(aux, out_file)
+    with open(ppj("OUT_ANALYSIS", "sim123_{}.pickle".format(model_name)), "wb") as out123_file:
+        pickle.dump(aux, out123_file)

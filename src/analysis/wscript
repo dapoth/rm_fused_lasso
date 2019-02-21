@@ -14,18 +14,15 @@ def build(ctx):
                 ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
                 ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
                 ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
-                ctx.path_to(ctx, 'IN_MODEL_CODE', 'agent.py'),
                 ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(model)),
             ],
             target=[
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(model)),
+                ctx.path_to(ctx, 'OUT_ANALYSIS', 'sim123_{}.pickle'.format(model)),
                 ctx.path_to(ctx, 'OUT_ANALYSIS', 'log', 'simulation_{}.log'.format(model))
             ],
-            append=model,
-            name='simulation_{}'.format(model)
+            append=model
         )
 
-def build(ctx):
 
     for sim in 'one_block', 'two_blocks':
         ctx(
