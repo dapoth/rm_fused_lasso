@@ -3,24 +3,10 @@
 
 def build(ctx):
 
-    for model in 'primal', 'dual':
-
-        ctx(
-            features='run_py_script',
-            source='create_output_tables.py',
-            deps=[
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'sim123_{}.pickle'.format(model)),
-                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(model))
-            ],
-            target=ctx.path_to(ctx, 'OUT_FIGURES', 'sim1234_{}.png'.format(model)),
-            append=model
-
-        )
-
-
+    
     ctx(
 	 features='run_py_script',
-	 source='plot_results.py',
+	 source='cgh_plot.py',
 	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),
-	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'red_line.pdf'),ctx.path_to(ctx, 'OUT_FIGURES', 'penalty.pdf')]
+	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'cgh_plot.pdf')
       )

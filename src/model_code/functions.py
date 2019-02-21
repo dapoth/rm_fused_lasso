@@ -199,35 +199,33 @@ def crossvalidation(alpha):
 
     cv_criterion
 
-def generate_data1(n, p, num_simulations, number_blocks, length_blocks, amplitude, spike_level,
+def generate_data(n, p, num_simulations, number_blocks, length_blocks, amplitude, spike_level,
                    levels=False, spikes=0):
     """Docstr"""
     beta = np.zeros([p, num_simulations])
     for sim in range(num_simulations):
-        beta[:, sim] = generate_blocks(p, number_blocks, length_blocks, amplitude, spike_level, levels=False, spikes=0)
+        beta[:, sim] = generate_blocks(p, number_blocks, length_blocks, amplitude, spike_level, levels, spikes)
+
     beta_hat = np.ones([p, num_simulations])
     mean = np.zeros(p)
     cov = np.identity(p)
     X = np.random.multivariate_normal(mean, cov, n)
-    X_t = np.transpose(X)
     mean_eps = np.zeros(num_simulations)
     cov_eps = np.identity(num_simulations)
     epsilon = np.random.multivariate_normal(mean_eps, cov_eps, n)
     Y = np.matmul(X, beta) + epsilon
 
-    return beta, beta_hat, X, X_t, epsilon, Y
+    return beta,X, epsilon, Y
 
-def generate_blocks(p, number_blocks, length_blocks, amplitude,
-                    spike_level, levels=False, spikes=0):
+
+
+def generate_blocks( p, number_blocks, length_blocks, amplitude,
+                    spike_level, levels = False, spikes = 0):
     """Generate beta's for simulation purpose."""
-    container = np.zeros(p)
-    max_blocks = math.floor(p / length_blocks)
+    container = np.zeros( p)
+    max_blocks = math.floor( p / length_blocks)
 
-    # blocks = np.linspace(1, number_blocks, number_blocks)
-    start_blocks = rd.sample(range(max_blocks), number_blocks)
-
-#    if max_blocks < number_blocks:
-#        break
+    start_blocks = rd.sample( range( max_blocks), number_blocks)
 
     amplitudes = [amplitude, amplitude*2]
 
@@ -250,7 +248,14 @@ def generate_blocks(p, number_blocks, length_blocks, amplitude,
                 if ( i > ( block-1)* length_blocks) and (i <= block* length_blocks):
                     container [i] = amplitude
 
-    #if spikes != 0 :
-     #   rd.choice(container[:]==0, spikes) = spike_level
+    if spikes != 0 :
+        non_blocks = []
+        for i in range(p):
+            if container[i]==0:
+                non_blocks.append(i)
+        beta_spikes = rd.sample(non_blocks, spikes)
+        for i in beta_spikes:
+            container[i] = spike_level
+
 
     return container

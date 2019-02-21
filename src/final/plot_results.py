@@ -14,19 +14,10 @@ import pickle
 
 
 if __name__ == "__main__":
+
     cgh_data = np.loadtxt(ppj("IN_DATA", "cgh.txt"))
 
-    fig2, ax2 = plt.subplots()
-    plt.plot(cgh_data)
-    ax2.set_xlim([0, 990])
-    ax2.set_ylim([-3, 6])
-    plt.xlabel('Genome Order')
-    plt.ylabel('Copy Number')
-    plt.axhline(color='r')
 
-    plt.plot(cgh_data,zorder = 1)
-
-    plt.savefig(ppj("OUT_FIGURES", "red_line.pdf"))
 
 
     # Plot normball corresponding to absolute value
@@ -39,24 +30,38 @@ if __name__ == "__main__":
 
 
 
-    NEW
-    sim_name = sys.argv[1]
-    /home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis
-    with open(ppj("OUT_ANALYSIS", "beta_hat_monte_Carlo_{}.pickle".format(sim_name)), "rb") as in123_file:
-        aux1234 = pickle.load(in123_file)
+    # NEW
+    # sim_name = sys.argv[1]
+    # /home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis
+    # with open(ppj("OUT_ANALYSIS", "beta_hat_monte_Carlo_{}.pickle".format(sim_name)), "rb") as in123_file:
+    #     aux1234 = pickle.load(in123_file)
+    #
+    # with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/beta_hat_monte_Carlo_two_blocks.pickle", "rb") as in123_file:
+    #     aux1234 = pickle.load(in123_file)
+    #
+    # beta = aux1234[0]
+    # beta_container = aux1234[1]
+    # s_opt_container = aux1234[2]
+    #
+    # plt.hist(beta_container[89,:,2], bins='auto')
+    # plt.plot(beta)
+    # beta[88:100]
+    #
+    # 393 in 392 out
+    # np.shape(beta_container)
+    #
+    # plt.plot(beta_container[:,9,2])
 
-    with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/beta_hat_monte_Carlo_two_blocks.pickle", "rb") as in123_file:
-        aux1234 = pickle.load(in123_file)
 
-    beta = aux1234[0]
-    beta_container = aux1234[1]
-    s_opt_container = aux1234[2]
+    # Plot cgh_data
+    fig2, ax2 = plt.subplots()
+    plt.plot(cgh_data)
+    ax2.set_xlim([0, 990])
+    ax2.set_ylim([-3, 6])
+    plt.xlabel('Genome Order')
+    plt.ylabel('Copy Number')
+    plt.axhline(color='r')
 
-    plt.hist(beta_container[89,:,2], bins='auto')
-    plt.plot(beta)
-    beta[88:100]
+    plt.plot(cgh_data,zorder = 1)
 
-    393 in 392 out
-    np.shape(beta_container)
-
-    plt.plot(beta_container[:,9,2])
+    plt.savefig(ppj("OUT_FIGURES", "red_line.pdf"))
