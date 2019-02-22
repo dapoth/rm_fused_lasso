@@ -1,11 +1,6 @@
 from sklearn.base import BaseEstimator, RegressorMixin
 import cvxpy as cp
 import numpy as np
-import math
-import random as rd
-from sklearn.model_selection import GridSearchCV
-import inspect
-import matplotlib.pyplot as plt
 
 class FusedLassoEstimator(BaseEstimator, RegressorMixin):
     """

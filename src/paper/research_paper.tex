@@ -181,12 +181,6 @@ Therefore in order to analyze high-dimensional data “regularization” becomes
 
 This paper examines one of the famous methods for dealing with this kind of set-up, the Least Absolute Shrinkage and Selection Operator, short Lasso estimator and a modification of it, the fused lasso estimator.
 
-%NUR ZUM  VERANSCHAULICHUNG 
-
-%\includegraphics[width=\textwidth]{../../out/figures/simulation_dual}
-
-%\includegraphics[width=\textwidth]{../../out/figures/simulation_primal}
-
 % Historical context
 The Lasso was introduced by \citet{lasso}. Thereafter a lot of extensions were and still are being proposed. The most prominent are the elastic net by \citet{zou2005regularization}, the fused lasso by \citet{fused}, the adaptive lasso by \citet{zou2006adaptive} and  the group lasso by \citet{meier2008group}. Recent literature combines these extensions for example  \citet{bleakley2011group} present the grouped fused lasso.
 
@@ -563,20 +557,18 @@ The first application we want to consider is from medical science. We want to lo
 CGH provides an overview of changes in DNA sequence copy number in a tumor sample 
 %and maps these changes on normal chrosomosomes
 relative to a control sample, i.e. normal chromosomes. Changes can be in form of losses, deletions, gains and amplifications\citep{cghmain}. The DNA  sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. This can for example look as in figure (\ref{cghdata}).
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=\textwidth]{../../out/figures/red_line.pdf}
-%	\caption{CGH Data}
-%	\label{cghdata}
-%\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{../../bld/out/figures/red_line.pdf}
+	\caption{CGH Data}
+	\label{cghdata}
+\end{figure}
 
 The CGH data are coming from an experiment and are very noisy. This renders some kind of smoothing necessary before analysing the data. \\
 Biological considerations dictate that it is typically segments of a chromosome — rather than individual genes — that are replicated, Consequently, we might expect that the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome.
 In this specific example we have as many regressors (genes) as observations (copy numbers) \citep{sparsity}.
-As seen above the fused lasso signal approximator is designed for cases like these with $ p = n$ and a meaningful ordering of the coefficients.
-
-\subsection{Other application}
-\todo{look for other application with $p>n$, e.g. Spectral Data or datasets from Elements of Statistical Learning} 
+As seen above the fused lasso signal approximator is designed for cases like these with $ p = n$ and a meaningful ordering of the coefficients
 
 \section{Conclusion/Discussion}
 
@@ -617,7 +609,7 @@ As seen above the fused lasso signal approximator is designed for cases like the
 
 %so ist es wohl am einfachsten
 \lstset{title={flestimator.py}}
-\pythonexternal{/home/christopher/Dokumente/rm_fused_lasso/src/model_code/flestimator.py}
+\pythonexternal{../../src/model_code/flestimator.py}
 
 \todo{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}
 
