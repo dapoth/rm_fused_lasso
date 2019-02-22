@@ -3,36 +3,20 @@
 
 def build(ctx):
 
-    for model in 'primal', 'dual':
+    
 
-        # Illustrate use of run_py_script with automatic model specification.
+
+    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
         ctx(
-            features='run_py_script',
-            source='simulation.py',
-            deps=[
-                ctx.path_to(ctx, 'OUT_DATA', 'y.csv'),
-                ctx.path_to(ctx, 'OUT_DATA', 'x.csv'),
-                ctx.path_to(ctx, 'OUT_DATA', 'beta.csv'),
-                ctx.path_to(ctx, 'OUT_DATA', 'eps.csv'),
-                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(model)),
-            ],
-            target=[
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'sim123_{}.pickle'.format(model)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'log', 'simulation_{}.log'.format(model))
-            ],
-            append=model
-        )
-
-
-    for sim in 'one_block', 'two_blocks':
-        ctx(
-            features='run_py_script',
-            source='true_sim.py',
-            deps=[
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
+            features = 'run_py_script',
+            source = 'true_sim.py',
+            deps = [
                 ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}.pickle'.format(sim)),
                 ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
             ],
-
-            append=sim
+            target = [
+                #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
+                ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_{}.pickle'.format(sim))
+            ],
+            append = sim
         )
