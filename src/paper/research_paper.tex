@@ -171,7 +171,6 @@ Laufzeiten
 
 \pagenumbering{arabic}
 
-
 \section{Introduction}
 Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
 
@@ -272,6 +271,13 @@ The further we move away from the OLS solution the larger the bias of our estima
 Feasible estimators for our problem are those within the blue set.
 Since we want to chose the closest possible contour line to the OLS solution we will chose one where the line and the set touch.
 This is often a corner of the set which corresponds to one component of the $\beta$ vector being equal to zero. This two-dimensional example generalizes to higher dimensions in which the region defined by the $\ell^1$-norm is a cross-polytope, i.e. it has many corners. \newline
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{../../bld/out/figures/lasso_penalty.png}
+	\caption{Lasso Penalty and OLS contour lines}
+	\label{lassopenalty}
+\end{figure}
 
 
 %\begin{figure}[h!]
@@ -419,7 +425,7 @@ A path algorithm is explained in the next section.
 %	\hat{\beta_i}(\lambda_1, \lambda_2) = S_{\lambda_1} (\hat{\beta_i}(0, \lambda_2)) \text{ for each } i = 1, \ldots, N.
 %\end{equation}
 
-\subsection{Fused Lasso Signal Approximator}
+\subsection{Fused Lasso Signal Approximator} \label{sec: fused_signal}
 
 A special case of the fused lasso occurs when the predictor matrix is the $N \times N$ identity matrix. In this case the 'non-redundancy' conditions are fulfilled, so the estimator is unique. It has the following form.
 
@@ -471,6 +477,39 @@ If we assume $||\beta^0||_1=||\beta_n^0||_1=o(\sqrt{\frac{n}{log(p)}}))$, $\epsi
 If the covariates are not too correlated and on the sparsity assumption then if lambda is in the range of $\lambda=\lambda_n\asymp\sqrt{\frac{log(p)}{n}}$ then beta converges in probability to $\beta$: $||\hat{\beta}(\lambda)-\beta^0||_1=o_P(1)$. 
 We are interested if lasso is able to find the features with large coefficients. This is indeed the case as one can show that...
 
+\subsection{Asymptotics Fused Lasso Signal Approximator}
+
+In this section we want to analyze asymptotic properties of the fused lasso signal approximator. The section follows closely \citep{rinaldoproperties}. Since $p = n$ is crucial for this setting as $n$ grows, $p$ needs to grow too.
+
+As our main goal when applying the fused lasso is to do model selection our asymptotic analysis concentrates on two aspects: the conditions under which the block partition and the block sparsity pattern can be estimated correctly. By block partition we mean the partition $\{B_1, \ldots, B_{J_0}\}$ of $\{1, \ldots, n\}$ into sets of consecutive indexes, such that we can write the coefficient vector $\beta$ as
+\begin{equation}\label{eq: beta_fused_signal}
+	\beta = \sum_{j=1}^{J_0} v_j 1_{B_j}.
+\end{equation}.
+The block sparsity pattern is the set $JS(\beta) = \{j: v_j \neq 0\}$, i.e. the index of the nonzero blocks. We will see that the conditions consist of conditions on the sequences of regularization parameters $\lambda_{1,n}$ and $\lambda_{2,n}$ and on the structure and values of the coefficient vector $\beta$.
+
+\begin{theorem}
+	Assume (E) and a structure of $\beta$ as in\eqref{eq: beta_fused_signal}. If the conditions on $\lambda_{1,n}$ and $\lambda_{2,n}$, on the minimal size of blocks, the smallest amplitude of blocks and the smallest difference between blocks are fulfilled then for the set
+	\begin{equation}
+		R_{1,n} = \{JS_0 = \hat{JS}\} \cap \{\forall j\in JS_0: \sgn(v_j) = \sgn(\hat{v}_j)\}
+	\end{equation} 
+	
+	\noindent we have $\lim_n P(R_{1,n}) = 1$.
+\end{theorem}
+This result is obtained as follows: First one derives the conditions under which the fusion estimate consistently recovers the true block partition and the local maxima and minima of $\beta$. Here consistency demands 
+
+\begin{enumerate}
+	\item The penalty constant $\lambda_{2,n}$ needs to increase with a specific rate.
+	\item The magnitude of the smallest jump (distance between two blocks) does not vanish faster than a specific rate. This means the blocks can asymptotically be distinguished.
+	\item The penalty constant needs to be smaller than a specific value, which incorporates the smallest jump and smallest block. If the smallest block or jump is small $\lambda_{2,n}$ must not be too large in order not to fuse blocks that are not fused in $\beta$.
+\end{enumerate} 
+ 
+In section \eqref{sec: fused_signal} we have seen that the fused lasso signal approximator is the soft-thresholded fusion estimate. Thus one knows that under the conditions for consistently estimating the blocks and extrema for the fusion estimate also the fused lasso consistently recovers them. This is due to soft thresholding the true block partition does not change it. Next one wants to know under which additional conditions not only the true local minima and maxima can be detected, but also the true block sparsity pattern can be achieved. We can qualitatively summarize the conditions as:
+\begin{enumerate}
+	\item The penalty constant $\lambda_{1,n}$ needs to increase.
+	\item The magnitude of the smallest nonzero block value cannot decrease to zero too fast. This guarantees some asymptotic distinguishability between zero and non-zero blocks.
+	\item Since the two penalty constants influence each other (see section \eqref{subsec: penalties}) they need to be in a certain ratio to enable the detection of the true blocks.
+	\item The conditions include the size of the minimal block. The larger the size of a block, the easier is its recovery by the estimator.
+\end{enumerate}
 \subsection{Asymptotic Distribution}
 In the following we cite an asymptotic result from \citet{fused} and give an interpretation hereof.
 For simplicity the authors assumed that $p$ is fixed with $N \rightarrow \infty$. As the authors note themselves these are ``not particularly realistic asymptotic conditions'' as the lasso and fused lasso are methods for high-dimensional data, which is not the case any more if $N$ gets larger than $p$. Still we think that the interpretation of the result is insightful.
