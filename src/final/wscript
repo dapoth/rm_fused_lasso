@@ -3,10 +3,22 @@
 
 def build(ctx):
 
-    
+
     ctx(
 	 features='run_py_script',
 	 source='cgh_plot.py',
 	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),
 	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'cgh_plot.pdf')
       )
+
+    ctx(
+  	 features='run_py_script',
+  	 source='plot_different_penaltys.py',
+  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.pdf')
+        )
+
+    ctx(
+  	 features='run_py_script',
+  	 source='plot_different_penalization_methods.py',
+  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penalization_methods.pdf')
+        )
