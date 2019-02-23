@@ -331,7 +331,7 @@ For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate de
 \begin{equation}
 g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
-where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. The squared Euclidean norm and the absolute value functions fulfill these criteria. An important observation is that the functions only depend on one $\beta$ coefficient.
+where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in \ref{LassoLambda}. Note that each $h_j(\beta_j)$ function only depends on one coefficient.
 \cite[chapter 5]{sparsity}
 \todo{Näher erklären warum Lasso es erfüllt und was cross-validation überhaupt ist}
 
