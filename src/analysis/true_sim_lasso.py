@@ -45,15 +45,15 @@ if __name__ == "__main__":
     #s_2 = sim_dict['s2']
 
     lasso_grid = {
-      's1': list(np.linspace(sim_dict['s1_min'],sim_dict['s1_max'],50))
+      's1': list(np.linspace(1,100,50))
     }
     fused_grid = {
-      's2': list(np.linspace(sim_dict['s2_min'],sim_dict['s2_max'],50))
+      's2': list(np.linspace(1000,1200,1))
     }
 
     two_d_grid = [{
-                's1': list(np.linspace(sim_dict['s1_min'],sim_dict['s1_max'],5)),
-                's2': list(np.linspace(sim_dict['s2_min'],sim_dict['s2_max'],5))
+                's1': list(np.linspace(1,100,50)),
+                's2': list(np.linspace(1000,1200,5))
                 }]
 
     clf = GridSearchCV(fle(lasso_grid,fused_grid), two_d_grid,
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         residuals[:,i] = y[:,i] - y_hat[:,i]
 
     container = [beta_hat, true_beta, penalty_cv, y_hat, residuals]
-    with open(ppj("OUT_ANALYSIS", "simulated_beta_hat_beta_penalty_cv_y_hat_residuals_{}.pickle".format(sim_name)), "wb") as out_file:
+    with open(ppj("OUT_ANALYSIS", "simulated_beta_hat_beta_penalty_cv_y_hat_residuals_lasso{}.pickle".format(sim_name)), "wb") as out_file:
         pickle.dump(container, out_file)
 
     # # Load Data from pickle file
@@ -103,11 +103,13 @@ if __name__ == "__main__":
     length_of_blocks = sim_dict["length_blocks"]
 
     """analysis of estimator properties and how the true beta got estimated"""
-    beta_hat[beta_hat <= 0.1*amplitude] = 0
+    beta_hat[np.absolue(beta_hat) <= 0.01*amplitude] = 0
+
     number_correct_zero = sum((beta_hat == 0) & (true_beta== 0))
 
-    beta_hat[(beta_hat >= 0.75*amplitude)  & (beta_hat <= 1.25*amplitude)] = amplitude
-    number_correct = sum(beta_hat == amplitude)
+    total_number_of_pos = sim_dict['num_simulations']*sim_dict["length_of_blocks"]*sim_dict["num_of_blocks"]
+    number_correct = sum(beta_hat[(beta_hat >0)  & (true_beta > 0)])
+    percent = number_correct/total_number_of_pos
 
     #count how many blocks got estimated correctly
     count = 0
@@ -120,79 +122,5 @@ if __name__ == "__main__":
 
 
     container_ana = [number_correct_zero, number_correct, count]
-    with open(ppj("OUT_ANALYSIS", "analysis_{}.pickle".format(sim_name)), "wb") as out_file:
+    with open(ppj("OUT_ANALYSIS", "analysis_lasso{}.pickle".format(sim_name)), "wb") as out_file:
        pickle.dump(container_ana, out_file)
-
-
-
-
-
-
-
-# monte carlo
-
-
-    # beta_container = np.ones((sim_dict["p"], sim_dict["num_simulations_mont"], len(sim_dict["n"])))
-    # s_opt_container = np.zeros([2,len(sim_dict["n"])])
-    #
-    #
-    #
-    # beta = generate_blocks(sim_dict["p"], sim_dict["number_of_blocks"], sim_dict["length_blocks"], sim_dict["amplitude"],
-    #                     sim_dict["spike_level"])
-    #
-    #
-    # for k in list(range(len(sim_dict["n"]))):
-    #
-    #     mean_x = np.zeros(sim_dict["p"])
-    #     cov_X = np.identity(sim_dict["p"])
-    #     X = np.random.multivariate_normal(mean_x, cov_X,sim_dict["n"][k])
-    #
-    #     eps = np.random.randn(sim_dict["n"][k])
-    #
-    #     y = X.dot(beta)+eps
-    #
-    #     lasso_grid = {
-    #       's1': list(np.linspace(sim_dict['s1_min'],sim_dict['s1_max'],20))
-    #     }
-    #     fused_grid = {
-    #       's2': list(np.linspace(sim_dict['s2_min'],sim_dict['s2_max'],20))
-    #     }
-    #
-    #     two_d_grid = [{
-    #                 's1': list(np.linspace(sim_dict['s1_min'],sim_dict['s1_max'],10)),
-    #                 's2': list(np.linspace(sim_dict['s2_min'],sim_dict['s2_max'],10))
-    #                 }]
-    #
-    #     clf = GridSearchCV(fle(lasso_grid,fused_grid), two_d_grid,
-    #                             scoring= 'neg_mean_squared_error',
-    #                             n_jobs = -1, iid= False, refit=True,
-    #                             cv=None, verbose=0, pre_dispatch='2*n_jobs',
-    #                             error_score='raise-deprecating',
-    #                             return_train_score='warn')
-    #
-    #     clf.fit(X, y)
-    #
-    #
-    #     s1 = clf.best_params_ ["s1"]
-    #     s2 = clf.best_params_["s2"]
-    #
-    #     s_opt_container[0,k] = s1
-    #     s_opt_container[1,k] = s2
-    #     for index ,i in enumerate(sim_dict["n"]):  # i =10 i = 1000 usw
-    #
-    #         mean_x = np.zeros(sim_dict["p"])
-    #         cov_X = np.identity(sim_dict["p"])
-    #         X = np.random.multivariate_normal(mean_x, cov_X,sim_dict["n"][k])
-    #
-    #         for j in range(sim_dict["num_simulations_mont"]):
-    #
-    #             eps = np.random.rand(sim_dict["n"][k])
-    #
-    #             y = np.matmul(X,beta)+eps
-    #
-    #             beta_container[:,j,index] = fused_lasso_primal(y,X,s1,s2)
-    #
-    # test1234 = [beta, beta_container, s_opt_container]
-    #
-    # with open(ppj("OUT_ANALYSIS", "beta_hat_monte_Carlo_{}.pickle".format(sim_name)), "wb") as out_file:
-    #     pickle.dump(test1234, out_file)
