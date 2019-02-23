@@ -225,27 +225,27 @@ def generate_blocks( p, number_blocks, length_blocks, amplitude,
     container = np.zeros( p)
     max_blocks = math.floor( p / length_blocks)
 
-    start_blocks = rd.sample( range( max_blocks), number_blocks)
+    start_blocks = rd.sample(range(max_blocks), number_blocks)
 
-    amplitudes = [amplitude, amplitude*2]
+#    if max_blocks < number_blocks:
+#        break
 
     if (levels == True):
         """
         If the Blocks should not all have equal levels, we will randomly chose
         the level of each block as either amplitude or amplitude times 2.
         """
-
+        amplitudes = [amplitude, amplitude*2]
         for block in start_blocks :
             amp = rd.choice(amplitudes)
             for i in range(p) :
-                if (i > (block-1) * length_blocks) and (i <= block * length_blocks):
+                if ( i >= block* length_blocks) and (i < (block+1)* length_blocks):
                     container[i] = amp
 
     else:
         for block in start_blocks :
-            #amp = rd.choice(amplitudes)
             for i in range(p) :
-                if ( i > ( block-1)* length_blocks) and (i <= block* length_blocks):
+                if ( i >= block* length_blocks) and (i < (block+1)* length_blocks):
                     container [i] = amplitude
 
     if spikes != 0 :
