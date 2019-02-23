@@ -207,9 +207,9 @@ In contrast to the standard OLS setting, consider a high dimensional setting. Th
 The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term on the non-zero regression parameters to the least squares estimator. Let $\lambda>0$ be the penalty constant, then the lasso estimator is defined as follows.
 
 \begin{align}
-\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p} \left \{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda \sum_{j=1}^p|\beta_j| \right\}\\
+\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p} \left \{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda \sum_{j=1}^p|\beta_j| \right\}\\
 \shortintertext{In matrix notation we can write this more compactly as}
-\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p}  \left\{\frac{1}{2n} \| Y-X\beta\|_2^2+\lambda \| \beta\|_1 \right\}, \label{LassoLambda}
+\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p}  \left\{ \| Y-X\beta\|_2^2+\lambda \| \beta\|_1 \right\}, \label{LassoLambda}
 \end{align} 
 
 \noindent where $ \| \cdot \|_2^2 $ is the squared Euclidean norm. This is equivalent to a constrained minimization problem of the form 
@@ -218,7 +218,7 @@ The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term 
 \hat{\beta}_{Primal}(R)=\argmin_{\beta:||\beta||_1\leq R} \frac{1}{n}||Y-X\beta||_2^2 \label{Primal}
 \end{equation} 
 
-\noindent where $R = \frac{||Y||^2}{\lambda}$, thus $R$ is dependent on the data \todo{konkreter} and on the penalty constant.\footnote{See the appendix for details.}
+\noindent where $R = \frac{||Y||^2}{\lambda}$, thus $R$ is dependent on the data and on $\lambda$.\footnote{See the appendix for details.} If $Y$ is centered then it follows $R = \frac{||Y||^2}{\lambda}$
 % This result comes from convex optimization theory and we can apply it because $\frac{1}{n}||Y-X\beta||_2^2$ is convex in $\beta$ and $||\beta||_1\leq R$ a convex set.
 
 Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
@@ -227,9 +227,9 @@ Lasso regression puts constraints on the size of the coefficients associated to 
 \subsection{The penalty constant}
 
 The penalty constant is a user-specified parameter, which is often chosen by a model selection procedure such as cross-validation \citep{sparsity}.
-As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
-\begin{equation} \label{eq: lasso}
-	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2\right \},
+As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$'s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
+\begin{equation}
+	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2\right \},
 \end{equation}
 which would be equal to the OLS-solution in a setting with $p\leq N$. This means that the penalty constant controls the complexity of the model, i.e. the degrees of freedom of the estimator. Not only the complexity of the model is controlled by the penalty constant, but also the amount of shrinkage of the estimates in comparison to an OLS solution.
 \todo{incorporate prior information}
@@ -305,9 +305,9 @@ $$\hat\beta_\lambda \in \argmin_{b\in \mathbb{R}^p}\underbrace{\frac{1}{n}\sum_{
 %
 Since the absolute value function is not differentiable at 0 we have to use subdifferential calculus, which is applicable because the objective is convex. In this simple case we can think of it as a widened interpretation of the derivative. The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$. Calculating the left- and right-hand gradient leads to the Karush Kuhn Tucker conditions for this problem. \todo{Anstelle von if eventuell lieber "for"}
 \begin{align*}
-b_\lambda \in \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) \Leftrightarrow \begin{dcases} 
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(\hat{\beta_{j}}) &\ if \quad \hat{\beta_j} \neq0 \\   
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ if \quad \hat{\beta_j} =0
+\hat{\beta}_\lambda \in \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(\beta) \Leftrightarrow \begin{dcases} 
+\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'\hat{\beta}_\lambda)= \frac{1}{2}\lambda sgn(\hat{\beta}_{\lambda, j}) &\ if \quad \hat{\beta_j} \neq0 \\   
+\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'\hat{\beta}_\lambda) \leq  \frac{1}{2}\lambda \ &\ if \quad \hat{\beta_j} =0
 \end{dcases} 
 \end{align*}
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}.
@@ -328,7 +328,7 @@ We can use coordinate descent because the objective function has the structure w
 \begin{equation}
 g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
-where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. \todo{Brauchen eine Zitierung dieser Bedingungen} The squared Euclidean norm and the absolute value functions fulfill these criteria. An important observation is that the functions only depend on one $\beta$ coefficient.
+where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in \ref{LassoLambda}. Note that each $h_j(\beta_j)$ function only depends on one coefficient.
 \cite[chapter 5]{sparsity}
 \todo{Näher erklären warum Lasso es erfüllt} \newline
 
@@ -358,8 +358,8 @@ An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that cont
 
 Consider the same linear model setting as for the lasso with the following extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only have a few, that means much less than $n$, blocks with nonzero coefficients. So the sparsity assumption of the lasso setting is relaxed.\\
 Lasso does not use structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
-	\begin{equation}\label{eq: fusedlasso}
-		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
+	\begin{equation}
+		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
 
 \subsection{The penalty constants} \label{subsec: penalties}
@@ -430,7 +430,7 @@ A path algorithm is explained in the next section.
 A special case of the fused lasso occurs when the predictor matrix is the $N \times N$ identity matrix. In this case the 'non-redundancy' conditions are fulfilled, so the estimator is unique. It has the following form.
 
 	\begin{equation}
-	\hat{\beta}_{\lambda_1,\lambda_2}^{FLSA}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-\beta_i)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}	
+	\hat{\beta}_{\lambda_1,\lambda_2}^{FLSA}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{   \sum_{i=1}^{N}(y_{i}-\beta_i)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}	
  \label{Fused-Signal}	\end{equation}
 
 We can interpret the estimator as an approximator of an unknown signal which is blocky and sparse in its nature and corrupted by an additive noise. (cf. \citep{rinaldoproperties})
