@@ -483,17 +483,28 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 
 \label{sec:asymptoticslasso}
 
-Asymptotics for high dimensional statistical interference is difficult. The reason is that for a meaningful analysis, besides $n$ also $p$ needs to go to infinity and it even has to grow faster than $n$. Else at some point, $n$ would be bigger than $p$ and so we wouldn't be in a high dimensional setting any more. As soon as $p << n$, we can preferably use known methods as OLS since they do not come with a shrinkage bias.  
-The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model/DGP is changing as $p$ grows. 
-One way to handle high dimensional asymptotics is to work with triangular arrays. Roughly speaking a triangular array is a sequence with two indices, in which each row is only a long as the row's index.  For our linear model, this would be: $Y_{n;i}=\sum^{p_n}_{j=1}\beta^0_{n;j}X^{(j)}_{n;i}+\epsilon_{n;i}, \ i=1,...,n; \ n=1,2,...$. \todo{Formel erklären}
-\bigskip
+In this chapter we want to analyze asymptotics for the lasso and fused lasso. In general asymptotics for high dimensional statistical interference is difficult. The reason is that for a meaningful analysis, besides $n$ also $p$ needs to go to infinity and it even has to grow faster than $n$. Else at some point, $n$ would be bigger than $p$ and so we wouldn't be in a high dimensional setting any more. As soon as $p << n$, we can preferably use known methods as OLS since they do not come with a shrinkage bias.  
+The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model/DGP is changing as $p$ grows. Our usual central limit theorems do not hold any longer in this setting.
+One way to handle high dimensional asymptotics is to work with triangular arrays. Roughly speaking a triangular array is a sequence with two indices, in which each row is only a long as the row's index.  For our linear model, this would be: $Y_{n;i}=\sum^{p_n}_{j=1}\beta^0_{n;j}X^{(j)}_{n;i}+\epsilon_{n;i}, \ i=1,...,n; \ n=1,2,...$.  \todo{Formel erklären} \newline
 
-assumptions diskutieren-min(n,p)=n
-An easy example of this is that of an urn. Consider an urn with 10 red and 10 blue balls. We would like to estimate the probability of drawing a red ball by repeatedly drawing from the urn (with replacing). In high dimensional settings, each time we draw from the urn, the distribution of red and blue balls changes inside the urn. In the following, we will give results on prediction error accuracy, convergence of the estimator and variable screening. 
-If we assume $||\beta^0||_1=||\beta_n^0||_1=o(\sqrt{\frac{n}{log(p)}}))$, $\epsilon$ as defined above and lambda in range of $\lambda=\lambda_n\asymp\sqrt{\frac{log(p)}{n}}$. The last assumption means that... . Then beta lasso is convergent in mean prediction sense. More formally $||X\hat{\beta}-X\beta^0||_2^2/n=o_P(1)$.
-If the covariates are not too correlated and on the sparsity assumption then if lambda is in the range of $\lambda=\lambda_n\asymp\sqrt{\frac{log(p)}{n}}$ then beta converges in probability to $\beta$: $||\hat{\beta}(\lambda)-\beta^0||_1=o_P(1)$. 
-We are interested if lasso is able to find the features with large coefficients. This is indeed the case as one can show that...
+In this chapter we proceed as follows: We first briefly state some asymptotic results for the lasso, afterwards we speak about the asymptotics of the fused lasso signal approximator in more detail. The results in that section are valuable for the understanding of the fused lasso and the conditions under which it performs well. Finally we give an asymptotic normality result which includes the lasso as well as the fused lasso. The focus of the whole chapter is giving the interpretation and intuition of results as the scope of most of the proofs goes beyond this paper.
 
+%An easy example of this is that of an urn. Consider an urn with 10 red and 10 blue balls. We would like to estimate the probability of drawing a red ball by repeatedly drawing from the urn (with replacing). In high dimensional settings, each time we draw from the urn, the distribution of red and blue balls changes inside the urn. In the following, we will give results on prediction error accuracy, convergence of the estimator and variable screening. 
+%If we assume $||\beta^0||_1=||\beta_n^0||_1=o(\sqrt{\frac{n}{log(p)}}))$, $\epsilon$ as defined above and lambda in range of $\lambda=\lambda_n\asymp\sqrt{\frac{log(p)}{n}}$. The last assumption means that... . Then beta lasso is convergent in mean prediction sense. More formally $||X\hat{\beta}-X\beta^0||_2^2/n=o_P(1)$.
+%If the covariates are not too correlated and on the sparsity assumption then if lambda is in the range of $\lambda=\lambda_n\asymp\sqrt{\frac{log(p)}{n}}$ then beta converges in probability to $\beta$: $||\hat{\beta}(\lambda)-\beta^0||_1=o_P(1)$. 
+%We are interested if lasso is able to find the features with large coefficients. This is indeed the case as one can show that...
+
+\subsection{Asymptotics Lasso} 
+
+When considering the asymptotics of the lasso we are mainly interested in its selection property and its prediction accuracy.
+
+Under no conditions on the design matrix and mild assumptions one obtains that
+\begin{equation}
+	||X\hat{\beta}-X\beta_0||_2^2/n \leq ||\beta_0||_1 O_p(\sqrt{(log(p)/n)}).
+\end{equation}
+This means that lasso is consistent in prediction if $\beta$ is sparse in the $\ell_1$-norm, more precisely $||\beta_0||_1 = o(\sqrt(n/log(p)))$.
+
+In order to obtain optimal rates of convergence for prediction and estimation one needs to impose assumptions on the design matrix $X$. One imposes an eigenvalue or irerepresentability condition, which means....
 \subsection{Asymptotics Fused Lasso Signal Approximator}
 
 In this section we want to analyze asymptotic properties of the fused lasso signal approximator. The section follows closely \citep{rinaldoproperties}. Since $p = n$ is crucial for this setting as $n$ grows, $p$ needs to grow too.
@@ -501,11 +512,17 @@ In this section we want to analyze asymptotic properties of the fused lasso sign
 As our main goal when applying the fused lasso is to do model selection our asymptotic analysis concentrates on two aspects: the conditions under which the block partition and the block sparsity pattern can be estimated correctly. By block partition we mean the partition $\{B_1, \ldots, B_{J_0}\}$ of $\{1, \ldots, n\}$ into sets of consecutive indexes, such that we can write the coefficient vector $\beta$ as
 \begin{equation}\label{eq: beta_fused_signal}
 	\beta = \sum_{j=1}^{J_0} v_j I(j \in B_j).
-\end{equation}.
-The block sparsity pattern is the set $JS(\beta) = \{j: v_j \neq 0\}$, i.e. the index of the nonzero blocks. We will see that the conditions consist of conditions on the sequences of regularization parameters $\lambda_{1,n}$ and $\lambda_{2,n}$ and on the structure and values of the coefficient vector $\beta$.
+\end{equation}
+The block sparsity pattern is the set $JS(\beta) = \{j: v_j \neq 0\}$, i.e. the indexes of the nonzero blocks. We will see that the conditions consist of conditions on the sequences of regularization parameters $\lambda_{1,n}$ and $\lambda_{2,n}$ and on the structure and values of the coefficient vector $\beta$.
+We begin by defining assumption (E): \\
+
+\noindent (E) The errors $\varepsilon_i, 1 \leq i \leq n$ are all identically distributed centered Gaussian variables with variance $\sigma_n^2$ such that $\sigma_n \to 0$. \newline
+
+\noindent An example for such a variance would for example be $\sigma_n = \sigma /n$ 
+
 
 \begin{theorem}
-	Assume (E) and a structure of $\beta$ as in\eqref{eq: beta_fused_signal}. If the conditions on $\lambda_{1,n}$ and $\lambda_{2,n}$, on the minimal size of blocks, the smallest amplitude of blocks and the smallest difference between blocks are fulfilled then for the set
+	Assume (E) and a structure of $\beta$ as in \eqref{eq: beta_fused_signal}. If the conditions on $\lambda_{1,n}$ and $\lambda_{2,n}$, on the minimal size of blocks, the smallest amplitude of blocks and the smallest difference between blocks as spelled out in \citep{rinaldoproperties} are fulfilled then for the set
 	\begin{equation}
 		R_{1,n} = \{JS_0 = \hat{JS}\} \cap \{\forall j\in JS_0: \sgn(v_j) = \sgn(\hat{v}_j)\}
 	\end{equation} 
@@ -516,22 +533,22 @@ This result is obtained as follows: First one derives the conditions under which
 
 \begin{enumerate}
 	\item The penalty constant $\lambda_{2,n}$ needs to increase with a specific rate.
-	\item The magnitude of the smallest jump (distance between two blocks) does not vanish faster than a specific rate. This means the blocks can asymptotically be distinguished.
-	\item The penalty constant needs to be smaller than a specific value, which incorporates the smallest jump and smallest block. If the smallest block or jump is small $\lambda_{2,n}$ must not be too large in order not to fuse blocks that are not fused in $\beta$.
+	\item The magnitude of the smallest jump (distance between two blocks) does not vanish faster than a specific rate. This means the blocks can asymptotically be distinguished. Also the smallest block (by number of indexes) must not be too small. The larger the size of a block, the easier is its recovery by the estimator.
+	\item The penalty constant needs to be smaller than a specific value, which incorporates the smallest jump and smallest block. If the smallest block or jump is small, $\lambda_{2,n}$ must not be too large in order not to fuse blocks that are not fused in $\beta$. 
 \end{enumerate} 
  
-In section \eqref{sec: fused_signal} we have seen that the fused lasso signal approximator is the soft-thresholded fusion estimate. Thus one knows that under the conditions for consistently estimating the blocks and extrema for the fusion estimate also the fused lasso consistently recovers them. This is due to soft thresholding the true block partition does not change it. Next one wants to know under which additional conditions not only the true local minima and maxima can be detected, but also the true block sparsity pattern can be achieved. We can qualitatively summarize the conditions as:
+In section \eqref{sec: fused_signal} we have seen that the fused lasso signal approximator is the soft-thresholded fusion estimate. Thus one knows that under the conditions for consistently estimating the blocks and extrema for the fusion estimate also the fused lasso consistently recovers them. This is due to soft thresholding not changing the block partition. Next one wants to know under which additional conditions not only the true local minima and maxima can be detected, but also the true block sparsity pattern can be achieved. We can qualitatively summarize the conditions as:
 \begin{enumerate}
-	\item The penalty constant $\lambda_{1,n}$ needs to increase.
+	\item The penalty constant $\lambda_{1,n}$ needs to increase with a specific rate.
 	\item The magnitude of the smallest nonzero block value cannot decrease to zero too fast. This guarantees some asymptotic distinguishability between zero and non-zero blocks.
-	\item Since the two penalty constants influence each other (see section \eqref{subsec: penalties}) they need to be in a certain ratio to enable the detection of the true blocks.
-	\item The conditions include the size of the minimal block. The larger the size of a block, the easier is its recovery by the estimator.
+	\item Since the two penalty constants influence each other (see section \eqref{subsec: penalties}) they need to be in a certain ratio for each $n$ to enable the detection of the true blocks.
 \end{enumerate}
-\subsection{Asymptotic Distribution}
+
+\subsection{Asymptotic Normality}
 In the following we cite an asymptotic result from \citet{fused} and give an interpretation hereof.
 For simplicity the authors assumed that $p$ is fixed with $N \rightarrow \infty$. As the authors note themselves these are ``not particularly realistic asymptotic conditions'' as the lasso and fused lasso are methods for high-dimensional data, which is not the case any more if $N$ gets larger than $p$. Still we think that the interpretation of the result is insightful.
 
-\begin{theorem}
+\begin{theorem} (\citep{asymptoticslasso},\citep{fused}) \newline
 	If $\lambda_N^{(l)}/\sqrt{N} \rightarrow \lambda_0^{(l)} \geq 0 \  (l=1,2)$ and
 	\begin{equation*}
 	C = \lim\limits_{N \rightarrow \infty}{(\frac{1}{N} \sum_{i=1}^{N}x_i x_i^T)}
@@ -548,17 +565,15 @@ For simplicity the authors assumed that $p$ is fixed with $N \rightarrow \infty$
 	with $u \in \mathbb{R}^p$ and $W$ has an $\mathcal{N}(0,\sigma^2 C)$ distribution.
 \end{theorem}
 
-The idea of the theorem and proof is similar to that in \citep{asymptoticslasso} where the asymptotics of the Lasso are analyzed. In order to study the limiting behavior of the fused lasso the asymptotic behavior of a specific objective function is studied. This objective function is minimized at $\sqrt{N}(\hat{\beta}_n-\beta)$ and converges in distribution to $V(u)$. The proof of the theorem can be found in \citep{fused}, we will give an interpretation of the result.
-\smallskip
+The idea of the theorem and proof is similar to that in \citep{asymptoticslasso} where the asymptotics of the Lasso are analyzed. In order to study the limiting behavior of the fused lasso the asymptotic behavior of a specific objective function is studied. This objective function is minimized at $\sqrt{N}(\hat{\beta}_n-\beta)$ and converges in distribution to $V(u)$. The proof of the theorem can be found in \citep{fused}, we will give an interpretation of the result.\newline
 
-\noindent As $n$ grows to infinity, we need to modify the penalty constant too. That means we need to let $\lambda$ grow as well in a particular speed, this means concretely that $\lambda_N^{(l)}/\sqrt{N} \rightarrow \lambda_0^{(l)} \geq 0 \  (l=1,2)$, so $\lambda$ is $o(n)$ \todo{Describe this further.}
-\smallskip
+\noindent We first look at the sequence of regularization parameters $\lambda_N^{(l)}$, where $l=1,2$. The expression $\lambda_N^{(l)}/\sqrt{N} \rightarrow \lambda_0^{(l)} \geq 0$ means that as $n$ grows to infinity, the penalty constants need to be modified. They need to grow in a particular speed, namely $\lambda_N^{(l)}$ are $o(\sqrt{N})$. The reason is that for growing $N$ there is a chance of overfitting if $\lambda$ stayed constant, the estimator would pick up irrelevant regressors if the penalization is not harsh enough.\newline
 
-\noindent First we take a closer look at the function $V(u)$. Only the first part of the function is stochastic. The second part can be seen as a bias term as we will describe now further.
-\smallskip
+When taking a closer look at the function $V(u)$, we notice that only the first part of the function containing $W$ is stochastic. The second part can be seen as a bias term as we will describe now further. \newline
 
-\noindent Let us start with the case, where $\lambda_0^{(1)}= \lambda_0^{(2)} = 0$, so we are back to OLS. The function $V(u)$ reduces to $V(u) = -2u'W + u'Cu$. It is easy to see that this is minimized at $C^{-1}W$, so as expected 		$\sqrt{N}(\hat{\beta}_N - \beta) \rightarrow_{\text{d}} \mathcal{N}(0,\sigma^2 C^{\frac{1}{2}})$.
-When $\lambda_0^{(1)}$ and/or $\lambda_0^{(2)}$ are unequal to zero we will not get asymptotic normality centered at zero. \newline
+We start with the case, where $\lambda_0^{(1)}= \lambda_0^{(2)} = 0$, so we are back to the OLS setting. The function $V(u)$ reduces to $V(u) = -2u'W + u'Cu$. It is easy to see that this is minimized at $C^{-1}W$, so as expected 		$\sqrt{N}(\hat{\beta}_N - \beta) \rightarrow_{\text{d}} \mathcal{N}(0,\sigma^2 C^{\frac{1}{2}})$.
+When $\lambda_0^{(1)}$ and/or $\lambda_0^{(2)}$ are unequal to zero we will not get asymptotic normality centered at zero as we will see now. \newline
+
 We want to interpret the results for $\lambda_0^{(1)}, \lambda_0^{(2)} > 0$ by means of an example. Therefore we consider the case where $\beta \in \mathbb{R}^2$.
 %Tibshirani et al. define $V_N(u)$ by
 %\begin{align*}
@@ -573,35 +588,59 @@ We want to interpret the results for $\lambda_0^{(1)}, \lambda_0^{(2)} > 0$ by m
 %	\argmin(V_N) = \sqrt{N}(\hat{\beta_N}-\beta) \rightarrow_{\text{d}} \argmin(V).
 %\end{equation*}
 
+We start by taking the (sub)derivative of $V$ with respect to $u_1$ and setting it to zero.
 
-Interpretation of the result: Nonzero parameters are estimated with some asymptotic bias if $\lambda_0 > 0$. When some of the $\beta_j$s are exactly $0$, the limiting distributions put positive probability at $0$. 
+\begin{align} \label{eq: subder}
+	0 = -2w_1 + 2c_{11}u_1 + u_2 (c_{12}+c_{21}) &+ \lambda_0^{(1)}(\sgn(\beta_1) I(\beta_1 \neq 0) + \sgn(u_1)) \nonumber\\
+	 &+ \lambda_0^{(2)} (-\sgn(\beta_2-\beta_1))I(\beta_1 \neq \beta_2) \nonumber\\
+	 & \quad \quad \quad - \sgn(u_2-u_1)I(\beta_2 \neq \beta_1)) 
+\end{align}
+
+\noindent By $\sgn(z)$ we denote the subderivate of the absolute value of $z$. It corresponds to the derivative of the absolute value, the sign function, whenever $z \neq 0$ and to the set $[-1,1]$, when $z=0$.\\
+
+The first case we want to look at is $\lambda_0^{(1)} > 0$ and $\lambda_0^{(2)} = 0$, so we are in the lasso setting. If $\beta_1 \neq 0$ we can derive a closed form solution for $\argmin(V)$.
+
+\begin{equation}
+	u_1 = \frac{1}{2c_{11}} (2w_1 - u_2(c_{12}+c_{21})-\lambda_0^{(1)} \sgn(\beta_1))
+\end{equation}
+
+\noindent The first two summands correspond to the minimum in the OLS case, so we see that the penalty term introduces a bias. We know that lasso does shrinkage of the absolute value of the parameters, so for $\beta$ positive, $\hat{\beta}$ will be smaller and for $\beta$ negative $\hat{\beta}$ will be larger than in the OLS setting. This is also true asymptotically. Therefore with growing $n$ the scaled difference $\sqrt{n}\hat{\beta} - \beta$ has a shift of probability to the negative side if $\beta$ is positive and a shift of probability to the positive side if $\beta$ is negative.\\
+
+Now we consider the case where $\lambda_0^{(1)} = 0$ and $\lambda_0^{(2)} > 0$, so we are in the fusion setting. For $\beta_1 \neq \beta_2$ we can derive the following closed-form solution for $u_1$.
+
+\begin{equation}
+u_1 = \frac{1}{2c_{11}} (2w_1 - u_2(c_{12}+c_{21})+\lambda_0^{(2)} (\sgn(\beta_2)-\sgn(\beta_1))
+\end{equation}
+
+\noindent Again the first two summands correspond to the minimum in the OLS case, so also $\lambda_0^{(2)}$ introduces a bias asymptotically. The fusion estimator will try to fuse the coefficients together or reduce the distance between them. Therefore if $\beta_2 > \beta_1$, the estimate $\hat{\beta}_1$ will be larger than in the OLS setting. Thus with growing $n$ the scaled difference $\sqrt{n}\hat{\beta} - \beta$ has a shift of probability to the positive side. Vice versa when $\beta_1 > \beta_2$.
+
+If we now consider $\lambda_0^{(1)} > 0$ and $\lambda_0^{(2)} > 0$ we can see from the above considerations that only in some cases the direction of the asymptotic bias is clear. For example if $\beta_1 > 0$ and $\beta_2 > \beta_1$ there is a positive shift of probability, if $\beta_1 > 0$ and $\beta_2 < \beta_1$ the direction of the bias is though not clear.
+
+Note that from equation \eqref{eq: subder} one can also see that when some of the $\beta_j$s are exactly $0$, the limiting distributions put positive probability at $0$ and when $\beta_1 = \beta_2$ probability is centered at the line $u_1 = u_2$. 
 
 
 \newpage
-\section{Simulation}
 
 \section{Simulation}
 
 To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
 
-For the four following simulation settings the number of relevant features was set to 30. This was done to show differences in performance depending rather on the structure, then on the number of relevant features.\\
-The first setting was constructed as the basic example, where fused lasso might have advantages on lasso. We only include one block of relevant features of length 30. In the second setting we split the relevant features into 3 equally long blocks, that might or might not be neighboring each other. This provides us an intuition on how the estimation of $\beta$ with fused lasso might depend on the amount of blocks into which the relevant features are split. In the third setting we extend the setting by allowing the blocks in $\beta$ to have different height. In the fourth setting, we augment the number of relevant features by adding a small number of spikes into $\beta$, in the area of non relevant $\beta_j$. This illustrates a case where fused lasso might have problems, picking up the solitary relevant features.\\
+For the four following simulation settings the number of relevant features was set to 30. This was done to show differences in performance depending rather on the structure than on the number of relevant features.\\
+The first setting was constructed as the basic example, where fused lasso might have advantages over lasso. We only include one block of relevant features of length 30. In the second setting we split the relevant features into 3 equally long blocks, that might or might not be neighboring each other. This provides us an intuition on how the estimation of $\beta$ with fused lasso might depend on the amount of blocks into which the relevant features are split. In the third setting we extend the setting by allowing the blocks in $\beta$ to have different height. In the fourth setting, we augment the number of relevant features by adding a small number of spikes into $\beta$, in the area of non relevant $\beta_j$. This illustrates a case where fused lasso might have problems, picking up the solitary relevant features.\\
 
-To perform lasso or fused lasso on this simulation setting, we need to provide the penalty constants $\lambda_1,\lambda_2$ or the equivalent constraint boundaries $s_1, s_2$. As described in subsection \ref{subsec: penalties} there are different methods to calculate the two penalty constants. Since we are able to do cross-validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for the search pattern in \citet{fused} was only justified by “empirical experimentation", which was not further explained and therefore might not be adequate for our setting.\\
+To perform lasso or fused lasso on this simulation setting, we need to provide the penalty constants $\lambda_1,\lambda_2$ or the equivalent constraint boundaries $s_1, s_2$. As described in subsection \ref{subsec: penalties} there are different methods to calculate the two penalty constants. Since we are able to do cross-validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for the search pattern in \citet{fused} was only justified by “empirical experimentation", which was not further explained and therefore might not be adequate for our setting. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.\\
+
 Since we build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}, we can resort to the build in ``GridCV'' to perform k-Fold cross-validation over a grid of hyperparameters $s_1,s_2$. We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
-To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error
+To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.
 \\
 
 
-We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citet{cvxpy}\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}. The package enables a fast calculation of the estimators even for reasonably large $p$ and $n$.
-
-
-As described in subsection \ref{subsec: penalties} there are various methods to calculate the two penalty constants. Since we are able to do cross validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for search in \citep{fused} was only justified by “empirical experimentation", which did not seem very clear to us. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.
-We implemented the grid search via the scikit learn package \citep{scikit-learn}. We used the function sklearn.model\_selection.GridSearchCV.
+We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}. The package enables a fast calculation of the estimators even for reasonably large $p$ and $n$. \\
 
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
 
-\todo{think about different structures of the beta-vector (which supports using one of the estimators)}
+
+
 Possible structures of coefficients for the simulation:
 \begin{enumerate}
 	\item plateaus (of different size) already implemented
