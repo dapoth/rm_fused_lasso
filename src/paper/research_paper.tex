@@ -207,9 +207,9 @@ In contrast to the standard OLS setting, consider a high dimensional setting. Th
 The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term on the non-zero regression parameters to the least squares estimator. Let $\lambda>0$ be the penalty constant, then the lasso estimator is defined as follows.
 
 \begin{align}
-\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p} \left \{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda \sum_{j=1}^p|\beta_j| \right\}\\
+\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p} \left \{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda \sum_{j=1}^p|\beta_j| \right\}\\
 \shortintertext{In matrix notation we can write this more compactly as}
-\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p}  \left\{\frac{1}{2n} \| Y-X\beta\|_2^2+\lambda \| \beta\|_1 \right\}, \label{LassoLambda}
+\hat{\beta}_{\lambda}^{Lasso}&\in\argmin_{\beta \in\rm \mathbb{R}^p}  \left\{ \| Y-X\beta\|_2^2+\lambda \| \beta\|_1 \right\}, \label{LassoLambda}
 \end{align} 
 
 \noindent where $ \| \cdot \|_2^2 $ is the squared Euclidean norm. This is equivalent to a constrained minimization problem of the form 
@@ -218,7 +218,7 @@ The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term 
 \hat{\beta}_{Primal}(R)=\argmin_{\beta:||\beta||_1\leq R} \frac{1}{n}||Y-X\beta||_2^2 \label{Primal}
 \end{equation} 
 
-\noindent where $R = \frac{||Y||^2}{\lambda}$, thus $R$ is dependent on the data \todo{konkreter} and on the penalty constant.\footnote{See the appendix for details.}
+\noindent where $R = \frac{||Y||^2}{\lambda}$, thus $R$ is dependent on the data and on $\lambda$.\footnote{See the appendix for details.} If $Y$ is centered then it follows $R = \frac{||Y||^2}{\lambda}$
 % This result comes from convex optimization theory and we can apply it because $\frac{1}{n}||Y-X\beta||_2^2$ is convex in $\beta$ and $||\beta||_1\leq R$ a convex set.
 
 Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
@@ -227,40 +227,44 @@ Lasso regression puts constraints on the size of the coefficients associated to 
 \subsection{The penalty constant}
 
 The penalty constant is a user-specified parameter, which is often chosen by a model selection procedure such as cross-validation \citep{sparsity}.
-As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
-\begin{equation} \label{eq: lasso}
-	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2\right \},
+As the penalty constant $\lambda$ enters positively we can think about it as a cost for having $\hat{\beta_j}$'s unequal to zero. As $\lambda$ goes to infinity the resulting estimator will be a zero vector i.e $\hat{\beta}_{\infty}^{Lasso}=0$. For $\lambda=0$ the above optimization problem reduces to the least squares problem and therefore 
+\begin{equation}
+	\hat{\beta}_{0}^{Lasso}\in\argmin_{\beta \in\rm \mathbb{R}^p} \left  \{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2\right \},
 \end{equation}
 which would be equal to the OLS-solution in a setting with $p\leq N$. This means that the penalty constant controls the complexity of the model, i.e. the degrees of freedom of the estimator. Not only the complexity of the model is controlled by the penalty constant, but also the amount of shrinkage of the estimates in comparison to an OLS solution.
 \todo{incorporate prior information}
 
 \subsection{Properties of the solution}
 
-In this section we want to analyze the properties of the lasso estimator, including existence and uniqueness and the advantages and drawbacks of the estimator. In order to state the uniqueness result we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{n\times p}$ are in general position if the affine span of any $k+1$ points $\sigma_1X_{i1}$ \ldots $\sigma_{k+1}X_{ik+1}$, for $k < \min \{n,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k+1} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k+1} \}$. 
+In this section we want to analyze the properties of the lasso estimator, including existence and uniqueness and the advantages and drawbacks of the estimator. 
+
+When we have $p \leq n$ and $\text{rank}(X) = p$ there is always a unique solution to (\ref{LassoLambda}) since the sum of squared residuals is a strictly convex function of $\beta$.
+
+In order to state the uniqueness result in the high-dimensional case, we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{n\times p}$ are in general position if the affine span of any $k+1$ points $\sigma_1X_{i1}$ \ldots $\sigma_{k+1}X_{ik+1}$, for $k < \min \{n,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k+1} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k+1} \}$. 
 
 \begin{theorem}
 	\begin{enumerate}
 		\item []
-		\item \textbf{Existence} A solution of the minimization problem in (\ref{eq: lasso}) always exists.
+		\item \textbf{Existence} A solution of the minimization problem in (\ref{LassoLambda}) always exists.
 		\item \textbf{Uniqueness} \citep{tibshirani2013lasso} If the columns of the design matrix $X$ are in general position, then for any $y$ and $\lambda > 0$ the lasso solution is unique.
 	\end{enumerate}
 
 \bigskip
 Note that when the predictor variables are drawn from a continuous distribution, the regressor matrix $X$ is in general position with probability one regardless of the sizes of $n$ and $p$.
-\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}.
+\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}. Note that a uniqueness result in a high-dimensional setting is remarkable. 
 	
 \end{theorem}
 
-\noindent\textbf{Advantages}
+\noindent\textbf{Advantages}\newline
 
 \noindent We want to begin by stating the main advantage of the Lasso estimator, its sparsity.
 
-\begin{theorem}[Sparsity of Lasso] \label{theo: sparsity_lasso}
-	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} \mathbbm{1} \{\beta_i \neq 0\}$.
-	Then under 'non-redundancy' conditions on the design matrix $X$ we have 
+\begin{theorem}[Sparsity of Lasso] \citep{tibshirani2013lasso} \label{theo: sparsity_lasso}
+	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} I \{\hat{\beta}_i \neq 0\}$ be the number of nonzero coefficients of the estimator.
+	If the regressors are in general position we have 
 	\begin{equation}
-		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N
-	\end{equation}.
+		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N.
+	\end{equation}
 \end{theorem}
 
 This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. \\
@@ -287,14 +291,14 @@ This is often a corner of the set which corresponds to one component of the $\be
 %	\label{lassopenalty}
 %\end{figure}
 
-\noindent\textbf{Drawbacks}
-%Problems with Lasso
-\begin{enumerate}
-	\item If two variables are highly correlated Lasso tends to pick only one of them and which one sometimes depends on minor changes. \todo{Man könnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.} If both variables are supposed to be selected, the estimation can be done via the elastic net. The elastic net was developed to overcome the problem of lasso not identifying highly correlated covariates. It minimizes the objective function $\| Y-X\beta\|_2^2+\lambda_1 \| \beta\|_1 +\lambda_2\|\beta\|_2^2$. The additional penalty has the advantage that it makes the objective function strictly convex.
-	\item Lasso was designed for model selection and often has good predictive properties \citep{belloni2014}. However inference about model parameters such as regression coefficients has to be treated carefully. Lasso shrinks the coefficients of parameters and except for perfect model selecetion, can omit variables that have small influence in the model.
-	\item Lasso does not exploit the structure of the regressors. If there is information on the regressor structure, e.g. the $X_i's$ can be ordered in a meaningful way or there are regressors that can be seen as a group, we would like to include this information in the estimation. Examples can be found in time series, biology, image reconstruction and many more.
-	Lasso does not use the extra information when estimating. This gives rise to modifications of the Lasso, for example the fused lasso, which do so. 
-\end{enumerate}
+\noindent\textbf{Drawbacks} \newline
+
+\noindent If two variables are highly correlated Lasso tends to pick only one of them and which one sometimes depends on minor changes. \todo{Man könnte im Appendix ein Minimalbeispiel wie wir es in Computational hatten zur Veranschaulichung geben.} If both variables are supposed to be selected, the estimation can be done via the elastic net. The elastic net was developed to overcome the problem of lasso not identifying highly correlated covariates. It minimizes the objective function $\| Y-X\beta\|_2^2+\lambda_1 \| \beta\|_1 +\lambda_2\|\beta\|_2^2$. The additional penalty has the advantage that it makes the objective function strictly convex.
+
+Lasso was designed for model selection and often has good predictive properties \citep{belloni2014}. However inference about model parameters such as regression coefficients has to be treated carefully. Lasso shrinks the coefficients of parameters and except for perfect model selecetion, can omit variables that have small influence in the model.
+
+If there is information on the regressor structure, e.g. the $X_i's$ can be ordered in a meaningful way or there are regressors that can be seen as a group, we would like to include this information in the estimation. Examples can be found in time series, biology, image reconstruction and many more.
+Lasso does not exploit the extra information when estimating. This gives rise to modifications of the Lasso, for example the fused lasso, which do so. 
 
 \subsection{Solution methods}
 
@@ -303,11 +307,12 @@ This is often a corner of the set which corresponds to one component of the $\be
 The solutions to the minimization problem of the LASSO Estimator are the estimators $\hat\beta_\lambda$ that solve
 $$\hat\beta_\lambda \in \argmin_{b\in \mathbb{R}^p}\underbrace{\frac{1}{n}\sum_{i=1}^{n}(y_i-x_i^Tb)^2+\lambda||b||_1}_{=S_\lambda (b)}.$$
 %
-Since the absolute value function is not differentiable at 0 we have to use subdifferential calculus, which is applicable because the objective is convex. In this simple case we can think of it as a widened interpretation of the derivative. The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$. Calculating the left- and right-hand gradient leads to the Karush Kuhn Tucker conditions for this problem. \todo{Anstelle von if eventuell lieber "for"}
+Since the absolute value function is not differentiable at 0 we have to use subdifferential calculus, which is applicable because the objective is convex. In this simple case we can think of it as a widened interpretation of the derivative. The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$. Calculating the left- and right-hand gradient leads to the Karush Kuhn Tucker conditions for this problem.
+
 \begin{align*}
 b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_\lambda(b) \Leftrightarrow \begin{dcases} 
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(b_{\lambda,j}) &\ if \quad b_{\lambda,j} \neq0 \\   
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ if \quad b_{\lambda,j}=0
+\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(b_{\lambda,j}) &\ for \quad b_{\lambda,j} \neq0 \\   
+\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ for \quad b_{\lambda,j}=0
 \end{dcases} 
 \end{align*}
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}.
@@ -315,11 +320,16 @@ This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimator
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. \todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
+\bigskip
 
-\textbf{Convexity of solutions} Let $\hat{\beta}$ and $\tilde{\beta}$ be solutions of the minimization problem and let $\alpha\in[0,1]$.\\
-Then also any linear combination $\beta =\alpha \hat{\beta} + (1-\alpha) \tilde{\beta}$ is a solution. 
+\textbf{Convexity of solutions} 
 
-Convexity of the solution set can be helpful when one has calculated the lasso solution for two different penalty terms. Then ...
+\begin{theorem}\label{th: convexitylassosolution}
+	Let $\hat{\beta}_{\lambda}$ and $\hat{\beta}_\mu$ be solutions of the minimization problem in (\ref{LassoLambda}) for $\lambda$ respectively $\mu$. Assume the two estimators have the same sign structure, then for any
+	$\alpha\in[0,1]$ the linear combination $\alpha\hat{\beta}_{\lambda}+ (1-\alpha)\hat{\beta}_\mu$ is a solution to the minimization problem with penalty constant $\alpha \lambda + (1-\alpha) \mu$.
+\end{theorem}
+
+Convexity of the solution set can be helpful for calculating solution paths of the lasso. When one has calculated the lasso solution for two different penalty terms, where the estimators have the same sign structure, one does not need to solve the optimization problem for the penalties in between any more, but can simply use the formula for the estimator as in theorem \eqref{th: convexitylassosolution}.
 
 \subsubsection{Coordinate descent} \label{Sec: Coordinate Lasso}
 For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate descent algorithm.
@@ -328,16 +338,17 @@ We can use coordinate descent because the objective function has the structure w
 \begin{equation}
 g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
-where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. \todo{Brauchen eine Zitierung dieser Bedingungen} The squared Euclidean norm and the absolute value functions fulfill these criteria. An important observation is that the functions only depend on one $\beta$ coefficient.
+where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in (\ref{LassoLambda}). Note that each $h_j(\beta_j)$ function only depends on one coefficient.
 \cite[chapter 5]{sparsity}
 \todo{Näher erklären warum Lasso es erfüllt} \newline
 
-\subsection{Orthonormal design}
+\subsection{Lasso Signal Approximator}
 
-To illustrate the material we first look at the special setting, where $X$ is the $n \times n$ identity matrix, thus $p=n$ and the 'non-redundancy' conditions are fulfilled. The model then reduces to
+To illustrate the material we first look at the special setting, where $X$ is the $n \times n$ identity matrix, thus $p=n$ and the regressors are orthonormal and thus in general position. The model then reduces to
 
-$$Y_i=X \cdot\beta_i+\varepsilon_i=\sum^n_{j=1}1_{(j=i)}\beta_i+\varepsilon_i = \beta_i + \varepsilon_i$$
-%
+$$Y_i=X \cdot\beta_i+\varepsilon_i=\sum^n_{j=1}I(j=i)\beta_i+\varepsilon_i = \beta_i + \varepsilon_i$$
+
+We call the lasso estimator in this setting signal approximator as we can interpret $y$ as a signal with additive noise added and $\beta$ as the true signal.
 Using the Karush Kuhn Tucker conditions we see that the unique lasso estimator in this case is
 $$\hat\beta_{\lambda,j}= \begin{dcases} y_j-\frac{n\lambda}{2} &if \quad y_j>\frac{n\lambda}{2}\\
             									  y_j+\frac{n\lambda}{2} &if \quad y_j<-\frac{n\lambda}{2}\\
@@ -359,8 +370,10 @@ An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that cont
 Consider the same linear model setting as for the lasso with the following extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only have a few, that means much less than $n$, blocks with nonzero coefficients. So the sparsity assumption of the lasso setting is relaxed.\\
 Lasso does not use structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
 	\begin{equation}\label{eq: fusedlasso}
-		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
+		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
+	
+\todo{Es fehlt die analoge Schreibweise}
 
 \subsection{The penalty constants} \label{subsec: penalties}
 In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. \todo{Die penalties beeinflussen sich auch gegenseitig, müssen wir noch was zu schreiben.} For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, so all coefficients get the same value.\\
@@ -376,26 +389,30 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 \begin{theorem}
 	\begin{enumerate}
 		\item[]
-		\item \textbf{Existence} A solution of the minimization problem in \ref{eq: fusedlasso} always exists.
-		\item \textbf{Uniqueness} Under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique 
+		\item \textbf{Existence} A solution of the minimization problem in (\ref{eq: fusedlasso}) always exists.
+		\item \textbf{Uniqueness} \citep{ali2018generalized} Under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique.
 	\end{enumerate}
 \end{theorem}
 
-\noindent\textbf{Advantages}
+\todo{Wir müssen schauen, ob man den Existenzbeweis von Lasso auf Fused Lasso verallgemeinern kann.}
+
+\noindent\textbf{Advantages} \newline
 
 \noindent Piecewise constant
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
-	Let $n_{seq}(\beta) = \sum_{j=1}^{p} \mathbbm{1} \{\beta_j \neq \beta_{j-1}\}$, i.e. the number of sequences of identical non-zero coefficients. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
+	Let $n_{seq}(\hat{\beta}) = \sum_{j=1}^{p} I \{\hat{\beta}_j \neq \hat{\beta}_{j-1}\}$ be the number of sequences of identical non-zero coefficients of the estimator. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
 
 \todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
 \citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+\bigskip
 
-\noindent\textbf{Drawbacks}
-\begin{enumerate}
-	\item The fused lasso estimator is not robust to model misspecifications, that means if it is applied to a setting, where we do not have a sparse block structure in the coefficients, it will not perform well.
-	\item The penalization is the same for all the coefficients no matter what the block length is. A smaller block needs a stronger penalization since it is more difficult to detect, a larger block needs less regularization. One way to overcome this problem is a modification of the fused lasso, namely the adaptive fused lasso (see \citep{rinaldoproperties}).
-\end{enumerate}
+\noindent\textbf{Drawbacks} \newline
+
+The fused lasso estimator is not robust to model misspecifications, that means if it is applied to a setting, where we do not have a sparse block structure in the coefficients, it will not perform well.
+
+The penalization is the same for all the coefficients no matter what the block length is. A smaller block needs a stronger penalization since it is more difficult to detect, a larger block needs less regularization. One way to overcome this problem is a modification of the fused lasso, namely the adaptive fused lasso (see \citep{rinaldoproperties}).
+
 
 \subsection{Solution methods}
 
@@ -430,7 +447,7 @@ A path algorithm is explained in the next section.
 A special case of the fused lasso occurs when the predictor matrix is the $N \times N$ identity matrix. In this case the 'non-redundancy' conditions are fulfilled, so the estimator is unique. It has the following form.
 
 	\begin{equation}
-	\hat{\beta}_{\lambda_1,\lambda_2}^{FLSA}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{ \frac{1}{2n}  \sum_{i=1}^{N}(y_{i}-\beta_i)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}	
+	\hat{\beta}_{\lambda_1,\lambda_2}^{FLSA}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{   \sum_{i=1}^{N}(y_{i}-\beta_i)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}	
  \label{Fused-Signal}	\end{equation}
 
 We can interpret the estimator as an approximator of an unknown signal which is blocky and sparse in its nature and corrupted by an additive noise. (cf. \citep{rinaldoproperties})
@@ -483,7 +500,7 @@ In this section we want to analyze asymptotic properties of the fused lasso sign
 
 As our main goal when applying the fused lasso is to do model selection our asymptotic analysis concentrates on two aspects: the conditions under which the block partition and the block sparsity pattern can be estimated correctly. By block partition we mean the partition $\{B_1, \ldots, B_{J_0}\}$ of $\{1, \ldots, n\}$ into sets of consecutive indexes, such that we can write the coefficient vector $\beta$ as
 \begin{equation}\label{eq: beta_fused_signal}
-	\beta = \sum_{j=1}^{J_0} v_j 1_{B_j}.
+	\beta = \sum_{j=1}^{J_0} v_j I(j \in B_j).
 \end{equation}.
 The block sparsity pattern is the set $JS(\beta) = \{j: v_j \neq 0\}$, i.e. the index of the nonzero blocks. We will see that the conditions consist of conditions on the sequences of regularization parameters $\lambda_{1,n}$ and $\lambda_{2,n}$ and on the structure and values of the coefficient vector $\beta$.
 
@@ -589,6 +606,7 @@ Possible structures of coefficients for the simulation:
 \todo{Insert images from simulation and evaluation. Müssen package booktabs benutzen.}
 
 
+
 \section{Real Data Application}
 
 \subsection{Comparative Genomic Hybridization Data}
@@ -668,8 +686,7 @@ Thus we have
 \end{equation*}
 so the two ways of writing the estimator are equivalent.
 
-\begin{proof} Convexity of solution set \newline
-\todo{Diese Aussage lässt sich verallgemeinern, sodass $\beta_1$ und $\beta_2$ Schätzer mit verschiedenen Lambdas sein können, würde ich auch machen, da es ein sehr spezieller Fall ist, dass es zwei Lösungen für das gleiche Lambda gibt}
+\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
 Define the objective function
 \begin{align*}
 h(\beta)=\|Y-X\beta\|_2^2+\lambda\|\beta\|
@@ -678,7 +695,7 @@ Note that $h(\beta)$ is convex. Let $\beta_1$ and $\beta_2$ be two minimizers of
 \begin{align*}
 h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1)}_{\leq h(\beta)}+(1-\alpha)\underbrace{h(\beta_2)}_{\leq h(\beta)} \\ &\leq \alpha h(\beta)+(1-\alpha)h(\beta)=h(\beta) \\ &\Rightarrow \alpha\beta_1+(1-\alpha)\beta_2 \ \ \ \text{is also a minimizer}
 \end{align*}
-Note that this implies that in case of two solutions there are uncountably many solutions.
+Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
 \begin{proof} Existence \newline
@@ -731,10 +748,6 @@ Since the sgn functions which evaluate exactly to -1 or 1 are fixed ,they can be
 \end{align}
 Note that both entries in (16) are always between -1 and 1. We also know that the sgn function in (15) are between -1 and 1. If $\lambda:2$ increases it only shrinks the values closer to 0. Thus we see $\hat{\beta}^*$ might change but that fused set remains constant. Since the structure of the solution remains intact. Only if a new beta joins the group say beta2, but then we could repeat the same argument.
 \end{proof}
-
-
-\listoftodos
-
 
 \newpage
 \bibliography{refs}

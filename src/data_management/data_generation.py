@@ -35,5 +35,5 @@ if __name__ == "__main__":
 
     aux1 = [beta, X, epsilon, Y]
 
-    with open(ppj("OUT_ANALYSIS", "simulation_{}.pickle".format(sim_name)), "wb") as out12_file:
+    with open(ppj("OUT_ANALYSIS", "data_simulation_{}.pickle".format(sim_name)), "wb") as out12_file:
         pickle.dump(aux1, out12_file)

@@ -18,3 +18,4 @@
 \contentsline {todo}{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}{18}
 \contentsline {todo}{Diese Aussage l\IeC {\"a}sst sich verallgemeinern, sodass $\beta _1$ und $\beta _2$ Sch\IeC {\"a}tzer mit verschiedenen Lambdas sein k\IeC {\"o}nnen, w\IeC {\"u}rde ich auch machen, da es ein sehr spezieller Fall ist, dass es zwei L\IeC {\"o}sungen f\IeC {\"u}r das gleiche Lambda gibt}{18}
 \contentsline {todo}{Ich finde die Notation in dem Beweis nicht gelungen, f\IeC {\"u}r Fused Lasso hatten wir die Lambdas bisher unten und nicht oben, einige Typos m\IeC {\"u}ssen korrigiert werden.}{19}
+
