@@ -1,4 +1,4 @@
-
+import seaborn
 import sys
 import json
 import logging
@@ -151,15 +151,14 @@ one_block ={
     "p": 200,
     "number_of_blocks":1,
     "amplitude":3,
-        "spikes": 0,
-
+    "spikes": 0,
     "length_blocks":50,
     "spike_level":0,
     "levels":1,
     "s1":50,
     "s2":50,
-    "s1_min":50,
-    "s1_max":300,
+    "s1_min":100,
+    "s1_max":200,
     "s2_min":12,
     "s2_max":90,
     "num_simulations": 200,
@@ -176,7 +175,7 @@ spike_level = one_block['spike_level']
 levels = one_block['levels']
 spikes = one_block['spikes']
 
-beta = (p, number_blocks, length_blocks, amplitude,
+beta = generate_blocks(p, number_blocks, length_blocks, amplitude,
                     spike_level,levels, spikes)
 
 
@@ -235,6 +234,20 @@ for k in list(range(len(one_block["n"]))):
             beta_container[:,j,index] = fused_lasso_primal(y,X,s1,s2)
 
 test1234 = [beta, beta_container, s_opt_container]
+
+with open("/home/christopher/Dokumente/Testbereich/cv_results_params.pickle", "wb") as out_file:
+    pickle.dump(clf.cv_results_['params'], out_file)
+
+    with open("/home/christopher/Dokumente/Testbereich/cv_results_mean_test_score.pickle", "wb") as out_file:
+        pickle.dump(clf.cv_results_['mean_test_score'], out_file)
+
+with open("/home/christopher/Dokumente/Testbereich/cv_results.pickle", "rb") as out_file:
+    cv_results = pickle.load(out_file)
+
+clf.cv_results_['mean_test_score']
+clf.cv_results_['params']
+
+clf.best_params_
 
 plt.plot(beta)
 plt.plot(beta_container[:,1,2])
