@@ -302,17 +302,41 @@ Lasso does not exploit the extra information when estimating. This gives rise to
 
 %Lasso is a convec problem
 The solutions to the minimization problem of the LASSO Estimator are the estimators $\hat\beta_\lambda$ that solve
-$$\hat\beta_\lambda \in \argmin_{b\in \mathbb{R}^p}\underbrace{\frac{1}{n}\sum_{i=1}^{n}(y_i-x_i^Tb)^2+\lambda||b||_1}_{=S_\lambda (b)}.$$
+$$\hat\beta_\lambda \in \argmin_{b\in \mathbb{R}^p}\underbrace{\sum_{i=1}^{n}(y_i-x_i^Tb)^2+\lambda||b||_1}_{=S_\lambda (b)}.$$
 %
-Since the absolute value function is not differentiable at 0 we have to use subdifferential calculus, which is applicable because the objective is convex. In this simple case we can think of it as a widened interpretation of the derivative. The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$. Calculating the left- and right-hand gradient leads to the Karush Kuhn Tucker conditions for this problem.
-
+The objective function $S_\lambda(b)$ is not differentiable at zero since the absolute value is not. Still we know the following: $b$ is a global minimum of $S_\lambda$ iff it is a local minimum due to convexity of $S_\lambda$. If we denote by $s_j^{-}$ the left partial derivative of $b$ with respect to the $j-$th coordinate and by $s_j^{+}$ the right one, we get the following conditions. If $b$ is a minimum of $S_\lambda(b)$ then for all $j$:
 \begin{align*}
-b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_\lambda(b) \Leftrightarrow \begin{dcases} 
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(b_{\lambda,j}) &\ for \quad b_{\lambda,j} \neq0 \\   
-\frac{1}{n}\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ for \quad b_{\lambda,j}=0
-\end{dcases} 
+	s_j^{-} &\leq 0 \\
+	s_j^{+} &\geq 0.
 \end{align*}
-This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}.
+Note that if $S_\lambda(b)$ is differentiable at $b_j$ then $s_j^{-} = s_j^{+}$.\\
+For the lasso this means that for $j$ with $\beta_j \neq 0$:
+\begin{equation}
+	s_j^{-} = s_j^{+} = -2 \sum_{j=1}^{n} (y_i -x_i'b) x_{ij} + \lambda \sgn(b_j)
+\end{equation}
+
+\noindent and for $j$ with $b_j = 0$:
+\begin{align}
+	s_j^{-} = -2 \sum_{j=1}^{n} (y_i -x_i'b) x_{ij} - \lambda \\
+	s_j^{+} = -2 \sum_{j=1}^{n} (y_i -x_i'b) x_{ij} + \lambda
+\end{align} 
+Reordering of terms gives the following conditions for the Lasso solution, called Karush-Kuhn-Tucker-Conditions.
+
+\begin{theorem}(Characterization of the Lasso solution)
+	\begin{align*}
+	b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_\lambda(b) \Leftrightarrow \begin{dcases} 
+	\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(b_{\lambda,j}) &\ for \quad b_{\lambda,j} \neq0 \\   
+	\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ for \quad b_{\lambda,j}=0
+	\end{dcases} 
+	\end{align*}
+\end{theorem}
+
+This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}. \newline
+
+A different approach to find the solution is subdifferential calculus. 
+Subderivatives generalize the derivative to convex functions which are not necessarily differentiable.
+As our objective function is convex the theory is applicable.
+The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$.
 
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
@@ -344,16 +368,16 @@ $$Y_i=X \cdot\beta_i+\varepsilon_i=\sum^n_{j=1}I(j=i)\beta_i+\varepsilon_i = \be
 
 We call the lasso estimator in this setting signal approximator as we can interpret $y$ as a signal with additive noise added and $\beta$ as the true signal.
 Using the Karush Kuhn Tucker conditions we see that the unique lasso estimator in this case is
-$$\hat\beta_{\lambda,j}= \begin{dcases} y_j-\frac{n\lambda}{2} &if \quad y_j>\frac{n\lambda}{2}\\
-            									  y_j+\frac{n\lambda}{2} &if \quad y_j<-\frac{n\lambda}{2}\\
-                                                  0						 &if \quad |y_j|\leq \frac{n\lambda}{2}
+$$\hat\beta_{\lambda,j}= \begin{dcases} y_j-\frac{\lambda}{2} &if \quad y_j>\frac{\lambda}{2}\\
+y_j+\frac{\lambda}{2} &if \quad y_j<-\frac{\lambda}{2}\\
+0						 &if \quad |y_j|\leq \frac{\lambda}{2}
 \end{dcases}$$
 We can write this more compactly as 
 \begin{equation}
  \hat\beta_{\lambda,j} = \sgn(y_j)(|y_j|-\frac{\lambda}{2})_+.
 \end{equation}
 
-\noindent In general we call $S_\lambda(z) := \sgn(z)(|z|-\frac{\lambda}{2})_+$ the soft-thresholding operator. In the orthonormal setting the lasso is thus the soft-thresholded OLS solution.
+\noindent In general we call $S_\lambda(z) := \sgn(z)(|z|-\lambda)_+$ the soft-thresholding operator. In the orthonormal setting the lasso is thus the soft-thresholded OLS solution.
 \todo{Könnten ein Bild einfügen.}
 An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that contribute more than $\frac{n\lambda}{2}$ to explaining $y$ are unequal to zero. The coefficients that are unequal to zero are shrinked OLS estimates. The shrinkage is not proportional to the size of $y_j$, for all $y_j$ with $|y_j|\leq \frac{n\lambda}{2}$ the shrinkage of the absolute coefficient is by $\frac{n\lambda}{2}$.
 
