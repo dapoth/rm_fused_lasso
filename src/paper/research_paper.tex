@@ -399,6 +399,11 @@ Chosing the penalty constants incorporates prior information to the estimation. 
 A possible approach for chosing the penalty constants could be cross validation on a two dimensional grid. This can optionally be combined with a search strategy on the grid, for example a greedy strategy or meaningful starting points combined with fixed directions as proposed by \citep{fused}. Which method to use strongly depends on run time of the used algorithm as the problem can become computationally unfeasible. 
 When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
+\begin{figure}
+	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
+	\caption{Different penalties}
+\end{figure}
+
 \subsection{Properties of the solution}
 
 Similar to the Lasso, we can define the following properties of the Fused Lasso estimator.
@@ -648,29 +653,40 @@ The first setting was constructed as the basic example, where fused lasso might 
 To perform lasso or fused lasso on this simulation setting, we need to provide the penalty constants $\lambda_1,\lambda_2$ or the equivalent constraint boundaries $s_1, s_2$. As described in subsection \ref{subsec: penalties} there are different methods to calculate the two penalty constants. Since we are able to do cross-validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for the search pattern in \citet{fused} was only justified by “empirical experimentation", which was not further explained and therefore might not be adequate for our setting. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.\\
 
 Since we build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}, we can resort to the build in ``GridCV'' to perform k-Fold cross-validation over a grid of hyperparameters $s_1,s_2$. We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
-To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.
-\\
+To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.\\
 
+\begin{figure}
+	\includegraphics[width=\textwidth]{../../bld/out/figures/heatmap_blocks_levels.png}
+	\caption{Heatmap}
+\end{figure}
 
 We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}. The package enables a fast calculation of the estimators even for reasonably large $p$ and $n$. \\
 
+\begin{figure}
+		\includegraphics[width=\textwidth]{../../bld/out/figures/different_penalization_methods}
+		\caption{Estimators}
+\end{figure}
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
 
 
 
-Possible structures of coefficients for the simulation:
-\begin{enumerate}
-	\item plateaus (of different size) already implemented
-	\item plateaus and one(ore more) peaks
-	\item sparsity, but without plateaus
-	\item situations in which the lasso or fused lasso may not be appropriate (imposing a wrong prior):
-	\begin{enumerate}
-		\item no ordering of the features
-		\item no sparsity
-	\end{enumerate}
-\end{enumerate}
+%Possible structures of coefficients for the simulation:
+%\begin{enumerate}
+%	\item plateaus (of different size) already implemented
+%	\item plateaus and one(ore more) peaks
+%	\item sparsity, but without plateaus
+%	\item situations in which the lasso or fused lasso may not be appropriate (imposing a wrong prior):
+%	\begin{enumerate}
+%		\item no ordering of the features
+%		\item no sparsity
+%	\end{enumerate}
+%\end{enumerate}
 
-\todo{Insert images from simulation and evaluation. Müssen package booktabs benutzen.}
+
+\begin{figure}
+	\input{../../bld/out/figures/table_simulation.tex}
+	\caption{Results of the simulation}
+\end{figure}
 
 
 
