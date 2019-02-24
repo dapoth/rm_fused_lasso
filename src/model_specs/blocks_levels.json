@@ -7,9 +7,9 @@
     "spike_level": 0,
     "spikes": 0,
     "levels": 1,
-    "s1_min": 40,
+    "s1_min": 0.5,
     "s1_max": 200,
-    "s2_min": 3,
-    "s2_max": 100,
+    "s2_min": 0.5,
+    "s2_max": 50,
     "num_simulations": 200
 }

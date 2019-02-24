@@ -9,33 +9,126 @@ import scipy
 from tabulate import tabulate
 import pickle
 import numpy as np
+import pandas as pd
 """Load analysis data"""
 
-for reg in 'lasso', 'fused', 'fusion':
-    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
-        with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg,sim)), "rb") as in12_file:
+
+ #data = {'item1': df_oneblock, 'item2': blocks}
+
+list = []
+for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
+    for reg in 'lasso', 'fused', 'fusion':
+        with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/analysis_{}_{}.pickle".format(reg,sim), "rb") as in12_file:
             analysis = pickle.load(in12_file)
+            analysis.append(sim)
+            analysis.append(reg)
+            list.append(analysis)
+list_pd = pd.DataFrame(list).round(3)
+list_pd
 
+for i in [1,3,5,7]:
+    for j in range(12):
 
-zeros_mean = analysis[0]
-zeros_stf = analysis[1]
+        list_pd.iloc[j,i] = '(' + str(list_pd.iloc[j,i]) + ')'
 
-ones_mean = analysis[2]
-ones_std = analysis[3]
-
-spikes_mean = analysis[4]
-spikes_std = analysis[5]
-
-blocks_mean = analysis[6]
-blocks_std = analysis[7]
-
-
-
+idx_rename = {0:'Lasso', 1:'Fused', 2: 'Fusion',3:'Lasso', 4:'Fused', 5: 'Fusion',6:'Lasso', 7:'Fused', 8: 'Fusion',9:'Lasso', 10:'Fused', 11: 'Fusion'}
+columns_rename = {0:"specificity" ,1:""  ,2:"sensititiy", 3:"" , 4:"spikes", 5:"" ,6:"blocks",7:"",8:"Setting",9:"Method"}
+list_pd = list_pd.rename( columns=columns_rename)
 
 
 
 
-rowIDs = ["Mean","Standarterror"]
+list_pd = list_pd.set_index(["Setting","Method"])
+
+
+
+
+list_pd
+
+
+
+estimations, eval = list_pd.shape(list_pd)
+data = {'one_block': pd.DataFrame(np.random.randn(4, 3)),
+        'Item2': pd.DataFrame(np.random.randn(4, 2))}
+
+for i in range(0,eval,2):
+    list_pd[i] = '(' + list_pd[i].astype(str)+')'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+list
+print(test)
+test = list[1][1],"\n", list[1][2]
+
+lasso_one_block = list[0]
+lasso_blocks = list[1]
+lasso_blocks_levels = list[2]
+lasso_blocks_spikes = list[3]
+
+fused_one_block = list[4]
+fused_blocks = list[5]
+fused_blocks_levels = list[6]
+fused_blocks_spikes = list[7]
+
+fusion_one_block = list[8]
+fusion_blocks = list[9]
+fusion_blocks_levels = list[10]
+fusion_blocks_spikes = list[11]
+
+aux = lasso_one_block[1] , "\n" lasso_one_block[2]
+aaa = str(lasso_one_block[1])
+
+str(lasso_one_block[1])
+
+print(str(lasso_one_block[1]),"\n(aaa)")
+print(lasso_one_block[1])
+
+print(lasso_one_block[0],"\n", "(",lasso_one_block[1],")")
+
+
+
+
+
+
+test = []
+for j in range(6,2):
+    print(lasso_one_block[j],"\n", "(",lasso_one_block[j+1],")")
+
+        test.append()
+
+['455.835', '5.422', '3.4', '1.895', '0.0', '0.0', '0.251', '0.13']
+
+
+[['455.835', '5.422', '3.4', '1.895', '0.0', '0.0', '0.251', '0.13'],
+ ['456.08', '6.003', '3.315', '2.116', '0.0', '0.0', '0.716', '0.401'],
+ ['453.28', '13.019', '3.795', '1.924', '0.0', '0.0', '0.107', '0.146'],
+ ['450.525', '14.088', '4.075', '1.876', '0.315', '0.496', '0.091', '0.192'],
+ ['467.915', '2.222', '6.955', '3.346', '0.0', '0.0', '0.882', '0.082'],
+ ['468.295', '2.151', '4.435', '3.634', '0.0', '0.0', '2.322', '0.458'],
+ ['468.1', '2.098', '10.555', '4.389', '0.0', '0.0', '0.469', '0.838'],
+ ['465.325', '3.369', '11.26', '3.788', '0.245', '0.442', '0.237', '0.489'],
+ ['390.86', '98.419', '27.185', '6.009', '0.0', '0.0', '0.877', '0.231'],
+ ['381.3', '102.075', '23.445', '9.009', '0.0', '0.0', '2.452', '0.811'],
+ ['330.75', '93.946', '23.795', '7.45', '0.0', '0.0', '1.142', '0.865'],
+ ['329.645', '88.954', '23.43', '6.852', '0.895', '0.744', '1.102', '0.944']]
+
+
+
+
+rowIDs = ["Lasso","Fused", "Fusion"]
 headers = ["Zerors", "Relevant", "Spikes", "Blocks"]
 
 table = tabulate(np.reshape(analysis,(2,4),'F'), headers, tablefmt="latex_booktabs", floatfmt=".2f", showindex=rowIDs)
@@ -48,3 +141,24 @@ print(tabulate(a, tablefmt="latex_booktabs", floatfmt=".2f"))
 with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/analysis_fused_one_block.pickle", "rb") as in12_file:
     analysis = pickle.load(in12_file)
 np.shape(analysis)
+
+
+print("hi\n",zeros_mean)
+
+print(zeros_mean)
+
+print(list[0][0],"\n","(",list[0][1],")")
+
+
+np.shape(list)
+list[3]
+print(list)
+
+\begin{tabular}{lrrrr}
+\toprule
+               &   Zerors &   Relevant &   Spikes &   Blocks \\
+\midrule
+ Mean          &   467.15 &      28.51 &     0.00 &     0.95 \\
+ Standarterror &    14.26 &       6.43 &     0.00 &     0.21 \\
+\bottomrule
+\end{tabular}
