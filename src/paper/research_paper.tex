@@ -154,12 +154,10 @@ showstringspaces=false            %
 \addcontentsline{toc}{section}{List of Figures}
 
 \listoffigures
-penaty term lasso \\
 soft thresholding lasso \\
-cgh mit Schätzer drin \\
 Simulationsbilder: 4 Stück jeweils mit lasso und fused lasso \\
 solution path \\
-cross validation bild wie im classification paper
+Heatmaps
 
 \addcontentsline{toc}{section}{List of Tables}
 
@@ -178,7 +176,7 @@ When analyzing high-dimensional data traditional methods as ordinary least squar
 Therefore in order to analyze high-dimensional data “regularization” becomes necessary. This means one needs a dimension reduction, i.e. the estimates need to be constrained in order to avoid overfitting.  \citep{belloni2014}.
 %complexity regularization will be necessary.  We focus here on regularizationwith the l1-penalty.
 
-This paper examines one of the famous methods for dealing with this kind of set-up, the Least Absolute Shrinkage and Selection Operator, short Lasso estimator and a modification of it, the fused lasso estimator.
+This paper examines one of the famous methods for dealing with this kind of set-up, the Least Absolute Shrinkage and Selection Operator, short Lasso estimator and a modification of it, the fused lasso estimator. They are both outputs of a penalized least squares regression.
 
 % Historical context
 The Lasso was introduced by \citet{lasso}. Thereafter a lot of extensions were and still are being proposed. The most prominent are the elastic net by \citet{zou2005regularization}, the fused lasso by \citet{fused}, the adaptive lasso by \citet{zou2006adaptive} and  the group lasso by \citet{meier2008group}. Recent literature combines these extensions for example  \citet{bleakley2011group} present the grouped fused lasso.
@@ -267,10 +265,10 @@ Note that when the predictor variables are drawn from a continuous distribution,
 	\end{equation}
 \end{theorem}
 
-This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. \\
-\todo{Besonders hilfreich, da gewisse Model Selection Verfahren bei sehr großem p nicht mehr anwendbar sind bzw. technisch nicht mehr möglich (bei best subset selection) siehe Einleitung Diplomarbeit}
-The reason for this property are visualized in Figure \ref{lassopenalty}, heuristically speaking the kinks of the contour lines of the penalty.
-The elliptic lines are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}. 
+This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. This is especially helpful in the high-dimensional setting. Other methods for model selection as backward selection cannot be applied any more  and other methods as for example best subset selection become computationally infeasible for large $p$. \\
+
+The reason for the sparsity property is visualized in figure \ref{lassopenalty}.
+The elliptic lines in the picture are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}. 
 The further we move away from the OLS solution the larger the bias of our estimator in the sample.
 Feasible estimators for our problem are those within the blue set.
 Since we want to chose the closest possible contour line to the OLS solution we will chose one where the line and the set touch.
@@ -340,7 +338,6 @@ g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
 where $g: \mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in (\ref{LassoLambda}). Note that each $h_j(\beta_j)$ function only depends on one coefficient.
 \cite[chapter 5]{sparsity}
-\todo{Näher erklären warum Lasso es erfüllt} \newline
 
 \subsection{Lasso Signal Approximator}
 
@@ -667,7 +664,7 @@ relative to a control sample, i.e. normal chromosomes. Changes can be in form of
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../../bld/out/figures/red_line.pdf}
+	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot.pdf}
 	\caption{CGH Data}
 	\label{cghdata}
 \end{figure}
@@ -679,11 +676,14 @@ As seen above the fused lasso signal approximator is designed for cases like the
 
 \section{Conclusion/Discussion}
 
+Have looked at specific penalized regression.
+
 \begin{enumerate}
 	\item Neighbors generalize to neighboring areas  (for example image reconstruction for 2d case, cf. \citep{sparsity})
 	\item Several different choices for the penalties on neighboring coefficients (apart from the $\ell^1$-norm) are possible.
 	\item Assume a uniformly spaced index, can consider cases where the index variable has nonuniform values (see p.667 in \citep{sparsity})
 	\item Can consider case where the features are unordered.
+	\item generalizations on the penalties and on the model fit possible
 \end{enumerate}
  %\citep{adams1995hitchhiker}
  
@@ -723,7 +723,7 @@ As seen above the fused lasso signal approximator is designed for cases like the
 
 \section{Proofs}
 
-Equivalence of (\ref{Primal}) and (\ref{LassoLambda}):
+\subsection{}Equivalence of (\ref{Primal}) and (\ref{LassoLambda}):
 First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
 \begin{equation}
 	S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0).
@@ -736,7 +736,7 @@ Thus we have
 \end{equation*}
 so the two ways of writing the estimator are equivalent.
 
-\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
+\subsection{}\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
 Define the objective function
 \begin{align*}
 h(\beta)=\|Y-X\beta\|_2^2+\lambda\|\beta\|
@@ -748,11 +748,13 @@ h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1
 Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
-\begin{proof} Existence \newline
+\subsection{} \begin{proof} Existence \newline
 Consider the problem written as in (\ref{Primal}). Observe that the arg min is taken over a compact set and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem.
 \end{proof}
 
-\todo{Ich finde die Notation in dem Beweis nicht gelungen, für Fused Lasso hatten wir die Lambdas bisher unten und nicht oben, einige Typos müssen korrigiert werden.}
+\subsection{}
+
+\todo{Ich finde die Notation in dem Beweis nicht gelungen, für Fused Lasso hatten wir die Lambdas bisher unten und nicht oben.}
 \begin{proof} Lemma \ref{sa: soft thresholding} (The basis of this proof can be found in \citep{friedman2007pathwise})
 	We want  to show that the solution to this problem 
 	\begin{equation}
@@ -777,6 +779,7 @@ Consider the problem written as in (\ref{Primal}). Observe that the arg min is t
 	Since we can chose the sign to be anywhere between -1 and 1 we set it to $\frac{\hat{\beta}_j^{0}}{\lambda_1}$
 \end{proof}
 
+\subsection{}
 \begin{proof} Idea: Monotone Fusion Property \citep{friedman2007pathwise}
 For simplicity we assume soft thresholding property is true. That means we can set $\lambda_1=0$ and we have n=p=6. Then the objective function looks as follows
 \begin{equation}
