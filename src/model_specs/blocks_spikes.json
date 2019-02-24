@@ -5,7 +5,7 @@
     "amplitude": 3,
     "length_blocks": 10,
     "spike_level": 6,
-    "spikes": 3,
+    "spikes": 1,
     "levels": 1,
     "s1_min": 40,
     "s1_max": 200,
