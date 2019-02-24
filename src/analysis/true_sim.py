@@ -65,15 +65,15 @@ if __name__ == "__main__":
     #s_2 = sim_dict['s2']
 
     lasso_grid = {
-      's1': list(np.linspace(s1_min,s1_max,50))
+      's1': list(np.linspace(s1_min,s1_max,20))
     }
     fused_grid = {
-      's2': list(np.linspace(s2_min,s2_max,50))
+      's2': list(np.linspace(s2_min,s2_max,20))
     }
 
     two_d_grid = [{
-                's1': list(np.linspace(s1_min,s1_max,50)),
-                's2': list(np.linspace(s2_min,s2_max,50))
+                's1': list(np.linspace(s1_min,s1_max,20)),
+                's2': list(np.linspace(s2_min,s2_max,20))
                 }]
 
     if reg_name == 'lasso':
@@ -256,12 +256,12 @@ if __name__ == "__main__":
         parameters = clf.cv_results_['params']
 
         # Array in die richtige 2-dimensionale Form bringen.
-        new_array = np.reshape(mean_test_score, (50,50))
+        new_array = np.reshape(mean_test_score, (20,20))
         new_array_sorted = np.flip(new_array)
 
         # Werte der s1 und s2 aus dem Grid für die Achsenbeschriftung extrahieren
-        lists2 = np.zeros(50)
-        for i in range(50):
+        lists2 = np.zeros(20)
+        for i in range(20):
             lists2[i] = round(parameters[i]['s2'], 1)
 
         lists1 = np.zeros(len(mean_test_score))
