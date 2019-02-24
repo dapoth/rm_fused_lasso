@@ -6,13 +6,13 @@ def build(ctx):
 
 
 
+    for reg in 'lasso', 'fused', 'fusion':
+        for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
 
-    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
-
-        ctx(
-            features='run_py_script',
-            source='data_generation.py',
-            deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
-            target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_simulation_{}.pickle'.format(sim)),
-            append=sim
-        )
+            ctx(
+                features='run_py_script',
+                source='data_generation.py',
+                deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+                target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}_{}.pickle'.format(reg,sim)),
+                append=[reg, sim]
+            )

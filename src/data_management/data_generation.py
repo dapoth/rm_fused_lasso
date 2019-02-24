@@ -10,12 +10,16 @@ from bld.project_paths import project_paths_join as ppj
 from src.model_code.functions import generate_data
 from src.model_code.functions import generate_blocks
 np.random.seed(12345)
+import ast
+
 
 
 if __name__ == "__main__":
-    sim_name = sys.argv[1]
+    reg_name = sys.argv[1]
+    sim_name = sys.argv[2]
     sim = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
                     encoding="utf-8"))
+
 
 
     ##### Load Model specs
@@ -35,5 +39,5 @@ if __name__ == "__main__":
 
     aux1 = [beta, X, epsilon, Y]
 
-    with open(ppj("OUT_ANALYSIS", "data_simulation_{}.pickle".format(sim_name)), "wb") as out12_file:
+    with open(ppj("OUT_ANALYSIS", "data_{}_{}.pickle".format(reg_name,sim_name)), "wb") as out12_file:
         pickle.dump(aux1, out12_file)

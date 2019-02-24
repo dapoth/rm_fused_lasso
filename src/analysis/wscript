@@ -5,54 +5,24 @@ def build(ctx):
 
 
 
+    for reg in 'lasso', 'fused', 'fusion':
+        for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
+            ctx(
+                features = 'run_py_script',
+                source = 'true_sim.py',
+                deps = [
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}_{}.pickle'.format(reg,sim)),
+                    ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+                ],
+                target = [
+                    #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'.format(reg,sim)),
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_{}_{}.pickle'.format(reg,sim))
+                    #ctx.path_to(ctx, 'OUT_ANALYSIS', 'heatmap_{}.png'.format(sim))
+                ],
+                append = [reg, sim]
+            )
 
-    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
-        ctx(
-            features = 'run_py_script',
-            source = 'true_sim.py',
-            deps = [
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_simulation_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
-            ],
-            target = [
-                #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulated_beta_hat_beta_penalty_cv_y_hat_residuals_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_{}.pickle'.format(sim))
-            ],
-            append = sim
-        )
-def build(ctx):
-    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
-        ctx(
-            features = 'run_py_script',
-            source = 'true_sim_lasso.py',
-            deps = [
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_simulation_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim))
-            ],
-            target = [
-                #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulated_beta_hat_beta_penalty_cv_y_hat_residuals_lasso{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_lasso{}.pickle'.format(sim))
-            ],
-            append = sim
-        )
-def build(ctx):
-    for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
-        ctx(
-            features = 'run_py_script',
-            source = 'true_sim_fusion.py',
-            deps = [
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_simulation_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim))
-            ],
-            target = [
-                #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulated_beta_hat_beta_penalty_cv_y_hat_residuals_fusion{}.pickle'.format(sim)),
-                ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fusion{}.pickle'.format(sim))
-            ],
-            append = sim
-        )
 
 # def build(ctx):
 #
