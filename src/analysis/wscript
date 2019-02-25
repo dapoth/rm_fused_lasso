@@ -9,7 +9,7 @@ def build(ctx):
         for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
             ctx(
                 features = 'run_py_script',
-                source = 'true_sim.py',
+                source = 'simulation.py',
                 deps = [
                     ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}_{}.pickle'.format(reg,sim)),
                     ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
