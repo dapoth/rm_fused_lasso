@@ -212,10 +212,10 @@ The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term 
 \noindent where $ \| \cdot \|_2^2 $ is the squared Euclidean norm. This is equivalent to a constrained minimization problem of the form 
 
 \begin{equation}
-\hat{\beta}_{Primal}(R)=\argmin_{\beta:||\beta||_1\leq R} \frac{1}{n}||Y-X\beta||_2^2 \label{Primal}
+\hat{\beta}_{Primal}(s)=\argmin_{\beta:||\beta||_1\leq s} \frac{1}{n}||Y-X\beta||_2^2 \label{Primal}.
 \end{equation} 
 
-\noindent where $R = \frac{||Y||^2}{\lambda}$, thus $R$ is dependent on the data and on $\lambda$.\footnote{See the appendix for details.} If $Y$ is centered then it follows $R = \frac{||Y||^2}{\lambda}$
+Note that $\lambda$ and $s$ are connected through the data. \todo{Zitierung high-di}
 % This result comes from convex optimization theory and we can apply it because $\frac{1}{n}||Y-X\beta||_2^2$ is convex in $\beta$ and $||\beta||_1\leq R$ a convex set.
 
 Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
@@ -325,7 +325,7 @@ Reordering of terms gives the following conditions for the Lasso solution, calle
 	\begin{align*}
 	b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_\lambda(b) \Leftrightarrow \begin{dcases} 
 	\sum_{i=1}^n x_{ij}(y_i-x_i'b)= \frac{1}{2}\lambda sgn(b_{\lambda,j}) &\ for \quad b_{\lambda,j} \neq0 \\   
-	\sum_{i=1}^n x_{ij}(y_i-x_i'b) \leq  \frac{1}{2}\lambda \ &\ for \quad b_{\lambda,j}=0
+	|\sum_{i=1}^n x_{ij}(y_i-x_i'b)| \leq  \frac{1}{2}\lambda \ &\ for \quad b_{\lambda,j}=0
 	\end{dcases} 
 	\end{align*}
 \end{theorem}
@@ -506,7 +506,7 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \label{sec:asymptoticslasso}
 
 In this chapter we want to analyze asymptotics for the lasso and fused lasso. In general asymptotics for high dimensional statistical interference is difficult. The reason is that for a meaningful analysis, besides $n$ also $p$ needs to go to infinity and it even has to grow faster than $n$. Else at some point, $n$ would be bigger than $p$ and so we wouldn't be in a high dimensional setting any more. As soon as $p << n$, we can preferably use known methods as OLS since they do not come with a shrinkage bias.  
-The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model/DGP is changing as $p$ grows. Our usual central limit theorems do not hold any longer in this setting.
+The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model/DGP is changing as $p$ grows. Our usual central limit theorems do not hold any longer in this setting. \todo{Begründung}
 One way to handle high dimensional asymptotics is to work with triangular arrays. Roughly speaking a triangular array is a sequence with two indices, in which each row is only a long as the row's index.  For our linear model, this would be: $Y_{n;i}=\sum^{p_n}_{j=1}\beta^0_{n;j}X^{(j)}_{n;i}+\epsilon_{n;i}, \ i=1,...,n; \ n=1,2,...$.  \todo{Formel erklären} \newline
 
 In this chapter we proceed as follows: We first briefly state some asymptotic results for the lasso, afterwards we speak about the asymptotics of the fused lasso signal approximator in more detail. The results in that section are valuable for the understanding of the fused lasso and the conditions under which it performs well. Finally we give an asymptotic normality result which includes the lasso as well as the fused lasso. The focus of the whole chapter is giving the interpretation and intuition of results as the scope of most of the proofs goes beyond this paper.
