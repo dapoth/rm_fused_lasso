@@ -256,7 +256,7 @@ if __name__ == "__main__":
         parameters = clf.cv_results_['params']
 
         # Array in die richtige 2-dimensionale Form bringen.
-        new_array = np.reshape(mean_test_score, (20,20))
+        new_array = np.reshape(np.abs(mean_test_score), (20,20))
         new_array_sorted = np.flip(new_array)
 
         # Werte der s1 und s2 aus dem Grid für die Achsenbeschriftung extrahieren
@@ -270,10 +270,11 @@ if __name__ == "__main__":
         lists1unique = np.flip(np.unique(lists1))
 
          # Erstelle heatmap
-        heatmap = seaborn.heatmap(new_array_sorted, vmin=-1550, vmax=-500, cmap="RdYlGn", center=-500,  xticklabels = lists2, yticklabels = lists1unique)
+        heatmap = seaborn.heatmap(new_array_sorted, xticklabels = lists2, yticklabels = lists1unique)
         plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(sim_name)))
 
         # Andere Farbmöglichkeiten für die Heatmap
         cmap="YlGnBu"
+        cmap="RdYlGn"
         cmap="RdYlGn"
         linewidths=.1
