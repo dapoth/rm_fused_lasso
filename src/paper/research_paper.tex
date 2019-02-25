@@ -332,11 +332,6 @@ Reordering of terms gives the following conditions for the Lasso solution, calle
 
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}. \newline
 
-A different approach to find the solution is subdifferential calculus. 
-Subderivatives generalize the derivative to convex functions which are not necessarily differentiable.
-As our objective function is convex the theory is applicable.
-The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$.
-
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. Also the lasso has the following useful property.\todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
@@ -446,7 +441,31 @@ In section \ref{Sec: Coordinate Lasso} we saw that the conditions for the coordi
 Assume that the previous iteration step set $\hat{\beta}_1=\hat{\beta}_2$ and we are in the new iteration step, where we minimize over $\beta_1$. Observe any change in $\beta_1$ introduces an increase of the absolute value of the difference of $\hat{\beta}_1$ and $\hat{\beta}_2$. Let us consider a situation in which it would be optimal to increase $\hat{\beta}_1$ a little to get rid of some squared differences in the model fit, but the difference in the absolute value is larger, so it is optimal for $\hat{\beta}_1$ to stay as in the previous iteration step. Assume we face the same problem in the iteration step for $\beta_2$, i.e. increasing it a little would be better for model fit, but it isn't done because of the combined penalty.
 in such a scenario coordinate descent gets stuck. Therefore we have to use algorithms like gradient descent because they can move $\beta_1$ and $\beta_2$ simultaneously, so that here both increase slightly, so that the squared error gets smaller and the absolute difference stays 0.
 A path algorithm is explained in the next section.
-\cite[chapter 5]{sparsity}
+\cite[chapter 5]{sparsity} \newline
+
+Deriving the Karush-Kuhn-Tucker conditions for the fused lasso problem is difficult. We can alternatively make use of a related approach to finding the solution, namely subdifferential calculus. 
+Subderivatives generalize the concept of derivatives to convex functions which are not necessarily differentiable.
+As our objective function is convex the theory is applicable. We do not want to go deeply into the theory, but look at it in our concrete case of the absolute value.
+If a function is differentiable at a point, then the subderivative equals the derivative. Thus in the case of the absolute value the subderivative is the sign function everywhere except at $zero$.
+At zero there are infinitely many tangent lines that go through the point, each line having a slope in the set $[-1,1]$.
+Therefore a natural idea is to say that the generalization of the derivative of the absolute value at $0$ is characterized by the set $[-1,1]$. The subderivative of the absolute value at zero is not a number, but the set $[-1,1]$. With the help of these subderivatives we can characterize the solution through the following equations.
+
+\begin{theorem}(Characterization Fused Lasso solution)
+	\begin{align*}
+	 	b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_{\lambda_1, \lambda_2}(b) \Leftrightarrow 
+	 	\begin{dcases}
+	 	-2(y_1 - \beta_1) + \lambda_1 r_1 + \lambda_2 t_2 = 0 \\
+	 	-2(y_j - \beta_j) + \lambda_1 r_j + \lambda_2 (t_j - t_{j+1}) = 0 \quad j= 2, \ldots, n,
+	 	\end{dcases}
+	\end{align*}
+where $r_j = \sgn(\beta_j)$ if $\beta_j \neq 0$ and $r_j \in [-1,1] $ if $\beta_j = 0$. 
+Similarly $t_j = \sgn(\beta_j - \beta_{j-1})$ if
+$\beta_j \neq \beta_{j-1}$ and 
+$t_j \in [-1,1] $ if $\beta_j = \beta_{j-1}$.
+	
+\end{theorem}
+
+In the differentiable case these are first order conditions as usual. In the case where $\beta_j = 0$ or $\beta_j = \beta_{j-1}$ the equations need to be interpreted as follows. Any $b_\lambda$ such that there exists $r_j\in [-1,1]$ respectively $t_j \in [-1,1]$ such that all the equations hold is a solution to the minimization problem.
 
 %For the calculation of the solution one can make use of the following handy property of the fused lasso.
 %
@@ -640,9 +659,6 @@ If we now consider $\lambda_0^{(1)} > 0$ and $\lambda_0^{(2)} > 0$ we can see fr
 
 Note that from equation \eqref{eq: subder} one can also see that when some of the $\beta_j$s are exactly $0$, the limiting distributions put positive probability at $0$ and when $\beta_1 = \beta_2$ probability is centered at the line $u_1 = u_2$. 
 
-
-\newpage
-
 \section{Simulation}
 
 To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
@@ -692,24 +708,29 @@ One of the main goals of our estimators is model selection. That means in order 
 
 \section{Real Data Application}
 
-\subsection{Comparative Genomic Hybridization Data}
-The first application we want to consider is from medical science. We want to look at data from Comparative Genomic Hybridization (CGH), a powerful method for molecular analysis of cancer.    
-CGH provides an overview of changes in DNA sequence copy number in a tumor sample 
-%and maps these changes on normal chrosomosomes
-relative to a control sample, i.e. normal chromosomes. Changes can be in form of losses, deletions, gains and amplifications\citep{cghmain}. The DNA  sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. This can for example look as in figure (\ref{cghdata}).
+To investigate the fused lasso estimator in a real data setting we consider an application from medical science.
+We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer. \footnote{The data was taken from .}  
+CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cells with cancer mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
+The aim of the analysis of the data is to detect these regions of gains or losses of copy numbers.\newline 
+%he DNA sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. 
+
+
+In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable. \\
+We will describe now why the fused lasso signal approximator is an appropriate method for the smoothing.
+As seen above the fused lasso signal approximator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
+The regressors in this setting are the genes and the observations are the copy numbers, thus $p=n$. \citep{sparsity}.
+Also, we expect the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome. 
+The result $\hat{beta_j}$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
+Applying the fused lasso estimator with the penalty terms $s_1 = $ and $s_2 = $ leads to the result in figure (\ref{cghdata}). The estimator sets a large number of coefficients exactly equal to zero and suggests two regions, where DNA sequence copy number gains have possibly taken place, thus the true signal is unequal to zero.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot.pdf}
-	\caption{CGH Data}
+	\caption{Fused Lasso applied to CGH Data}
 	\label{cghdata}
 \end{figure}
 
-The CGH data are coming from an experiment and are very noisy. This renders some kind of smoothing necessary before analysing the data. \\
-Biological considerations dictate that it is typically segments of a chromosome — rather than individual genes — that are replicated, Consequently, we might expect that the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome.
-In this specific example we have as many regressors (genes) as observations (copy numbers) \citep{sparsity}.
-As seen above the fused lasso signal approximator is designed for cases like these with $ p = n$ and a meaningful ordering of the coefficients
-
+\todo{Über Wahl von s1 und s2 sprechen}
 \section{Conclusion/Discussion}
 
 Have looked at specific penalized regression.
