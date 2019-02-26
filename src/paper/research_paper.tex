@@ -272,21 +272,20 @@ In order to state the uniqueness result in the high-dimensional case, we need th
 
 \bigskip
 Note that when the predictor variables are drawn from a continuous distribution, the regressor matrix $X$ is in general position with probability one regardless of the sizes of $n$ and $p$.
-\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}. Note that a uniqueness result in a high-dimensional setting is remarkable. 
+\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citet{tibshirani2013lasso}. Note that a uniqueness result in a high-dimensional setting is remarkable. 
 	
 \end{theorem}
 
 \noindent\textbf{Advantages}\newline
-
-\noindent We want to begin by stating the main advantage of the Lasso estimator, its sparsity.
-
-\begin{theorem}[Sparsity of Lasso] \citep{tibshirani2013lasso} \label{theo: sparsity_lasso}
+The most important advantage of the Lasso estimator is that the estimator is sparse. This property is not self-evident for penalized regression ( see Ridge regression).
+\begin{theorem}\label{theo: sparsity_lasso}(\textbf{Sparsity of Lasso}, see \citet{tibshirani2013lasso})\textbf{.}\\
 	Let $n_{\{\beta_i\neq 0\}}(\hat{\beta}) = \sum_{i=1}^{p} I \{\hat{\beta}_i \neq 0\}$ be the number of nonzero coefficients of the estimator.
 	If the regressors are in general position we have 
 	\begin{equation}
 		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N.
 	\end{equation}
 \end{theorem}
+The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails. Standard criteria for model selection like BIC do not adapt to the high dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. A disadvantage of subset selection is also that it is not computationally feasible for large $p$ \citep{hastie2017extended}. An interest development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved by mixed integer optimization.\\
 
 This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. This is especially helpful in the high-dimensional setting. For example the ols estimator is known to have low bias but very high variance. In a lot of cases the mean squared error would be lower if one were to introduce a small amount of bias but therefore decrease the variance by a large amount. One way of doing it is by using the lasso estimator. Other methods for model selection as backward selection cannot be applied any more  and other methods as for example best subset selection become computationally infeasible for large $p$. \\
 
@@ -299,7 +298,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 
 \begin{figure}
 	\centering
-	%\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
 	\caption{Lasso Penalty and OLS contour lines}
 	\label{lassopenalty}
 \end{figure}
@@ -307,7 +306,8 @@ This is often a corner of the set which corresponds to one component of the $\be
 
 \begin{figure}[h!]
 	\centering
-	%\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
+
 	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
 	
 \end{figure}
@@ -670,6 +670,15 @@ Note that from equation \eqref{eq: subder} one can also see that when some of th
 
 \newpage
 
+\section{Implementation}
+
+A problem when performing simulations with uncommon estimators, like the fused lasso, is that package availability for that estimator can often be scarce. Also it can not be assumed that the available packages are tested or whether their documentation is correct. After some research we decided to implement our own fused lasso estimator.\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}\\
+
+For the computation of feature parameters $\beta_j$ for given hyperparameters $s_1,s_2$ we relied on the convex optimizer CVXPY\citep{cvxpy}, which allows sparse linear constraints. We chose CVXPY because of two reason. First the CVXPY implementation had substantial advantages in runtime towards existing implementations. Secondly, CVXPY allowed us to include the linear restrictions for the optimization problem in a very intuitive and equation like manner. This spared us of mistakes in translating the constraints to the standard form generic optimizers require.\\
+To solve the decision problem of hyperparameters, we decided to resort to cross-validation. We pursued an approach similar to that of \citet{rapaport2008classification}. They choose the limits of their grid for cross-validation by observing when the restrictions become irrelevant.
+
+We opted to build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}. This provided us a basis class for our implementation and interfaces allowing easy implementation of further methods. This way we can resort to the Scikit build-in ``GridsearchCV'' to determine an adequate neighborhood of hyperparameters $s_1,s_2$ over a chosen grid. In addition to this, \citet{fused}  implemented a search strategy to reduce the necessary amount of computations on the grid by omitting certain grid points. This was justified by ``empirical experimentation'' that was not always reproducible in our tests. Consequently we stuck with the more conservative choice and checked the whole grid. As scoring for the cross-validation we chose the prevalent mean squared error.
+
 \section{Simulation}
 
 To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
@@ -679,7 +688,7 @@ The first setting was constructed as the basic example, where fused lasso might 
 
 To perform lasso or fused lasso on this simulation setting, we need to provide the penalty constants $\lambda_1,\lambda_2$ or the equivalent constraint boundaries $s_1, s_2$. As described in subsection \ref{subsec: penalties} there are different methods to calculate the two penalty constants. Since we are able to do cross-validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for the search pattern in \citet{fused} was only justified by “empirical experimentation", which was not further explained and therefore might not be adequate for our setting. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.\\
 
-Since we build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}, we can resort to the build in ``GridCV'' to perform k-Fold cross-validation over a grid of hyperparameters $s_1,s_2$. We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
+We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
 To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.\\
 
 \begin{figure}
@@ -711,7 +720,7 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 \begin{figure}
-	\input{../../bld/out/figures/mytable.tex}
+%	\input{../../bld/out/figures/mytable.tex}
 	\caption{Results of the simulation}
 \end{figure}
 
