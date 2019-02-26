@@ -11,7 +11,7 @@ def build(ctx):
                 features = 'run_py_script',
                 source = 'simulation.py',
                 deps = [
-                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}_{}.pickle'.format(reg,sim)),
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}.pickle'.format(sim)),
                     ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
                 ],
                 target = [
