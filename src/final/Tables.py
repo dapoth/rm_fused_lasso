@@ -18,9 +18,9 @@ from bld.project_paths import project_paths_join as ppj
  #data = {'item1': df_oneblock, 'item2': blocks}
 
 list = []
-for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
+for sim in 'blocks_levels', 'blocks_few_spikes', 'blocks_many_spikes', 'spikes':
     for reg in 'lasso', 'fused', 'fusion':
-        with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/analysis_{}_{}.pickle".format(reg,sim), "rb") as in12_file:
+        with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
             analysis = pickle.load(in12_file)
             analysis.append(sim)
             analysis.append(reg)
@@ -43,9 +43,26 @@ list_pd = list_pd.rename( columns=columns_rename)
 list_pd = list_pd.set_index(["Setting","Method"])
 
 
-
-
 list_pd.to_latex()
 
 with open(ppj("OUT_FIGURES", "mytable.tex"), 'w') as tf:
      tf.write(list_pd.to_latex())
+
+"""Time Table"""
+list_time = []
+for sim in 'blocks_levels', 'blocks_few_spikes', 'blocks_many_spikes', 'spikes':
+    #with open(ppj("OUT_ANALYSIS", "time_table_{}.pickle".format(sim_name)), "rb") as in12_file:
+    #    time_list = pickle.load(in12_file)
+    with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/time_list_{}.pickle".format(sim), "rb") as in12_file:
+        time_list = pickle.load(in12_file)
+        time_list.append(sim)
+        list_time.append(time_list)
+time_pd = pd.DataFrame(list_time)
+columns_rename = {0:"p"   ,1:"n", 2:"time: cv" , 3:"time: estimation",4:"Setting"}
+time_pd = time_pd.rename( columns=columns_rename)
+time_pd = time_pd.set_index(["Setting"])
+
+time_pd.to_latex()
+
+with open(ppj("OUT_FIGURES", "timetable.tex"), 'w') as tf:
+     tf.write(time_pd.to_latex())

@@ -139,14 +139,14 @@ if __name__ == "__main__":
 
 """ waf """
 # mont_name = sys.argv[0]
-# sim_dict = json.load(open(ppj("IN_MODEL_SPECS", "one_block_monte_carlo.json"), encoding="utf-8"))
+# sim_dict = json.load(open(ppj("IN_MODEL_SPECS", "blocks_levels_monte_carlo.json"), encoding="utf-8"))
 
 
 
 
 
-#### one_block
-one_block ={
+#### blocks_levels
+blocks_levels ={
     "n": [10,100, 1000],
     "p": 200,
     "number_of_blocks":1,
@@ -165,43 +165,43 @@ one_block ={
     "num_simulations_mont": 10
 }
 
-num_simulations = one_block['num_simulations']
-p = one_block['p']
-n = one_block['n']
-number_blocks = one_block['number_of_blocks']
-length_blocks = one_block['length_blocks']
-amplitude = one_block['amplitude']
-spike_level = one_block['spike_level']
-levels = one_block['levels']
-spikes = one_block['spikes']
+num_simulations = blocks_levels['num_simulations']
+p = blocks_levels['p']
+n = blocks_levels['n']
+number_blocks = blocks_levels['number_of_blocks']
+length_blocks = blocks_levels['length_blocks']
+amplitude = blocks_levels['amplitude']
+spike_level = blocks_levels['spike_level']
+levels = blocks_levels['levels']
+spikes = blocks_levels['spikes']
 
 beta = generate_blocks(p, number_blocks, length_blocks, amplitude,
                     spike_level,levels, spikes)
 
 
-beta_container = np.ones((one_block["p"], one_block["num_simulations"], len(one_block["n"])))
-s_opt_container = np.zeros([2,len(one_block["n"])])
+beta_container = np.ones((blocks_levels["p"], blocks_levels["num_simulations"], len(blocks_levels["n"])))
+s_opt_container = np.zeros([2,len(blocks_levels["n"])])
 
-for k in list(range(len(one_block["n"]))):
+for k in list(range(len(blocks_levels["n"]))):
 
-    mean_x = np.zeros(one_block["p"])
-    cov_X = np.identity(one_block["p"])
-    X = np.random.multivariate_normal(mean_x, cov_X,one_block["n"][k])
+    mean_x = np.zeros(blocks_levels["p"])
+    cov_X = np.identity(blocks_levels["p"])
+    X = np.random.multivariate_normal(mean_x, cov_X,blocks_levels["n"][k])
 
-    eps = np.random.randn(one_block["n"][k])
+    eps = np.random.randn(blocks_levels["n"][k])
 
     y = X.dot(beta)+eps
 
     lasso_grid = {
-      's1': list(np.linspace(one_block['s1_min'],one_block['s1_max'],20))
+      's1': list(np.linspace(blocks_levels['s1_min'],blocks_levels['s1_max'],20))
     }
     fused_grid = {
-      's2': list(np.linspace(one_block['s2_min'],one_block['s2_max'],20))
+      's2': list(np.linspace(blocks_levels['s2_min'],blocks_levels['s2_max'],20))
     }
 
     two_d_grid = [{
-                's1': list(np.linspace(one_block['s1_min'],one_block['s1_max'],20)),
-                's2': list(np.linspace(one_block['s2_min'],one_block['s2_max'],20))
+                's1': list(np.linspace(blocks_levels['s1_min'],blocks_levels['s1_max'],20)),
+                's2': list(np.linspace(blocks_levels['s2_min'],blocks_levels['s2_max'],20))
                 }]
 
     clf = GridSearchCV(FusedLassoEstimator(lasso_grid,fused_grid), two_d_grid,
@@ -219,15 +219,15 @@ for k in list(range(len(one_block["n"]))):
 
     s_opt_container[0,k] = s1
     s_opt_container[1,k] = s2
-    for index ,i in enumerate(one_block["n"]):  # i =10 i = 1000 usw
+    for index ,i in enumerate(blocks_levels["n"]):  # i =10 i = 1000 usw
 
-        mean_x = np.zeros(one_block["p"])
-        cov_X = np.identity(one_block["p"])
-        X = np.random.multivariate_normal(mean_x, cov_X,one_block["n"][k])
+        mean_x = np.zeros(blocks_levels["p"])
+        cov_X = np.identity(blocks_levels["p"])
+        X = np.random.multivariate_normal(mean_x, cov_X,blocks_levels["n"][k])
 
-        for j in range(one_block["num_simulations"]):
+        for j in range(blocks_levels["num_simulations"]):
 
-            eps = np.random.rand(one_block["n"][k])
+            eps = np.random.rand(blocks_levels["n"][k])
 
             y = np.matmul(X,beta)+eps
 
