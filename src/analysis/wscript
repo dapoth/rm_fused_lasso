@@ -6,7 +6,7 @@ def build(ctx):
 
 
     for reg in 'lasso', 'fused', 'fusion':
-        for sim in 'one_block', 'blocks', 'blocks_levels', 'blocks_spikes':
+        for sim in 'blocks_levels', 'blocks_few_spikes', 'blocks_many_spikes', 'spikes':
             ctx(
                 features = 'run_py_script',
                 source = 'simulation.py',

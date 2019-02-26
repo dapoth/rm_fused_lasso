@@ -12,6 +12,8 @@ from src.model_code.functions import generate_blocks
 import math
 import matplotlib.pyplot as plt
 import seaborn
+import pandas as pd
+from time import time
 
 if __name__ == "__main__":
     """Waf."""
@@ -86,6 +88,8 @@ if __name__ == "__main__":
             's2': list(np.linspace(1, 100, 50))
         }]
 
+    start_time_cv = time()
+
     clf = GridSearchCV(fle(lasso_grid, fused_grid), two_d_grid,
                        scoring='neg_mean_squared_error',
                        n_jobs=-1, iid=False, refit=True,
@@ -93,9 +97,11 @@ if __name__ == "__main__":
                        error_score='raise-deprecating',
                        return_train_score='warn')
 
+
+
     clf.fit(X, y[:, 1])
     penalty_cv = [clf.best_params_["s1"], clf.best_params_["s2"]]
-
+    end_time_cv = time()
     # dict of optimal parameters ["s1" : opt_value, "s2": opt_value]
     # np.savetxt("/home/christopher/Dokumente/Testbereich/s1.txt",
     # np.array( [ opt_values["s1"], opt_values["s2"] ] )   )
@@ -107,10 +113,26 @@ if __name__ == "__main__":
     #    beta_hat[:, sim] = fle(opt_values["s1"],opt_values["s2"]).
     # fit( X,y[:, sim])
 
+
     for i in range(num_simulations):
+        start_time_estimation = time()
         beta_hat[:, i] = fle(penalty_cv[0], penalty_cv[1]).fit(X, y[:, i])
         y_hat[:, i] = np.matmul(X, beta_hat[:, i])
         residuals[:, i] = y[:, i] - y_hat[:, i]
+        end_time_estimation = time()
+
+
+
+    if reg_name == 'fused':
+
+        time_list = [p, n, np.round((end_time_cv-start_time_cv),2), np.round((end_time_estimation-start_time_estimation),2)]
+
+        with open(ppj("OUT_ANALYSIS", "time_list_{}.pickle".format(sim_name)), "wb") as out_file:
+           pickle.dump(time_list, out_file)
+
+
+
+
 
     container = [beta_hat, true_beta, penalty_cv, y_hat, residuals]
     with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".format(reg_name, sim_name)), "wb") as out_file:
@@ -139,7 +161,7 @@ if __name__ == "__main__":
 
     #count the spikes
     spike_count = []
-    if sim_dict["spikes"] == 1:
+    if sim_dict["spikes"] > 1:
         for i in range(num_simulations): #0 bis 199
 
             count = 0
