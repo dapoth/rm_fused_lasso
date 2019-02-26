@@ -169,8 +169,8 @@ Laufzeiten
 \pagenumbering{arabic}
 
 \section{Introduction}
-\input{../../bld/out/figures/mytable.tex}
-\input{../../bld/out/figures/timetable.tex}
+%\input{../../bld/out/figures/mytable.tex}
+%\input{../../bld/out/figures/timetable.tex}
 
 Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
 
@@ -277,7 +277,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
 	\caption{Lasso Penalty and OLS contour lines}
 	\label{lassopenalty}
 \end{figure}
@@ -285,7 +285,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
 	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
 	\label{lassopenalty}
 \end{figure}
@@ -403,7 +403,7 @@ A possible approach for chosing the penalty constants could be cross validation 
 When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
 	\caption{Different penalties}
 \end{figure}
 
@@ -646,6 +646,16 @@ Note that from equation \eqref{eq: subder} one can also see that when some of th
 
 \newpage
 
+\section{Computation}
+
+A problem when performing simulations with uncommon estimators, like the fused lasso, is that package availability for that estimator can often be scarce. Also it can not be assumed that the available packages are tested or whether their documentation is correct. After some research we decided to implement our own fused lasso estimator.\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}\\
+
+For the computation of feature parameters $\beta_j$ for given hyperparameters $s_1,s_2$ we relied on the convex optimizer CVXPY from \citet{cvxpy}, which allows sparse linear constraints. We chose CVXPY because of two reason. First the CVXPY implementation had substantial advantages in runtime towards existing implementations. Secondly, CVXPY allowed us to include the linear restrictions for the optimization problem in a very intuitive and equation like manner. This spared us of mistakes in translating the constraints to the standard form generic optimizers require.\\
+To solve the decision problem of hyperparameters, we decided to resort to cross-validation. We pursued an approach similar to that of \citet{rapaport2008classification}. They choose the limits of their grid for cross-validation by observing when the restrictions become irrelevant.
+
+We opted to build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}. This provided us a basis class for our implementation and interfaces allowing easy implementation of further methods. This way we can resort to the Scikit build-in ``GridsearchCV'' to determine an adequate neighborhood of hyperparameters $s_1,s_2$ over a chosen grid. In addition to this, \citet{fused}  implemented a search strategy to reduce the necessary amount of computations on the grid by omitting certain grid points. This was justified by ``empirical experimentation'' that was not always reproducible in our tests. Consequently we stuck with the more conservative choice and checked the whole grid. As scoring for the cross-validation we chose the prevalent mean squared error.
+
+
 \section{Simulation}
 
 To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
@@ -655,18 +665,18 @@ The first setting was constructed as the basic example, where fused lasso might 
 
 To perform lasso or fused lasso on this simulation setting, we need to provide the penalty constants $\lambda_1,\lambda_2$ or the equivalent constraint boundaries $s_1, s_2$. As described in subsection \ref{subsec: penalties} there are different methods to calculate the two penalty constants. Since we are able to do cross-validation over a whole two-dimensional grid in a reasonable time, we decided not to use a search strategy. The proposed direction for the search pattern in \citet{fused} was only justified by “empirical experimentation", which was not further explained and therefore might not be adequate for our setting. By optimizing over the whole grid we make sure to not miss the optimal combination of $\lambda_1$ and $\lambda_2$.\\
 
-Since we build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}, we can resort to the build in ``GridCV'' to perform k-Fold cross-validation over a grid of hyperparameters $s_1,s_2$. We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
+We chose to perform 3-fold cross-validation. That means our sample was divided into three folds, of whom always two were used to fit our model and perform a prediction on the remaining fold. The ``prediction'' fold was permutated until all folds were once used as prediction fold.\\
 To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.\\
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{../../bld/out/figures/heatmap_blocks_levels.png}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/heatmap_blocks_levels.png}
 	\caption{Heatmap}
 \end{figure}
 
 We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}. The package enables a fast calculation of the estimators even for reasonably large $p$ and $n$. \\
 
 \begin{figure}
-		\includegraphics[width=\textwidth]{../../bld/out/figures/different_penalization_methods}
+%		\includegraphics[width=\textwidth]{../../bld/out/figures/different_penalization_methods}
 		\caption{Estimators}
 \end{figure}
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
@@ -687,7 +697,7 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 \begin{figure}
-	\input{../../bld/out/figures/mytable.tex}
+%	\input{../../bld/out/figures/mytable.tex}
 	\caption{Results of the simulation}
 \end{figure}
 
@@ -703,7 +713,7 @@ relative to a control sample, i.e. normal chromosomes. Changes can be in form of
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot.pdf}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot.pdf}
 	\caption{CGH Data}
 	\label{cghdata}
 \end{figure}
