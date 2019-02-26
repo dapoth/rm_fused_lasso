@@ -175,8 +175,8 @@ Laufzeiten
 \pagenumbering{arabic}
 
 \section{Introduction}
-\input{../../bld/out/figures/mytable.tex}
-\input{../../bld/out/figures/timetable.tex}
+%\input{../../bld/out/figures/mytable.tex}
+%\input{../../bld/out/figures/timetable.tex}
 
 Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
 
@@ -245,7 +245,7 @@ In this section we want to analyze the properties of the lasso estimator, includ
 
 When we have $p \leq n$ and $\text{rank}(X) = p$ there is always a unique solution to (\ref{LassoLambda}) since the sum of squared residuals is a strictly convex function of $\beta$.
 
-In order to state the uniqueness result in the high-dimensional case, we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{n\times p}$ are in general position if the affine span of any $k+1$ points $\sigma_1X_{i1}$ \ldots $\sigma_{k+1}X_{ik+1}$, for $k < \min \{n,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k+1} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k+1} \}$. 
+In order to state the uniqueness result in the high-dimensional case, we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{n\times p}$ are in general position if the affine span of any $k+1$ points $\sigma_1X_{i1},$ \ldots $\sigma_{k+1}X_{ik+1}$, for $k < \min \{n,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k+1} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k+1} \}$. 
 
 \begin{theorem}
 	\begin{enumerate}
@@ -255,8 +255,8 @@ In order to state the uniqueness result in the high-dimensional case, we need th
 	\end{enumerate}
 
 \bigskip
-Note that when the predictor variables are drawn from a continuous distribution, the regressor matrix $X$ is in general position with probability one regardless of the sizes of $n$ and $p$.
-\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}. Note that a uniqueness result in a high-dimensional setting is remarkable. 
+When the predictor variables are drawn from a continuous distribution, the regressor matrix $X$ is in general position with probability one regardless of the sizes of $n$ and $p$.
+\noindent The proof of the existence of the lasso can be found in the appendix, the proof of uniqueness in \citep{tibshirani2013lasso}. Note that a uniqueness result in a high-dimensional setting is remarkable. In case of non-uniqueness of the solution, the lasso has infinitely many solutions. \footnote{See the appendix for details.}
 	
 \end{theorem}
 
@@ -292,7 +292,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 \begin{figure}[h!]
 	\centering
 	%\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
-	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
+	\caption{Lasso penalty and contour lines of least squares}
 	\label{lassopenalty}
 \end{figure}
 
@@ -410,7 +410,7 @@ When considering grids an upper bound for $\lambda_1$ should be the optimal $\la
 
 \subsection{Properties of the solution}
 
-Similar to the Lasso, we can define the following properties of the Fused Lasso estimator.
+Similar to the Lasso, we can define the following properties of the Fused Lasso estimator. 
 
 \begin{theorem}
 	\begin{enumerate}
@@ -541,8 +541,8 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 
 \label{sec:asymptoticslasso}
 
-In this chapter we want to analyze asymptotics for the lasso and fused lasso. In general asymptotics for high dimensional statistical interference is difficult. The reason is that for a meaningful analysis, besides $n$ also $p$ needs to go to infinity and it even has to grow faster than $n$. Else at some point, $n$ would be bigger than $p$ and so we wouldn't be in a high dimensional setting any more. As soon as $p << n$, we can preferably use known methods as OLS since they do not come with a shrinkage bias.  
-The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model/DGP is changing as $p$ grows. Our usual central limit theorems do not hold any longer in this setting. \todo{Begründung}
+In this chapter we want to analyze asymptotics for the lasso and fused lasso. In general asymptotics for high dimensional statistical interference is difficult. The reason is that for a meaningful analysis, besides $n$ also $p$ needs to go to infinity and it even has to grow faster than $n$. Else at some point, $n$ would be bigger than $p$ and so we wouldn't be in a high dimensional setting any more. As soon as $p \ll n$, we can preferably use known methods as OLS since they do not come with a shrinkage bias.  
+The problem, when analyzing the asymptotics with growing $p$ is that the underlying statistical model is changing as $p$ grows. Our usual central limit theorems do not hold any longer in this setting. \todo{Begründung}
 One way to handle high dimensional asymptotics is to work with triangular arrays. Roughly speaking a triangular array is a sequence with two indices, in which each row is only a long as the row's index.  For our linear model, this would be: $Y_{n;i}=\sum^{p_n}_{j=1}\beta^0_{n;j}X^{(j)}_{n;i}+\epsilon_{n;i}, \ i=1,...,n; \ n=1,2,...$.  \todo{Formel erklären} \newline
 
 In this chapter we proceed as follows: We first briefly state some asymptotic results for the lasso, afterwards we speak about the asymptotics of the fused lasso signal approximator in more detail. The results in that section are valuable for the understanding of the fused lasso and the conditions under which it performs well. Finally we give an asymptotic normality result which includes the lasso as well as the fused lasso. The focus of the whole chapter is giving the interpretation and intuition of results as the scope of most of the proofs goes beyond this paper.
@@ -554,15 +554,20 @@ In this chapter we proceed as follows: We first briefly state some asymptotic re
 
 \subsection{Asymptotics Lasso} 
 
-When considering the asymptotics of the lasso we are mainly interested in its selection property and its prediction accuracy.
+%When considering the asymptotics of the lasso we are mainly interested in its selection property and its prediction accuracy.
+%
+%Under no conditions on the design matrix and mild assumptions one obtains that
+%\begin{equation}
+%	||X\hat{\beta}-X\beta_0||_2^2/n \leq ||\beta_0||_1 O_p(\sqrt{(log(p)/n)}).
+%\end{equation}
+%This means that lasso is consistent in prediction if $\beta$ is sparse in the $\ell_1$-norm, more precisely $||\beta_0||_1 = o(\sqrt(n/log(p)))$.
+%
+%In order to obtain optimal rates of convergence for prediction and estimation one needs to impose assumptions on the design matrix $X$. One imposes an eigenvalue or irerepresentability condition, which means....
+Under no conditions on the design matrix and mild assumptions on the error terms one obtains that lasso is consistent in prediction if $\beta$ is sparse in the $\ell_1$-norm. More precisely $||\beta_0||_1 = o(\sqrt(n/log(p)))$. \\
+For optimal rates of convergence for prediction and estimation of the parameters one requires conditions on the design matrix $X$. For example restricted eigenvalue assumptions or the compatibility condition.\\
+In order to asymptotically recover the active set of coefficients with probability one restrictive conditions need to be imposed on $X$ and on $\beta$. These conditions are unlikely to hold. \\
+However under different conditions the lasso includes coefficients of $\beta$ above a certain threshold with high probability into its active set. The conditions are not very restrictive in sparse settings. In case all non-zero coefficients are above a certain threshold the lasso thus includes all relevant regressors in its active set with high probability. Since it may still include false positives the literature suggests to say that lasso does variable screening instead of variable selection. (\citep{tibshirani2011regression})
 
-Under no conditions on the design matrix and mild assumptions one obtains that
-\begin{equation}
-	||X\hat{\beta}-X\beta_0||_2^2/n \leq ||\beta_0||_1 O_p(\sqrt{(log(p)/n)}).
-\end{equation}
-This means that lasso is consistent in prediction if $\beta$ is sparse in the $\ell_1$-norm, more precisely $||\beta_0||_1 = o(\sqrt(n/log(p)))$.
-
-In order to obtain optimal rates of convergence for prediction and estimation one needs to impose assumptions on the design matrix $X$. One imposes an eigenvalue or irerepresentability condition, which means....
 \subsection{Asymptotics Fused Lasso Signal Approximator}
 
 In this section we want to analyze asymptotic properties of the fused lasso signal approximator. The section follows closely \citep{rinaldoproperties}. Since $p = n$ is crucial for this setting as $n$ grows, $p$ needs to grow too.
@@ -629,7 +634,7 @@ The idea of the theorem and proof is similar to that in \citep{asymptoticslasso}
 
 When taking a closer look at the function $V(u)$, we notice that only the first part of the function containing $W$ is stochastic. The second part can be seen as a bias term as we will describe now further. \newline
 
-We start with the case, where $\lambda_0^{(1)}= \lambda_0^{(2)} = 0$, so we are back to the OLS setting. The function $V(u)$ reduces to $V(u) = -2u'W + u'Cu$. It is easy to see that this is minimized at $C^{-1}W$, so as expected 		$\sqrt{N}(\hat{\beta}_N - \beta) \rightarrow_{\text{d}} \mathcal{N}(0,\sigma^2 C^{\frac{1}{2}})$.
+We start with the case, where $\lambda_0^{(1)}= \lambda_0^{(2)} = 0$, so we are back to the OLS setting. The function $V(u)$ reduces to $V(u) = -2u'W + u'Cu$. It is easy to see that this is minimized at $C^{-1}W$, so as expected 		$\sqrt{N}(\hat{\beta}_N - \beta) \rightarrow_{\text{d}} \mathcal{N}(0,\sigma^2 C^{-1})$.
 When $\lambda_0^{(1)}$ and/or $\lambda_0^{(2)}$ are unequal to zero we will not get asymptotic normality centered at zero as we will see now. \newline
 
 We want to interpret the results for $\lambda_0^{(1)}, \lambda_0^{(2)} > 0$ by means of an example. Therefore we consider the case where $\beta \in \mathbb{R}^2$.
@@ -646,15 +651,16 @@ We want to interpret the results for $\lambda_0^{(1)}, \lambda_0^{(2)} > 0$ by m
 %	\argmin(V_N) = \sqrt{N}(\hat{\beta_N}-\beta) \rightarrow_{\text{d}} \argmin(V).
 %\end{equation*}
 
-We start by taking the (sub)derivative of $V$ with respect to $u_1$ and setting it to zero.
+We start by taking the subderivative of $V$ with respect to $u_1$ and setting it to zero.
 
 \begin{align} \label{eq: subder}
-	0 = -2w_1 + 2c_{11}u_1 + u_2 (c_{12}+c_{21}) &+ \lambda_0^{(1)}(\sgn(\beta_1) I(\beta_1 \neq 0) + \sgn(u_1)) \nonumber\\
+	0 = -2w_1 + 2c_{11}u_1 + u_2 (c_{12}+c_{21}) &+ \lambda_0^{(1)}(\sgn(\beta_1) I(\beta_1 \neq 0) \nonumber\\
+	& \quad \quad + r(u_1) I(\beta_1 = 0)) \\
 	 &+ \lambda_0^{(2)} (-\sgn(\beta_2-\beta_1))I(\beta_1 \neq \beta_2) \nonumber\\
-	 & \quad \quad \quad - \sgn(u_2-u_1)I(\beta_2 \neq \beta_1)) 
+	 & \quad \quad \quad - r(u_2-u_1)I(\beta_2 \neq \beta_1)) 
 \end{align}
 
-\noindent By $\sgn(z)$ we denote the subderivate of the absolute value of $z$. It corresponds to the derivative of the absolute value, the sign function, whenever $z \neq 0$ and to the set $[-1,1]$, when $z=0$.\\
+\noindent By $r(z)$ we denote the subderivate of the absolute value of $z$. It corresponds to the sign function, whenever $z \neq 0$ and to the set $[-1,1]$, when $z=0$.\\
 
 The first case we want to look at is $\lambda_0^{(1)} > 0$ and $\lambda_0^{(2)} = 0$, so we are in the lasso setting. If $\beta_1 \neq 0$ we can derive a closed form solution for $\argmin(V)$.
 
@@ -717,7 +723,7 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 \begin{figure}
-	\input{../../bld/out/figures/mytable.tex}
+%	\input{../../bld/out/figures/mytable.tex}
 	\caption{Results of the simulation}
 \end{figure}
 
@@ -1177,12 +1183,9 @@ if __name__ == "__main__":
 %\lstset{title={flestimator.py}}
 %\pythonexternal{../../src/model_code/flestimator.py}
 
-\todo{Insert code for simulation with lasso and fused lasso as soon as the question is being answered how to optimize over both lambdas}
-
-
 \section{Proofs}
 
-\subsection{}\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
+\subsection{}\begin{proof} (Convexity of solution set for fixed $\lambda$) \newline
 Define the objective function
 \begin{align*}
 h(\beta)=\|Y-X\beta\|_2^2+\lambda\|\beta\|
@@ -1194,7 +1197,7 @@ h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1
 Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
-\subsection{} \begin{proof} Existence Lasso \newline
+\subsection{} \begin{proof} \textbf{Existence Lasso} 
 First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
 \begin{equation}
 S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0),
@@ -1206,7 +1209,8 @@ Thus we have
 ||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b).
 \end{equation*}
 Observe that $A:=\{b\in \mathbb{R}^p: ||b||_1 \leq \frac{||Y||^2}{\lambda}\}$ is compact and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem. \newline
-Existence Fused Lasso \newline
+
+\textbf{Existence Fused Lasso}
 The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B := \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
 \end{proof}
 
@@ -1225,12 +1229,13 @@ The proof for the existence of the fused lasso works similar as the one for the 
 	\begin{align}
 	-y_j+sgn(\hat{\beta}^0_j)(|\hat{\beta}_j^0|-\lambda_1)^{\text{+}}+\lambda_1 sgn(\hat{\beta}_j^{\lambda_1})+\lambda_2 [sgn(\hat{\beta}^{\lambda_1}_j-\hat{\beta}^{\lambda_1}_{j-1})+sgn(\hat{\beta}^{\lambda_1}_{j+1}-\hat{\beta}^{\lambda_1}_j)]=0
 	\end{align}
+	\textbf{Case 1}
 	Consider the case  where $|\hat{\beta^0}|-\lambda_1\geq0$, noting the equality $sgn(\beta)|\beta|=\beta$ and the fact that the sign of the differences is the same as for lambda equal to we are left with
 	\begin{equation}
 	-y_j+\hat{\beta}_j^0-\lambda_1 sgn(\hat{\beta}^0_j) + \lambda_1sgn(\hat{\beta}^{\lambda_1}_j)+\lambda_2 [sgn(\hat{\beta}^{0}_j-\hat{\beta}^{0}_{j-1})+sgn(\hat{\beta}^{0}_{j+1}-\hat{\beta}^{0}_j)]=0
 	\end{equation}
-	So by setting $sgn(\hat{\beta}^0_j)=sgn(\hat{\beta}^{\lambda_1}_j)$ equation 20 reduces to the optimality condition if lambda1 is equal to 0 and since we assumed $\hat{\beta}^0$ is the solution for this problem we know the equation holds.
-	In case two if $|\hat{\beta}_j^0|-\lambda_1<0$ then $\hat{\beta}_j^{\lambda_1}=sgn(\hat{\beta}_j^0)(|\hat{\beta}_j^0|-\lambda_1)^{\text{+}}=0$. Ignoring by the same arguments the sign differences we are left with
+	So by setting $sgn(\hat{\beta}^0_j)=sgn(\hat{\beta}^{\lambda_1}_j)$ equation 20 reduces to the optimality condition if lambda1 is equal to 0 and since we assumed $\hat{\beta}^0$ is the solution for this problem we know the equation holds. \\
+	\textbf{Case 2} If $|\hat{\beta}_j^0|-\lambda_1<0$ then $\hat{\beta}_j^{\lambda_1}=sgn(\hat{\beta}_j^0)(|\hat{\beta}_j^0|-\lambda_1)^{\text{+}}=0$. Ignoring by the same arguments the sign differences we are left with
 	\begin{equation}
 	-y_j+\lambda_1 sgn(\hat{\beta}_j^{\lambda_1})
 	\end{equation}
