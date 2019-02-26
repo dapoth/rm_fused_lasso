@@ -417,18 +417,24 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 	\end{enumerate}
 \end{theorem}
 
-\todo{Wir müssen schauen, ob man den Existenzbeweis von Lasso auf Fused Lasso verallgemeinern kann.}
+The proof of existence can be found in the appendix, the one for uniqueness in .
 
 \noindent\textbf{Advantages} \newline
 
-\noindent Piecewise constant
+One of the main strengths of the fused lasso is its sparsity concerning the number of nonzero blocks.
+
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
 	Let $n_{seq}(\hat{\beta}) = \sum_{j=1}^{p} I \{\hat{\beta}_j \neq \hat{\beta}_{j-1}\}$ be the number of sequences of identical non-zero coefficients of the estimator. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
 
-\todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
-\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
-\bigskip
+The sparsity of blocks property corresponds to a piecewise constant solution since it allows only a few jumps in coefficients. Also only a few blocks are unequal to zero.
+This makes the model easily interpretable. The piecewise constant solution simply corresponds to an averaging of the features. We will see an example illustrating this property in section \eqref{sec: real data}. \\
+
+If the true model is piecewise constant the fused lasso will perform much better than the lasso in terms of model selection. As lasso tends to select only one of two regressors if they are highly correlated it does not perform well in catching the block structure of the coefficients. In contrast to that the fused lasso promotes the estimator to have a block structure. \\
+
+%\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+%
+%Model becomes interpretable.
 
 \noindent\textbf{Drawbacks} \newline
 
@@ -525,6 +531,8 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \begin{lemma}[Monotone Fusion] (cf. \citep{sparsity}) \label{monotone_fusion}
 	Suppose that for some value of $\lambda$ and some index $i \in \{1, ..., -1 \}$ the optimal solution satisfies $\hat{\beta_i}(\lambda)$ = $\hat{\beta}_{i+1}(\lambda)$. Then for all $\lambda' > \lambda$, we also have $\hat{\beta_i}(\lambda')$ = $\hat{\beta}_{i+1}(\lambda')$.
 \end{lemma}
+
+\todo{How to construct solution path}
 
 \section{Asymptotics}
 
@@ -712,18 +720,19 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 
-\section{Real Data Application}
+\section{Real Data Application} \label{sec: real data}
 
 To investigate the fused lasso estimator in a real data setting we replicate an application from medical science described in \citep{spatial}.
 We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer.\footnote{The data was taken from https://web.stanford.edu/~hastie/StatLearnSparsity/data.html (the website was visited on 9th December 2018).}  
 CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cancer cells mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
 The aim of the analysis of the data is to detect these regions of gains and losses of copy numbers.\\ 
 %he DNA sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. 
-In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable. \\
+In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable.
 The fused lasso signal approximator is an appropriate method for this type of smoothing.
-As seen above the fused lasso signal approximator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
-The regressors in this setting are the genes and the observations are the copy numbers, thus $p=n$.
-Also, we expect the underlying vector of true copy numbers to be piecewise constant over contiguous regions of a chromosome. 
+As seen above the estimator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
+Our data consists of 990 observations, where each observation is the $\log_2$ ration between the copy numbers of a gene in the tumor cells and the copy number in the healthy cells.  \\
+If we regress the copy number on the genes, we have $p=n$.
+Also, we expect the underlying vector of true copy numbers $\beta$ to be piecewise constant over contiguous regions of a chromosome. 
 The result $\hat{\beta}_j$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
 Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in figure (\ref{cghdata}). The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
 
@@ -809,7 +818,7 @@ Thus we have
 \end{equation*}
 Observe that $A:=\{b\in \mathbb{R}^p: ||b||_1 \leq \frac{||Y||^2}{\lambda}\}$ is compact and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem. \newline
 Existence Fused Lasso \newline
-The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B = \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
+The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B := \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
 \end{proof}
 
 \subsection{}
