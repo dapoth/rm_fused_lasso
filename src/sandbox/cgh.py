@@ -6,6 +6,10 @@ Created on Mon Feb 25 23:49:37 2019
 @author: clara
 """
 
+
+
+
+
 import matplotlib.pyplot as plt
 import cvxpy as cp
 import numpy as np
@@ -30,7 +34,7 @@ def fused_lasso_primal(y,x,s1,s2):
 
 
 # Plot cgh_data
-    
+
 cgh_data = np.loadtxt("cgh.txt")
 beta = fused_lasso_primal(cgh_data, np.identity(len(cgh_data)), 160, 15)
 plt.xlabel('Genome Order')
@@ -38,5 +42,5 @@ plt.ylabel('Copy Number')
 plt.plot(cgh_data,"bo")
 plt.axhline(color='r')
 plt.plot(beta, color='orange')
+plt.savefig("cgh_plot.png")
 plt.show()
-plt.savefig("cgh_plot.pdf")

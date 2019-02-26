@@ -52,40 +52,42 @@ if __name__ == "__main__":
     residuals = np.empty((n, num_simulations))
 
     """Calculation of optimal lambda (still missing)."""
+
+    grid_density = 40
     lasso_grid = {
-      's1': list(np.linspace(s1_min, s1_max, 20))
+      's1': list(np.linspace(s1_min, s1_max, grid_density))
     }
     fused_grid = {
-      's2': list(np.linspace(s2_min, s2_max, 20))
+      's2': list(np.linspace(s2_min, s2_max, grid_density))
     }
     two_d_grid = [{
-            's1': list(np.linspace(s1_min, s1_max, 20)),
-            's2': list(np.linspace(s2_min, s2_max, 20))
+            's1': list(np.linspace(s1_min, s1_max, grid_density)),
+            's2': list(np.linspace(s2_min, s2_max, grid_density))
         }]
 
     if reg_name == 'lasso':
         lasso_grid = {
-            's1': list(np.linspace(1, 100, 50))
+            's1': list(np.linspace(s1_min, s1_max, grid_density))
         }
         fused_grid = {
-            's2': list(np.linspace(1000, 1200, 1))
+            's2': list(np.linspace(1190, 1200, 1))
         }
 
         two_d_grid = [{
-            's1': list(np.linspace(1, 100, 50)),
-            's2': list(np.linspace(1000, 1200, 5))
+            's1': list(np.linspace(s1_min, s1_max, grid_density)),
+            's2': list(np.linspace(1190, 1200, 5))
         }]
 
     if reg_name == 'fusion':
         lasso_grid = {
-            's1': list(np.linspace(1000, 1200, 1))
+            's1': list(np.linspace(1190, 1200, 1))
         }
         fused_grid = {
-            's2': list(np.linspace(1, 50, 50))
+            's2': list(np.linspace(s2_min, s2_max, grid_density))
         }
         two_d_grid = [{
-            's1': list(np.linspace(1000, 1200, 5)),
-            's2': list(np.linspace(1, 100, 50))
+            's1': list(np.linspace(1190, 1200, 5)),
+            's2': list(np.linspace(s2_min, s2_max, grid_density))
         }]
 
     start_time_cv = time()
@@ -139,68 +141,98 @@ if __name__ == "__main__":
         pickle.dump(container, out_file)
 
 
-    """Analysis of estimator properties and how the true beta got estimated."""
-    container_analysis = []
-    #number of zeros
-    beta_hat[(np.absolute(beta_hat) <= 0.1 * amplitude) & (true_beta == 0)] = 0
-    number_correct_zero = np.sum((beta_hat <= 0.1*amplitude) & (true_beta == 0),
-                                                                axis=0)
-    np.mean(number_correct_zero)
-    np.std(number_correct_zero)
-
-    container_analysis.append(np.mean(number_correct_zero))
-    container_analysis.append(np.std(number_correct_zero))
-
-
-    # number of relevant variables
-    correct_nonzero = sum((beta_hat >= 0.75*amplitude)  & (true_beta > 0))
-    container_analysis.append(np.mean(correct_nonzero))
-    container_analysis.append(np.std(correct_nonzero))
-    np.mean(correct_nonzero)
-    np.std(correct_nonzero)
-
-    #count the spikes
-    spike_count = []
-    if sim_dict["spikes"] > 1:
-        for i in range(num_simulations): #0 bis 199
-
-            count = 0
-            for j in range(p): #0 bis 499
-
-                if (j == 0) & (true_beta[1,i] == 0) & (beta_hat[j,i] > 0):
-
-                    count = count + 1
-
-                elif (true_beta[j-2, i] == 0) & (true_beta[j, i] == 0) & (beta_hat[j-1, i] > amplitude/2) & (true_beta[j-1, i] > 0):
-                    if j == (p-1):
-                        break
-                    count = count + 1
-
-                if (j == (p-1)) & (beta_hat[(p-1), i] > 1) & (true_beta[p-2, i] == 0):
-                    count = count + 1
-            spike_count.append(count)
-    else:
-        spike_count = np.zeros(num_simulations)
-
-    container_analysis.append(np.mean(spike_count))
-    container_analysis.append(np.std(spike_count))
-
-    # count how many blocks got estimated correctly
-    beta_hat[(beta_hat >= 0.50*amplitude) &
-             (beta_hat <= 1.5*amplitude) & (true_beta == amplitude)] = amplitude
-    beta_hat[(beta_hat >= 0.75*levels) &
-             (beta_hat <= 1.25*levels) & (true_beta == levels)] = levels
-    number_of_blocks = (sum((true_beta == beta_hat) & (beta_hat > 0.5))
-                        - spike_count) / length_blocks
-
-    container_analysis.append(np.mean(number_of_blocks))
-    container_analysis.append(np.std(number_of_blocks))
-
-    with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg_name, sim_name)), "wb") as out_file:
-       pickle.dump(container_analysis, out_file)
+    # """Analysis of estimator properties and how the true beta got estimated."""
+    #
+    # # with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/simulation_fusion_small_blocks.pickle", "rb") as in12_file:
+    # #      analysis = pickle.load(in12_file)
+    # # #
+    # #  beta_hat = analysis[0]
+    # #  true_beta = analysis[1]
+    # #
+    # container_analysis = []
+    # #
+    #  # amplitude = 3
+    #
+    # # number of relevant variables
+    # correct_nonzero = sum((beta_hat >= 0.30*amplitude)  & (true_beta > 0)) * 1 / np.sum(true_beta > 0,axis = 0)
+    # container_analysis.append(np.mean(correct_nonzero))
+    # container_analysis.append(np.std(correct_nonzero))
+    #
+    #
+    #
+    # #number of zeros
+    # # beta_hat[(np.absolute(beta_hat) <= 0.01) & (true_beta == 0)] = 0
+    # # number_correct_zero = np.sum((beta_hat <= 0.1*amplitude) & (true_beta == 0),
+    # #                                                             axis=0)
+    # #
+    # # beta_hat[(np.absolute(beta_hat) <= 0.01) & (true_beta == 0)] = 0
+    # percent_correct_zero = np.sum((np.absolute(beta_hat) <= 0.1) & (true_beta == 0),
+    #                                                             axis=0) / np.sum(true_beta == 0,axis = 0)
+    #
+    # container_analysis.append(np.mean(percent_correct_zero))
+    # container_analysis.append(np.std(percent_correct_zero))
+    #
+    #
+    #
+    #
+    #
+    # #count the spikes
+    # spike_count = []
+    # if sim_dict["spikes"] >= 1:
+    #     for i in range(num_simulations): #0 bis 199
+    #
+    #         count = 0
+    #
+    #         for j in range(p): #0 bis 499
+    #
+    #             if j == p-1:
+    #                 break
+    #
+    #             if (j == 0) & (true_beta[1,i] == 0) & (beta_hat[j,i] > amplitude/2) & (true_beta[0,i] > 0):
+    #
+    #                 count = count + 1
+    #
+    #             if (j == (p-1)) & (beta_hat[(p-1), i] > 2) & (true_beta[p-2, i] == 0) & (true_beta[p-1, i] > 0):
+    #                 count = count + 1
+    #
+    #             if (true_beta[j-1, i] == 0) & (true_beta[j+1, i] == 0) & (beta_hat[j, i] > amplitude/2) & (true_beta[j, i] > 0):
+    #
+    #                 count = count + 1
+    #
+    #         spike_count.append(count)
+    #     spike_count = np.array(spike_count) / spikes
+    #     container_analysis.append(np.mean(spike_count))
+    #     container_analysis.append(np.std(spike_count))
+    #
+    # else:
+    #     spike_count = np.zeros(num_simulations) * np.NAN
+    #     container_analysis.append(spike_count)
+    #     container_analysis.append(spike_count)
+    #
+    # # count how many blocks got estimated correctly
+    # # beta_hat[(beta_hat >= 0.50*amplitude) &
+    # #          (beta_hat <= 1.5*amplitude) & (true_beta == amplitude)] = amplitude
+    # # beta_hat[(beta_hat >= 0.75*levels) &
+    # #          (beta_hat <= 1.25*levels) & (true_beta == levels)] = levels
+    # # number_of_blocks = (sum((true_beta == beta_hat) & (beta_hat > 0.5))
+    # #                     - spike_count) / length_blocks
+    # if reg_name == 'spikes':
+    #     number_blocks = 1
+    #
+    #
+    # # if reg_name == 'fusion':
+    # #     number_of_blocks = np.sum(((beta_hat >= 0.9*amplitude) & (beta_hat <= 1.1x*amplitude) & (true_beta == amplitude)) | ((beta_hat >= 0.9*levels) & (beta_hat <= 1.1*levels) & (true_beta == levels)),axis = 0)
+    # # else:
+    # counter_blocks = np.sum(((beta_hat >= 0.50*amplitude) & (beta_hat <= 1.5*amplitude) & (true_beta == amplitude)) | ((beta_hat >= 0.75*levels) & (beta_hat <= 1.25*levels) & (true_beta == levels)),axis = 0)
+    #
+    # percent_blocks = np.array(counter_blocks) / (length_blocks * number_blocks)
+    # container_analysis.append(np.mean(percent_blocks))
+    # container_analysis.append(np.std(percent_blocks))
+    #
+    # with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg_name, sim_name)), "wb") as out_file:
+    #    pickle.dump(container_analysis, out_file)
 
     """Plot distribution."""
-
     beta = true_beta[:, 1]  # nimm ein echtes beta
     beta_container = np.ones((p, num_simulations))
     mean_x = np.zeros(p)
@@ -213,6 +245,9 @@ if __name__ == "__main__":
         y = np.matmul(X, beta) + eps
         beta_container[:, j] = fused_lasso_primal(y, X, penalty_cv[0], penalty_cv[1])
 
+
+
+    """Plot distribution of beta_j before block at break of block and inside block"""
     list_index = []
     for ch in range(p):
         if ch == (p-4):
@@ -237,23 +272,29 @@ if __name__ == "__main__":
     axes[1, 1].hist(beta_container[list_index[3], :])
     axes[1, 1].set_xlabel('block_out')
 
-    plt.savefig(ppj("OUT_FIGURES", "plot_{}_{}.pdf".format(reg_name, sim_name)))
+    plt.savefig(ppj("OUT_FIGURES", "plot_{}_{}.png".format(reg_name, sim_name)))
 
     fig.clf()
 
+
+
+
+
+
     """Heatmap."""
+
 
     if reg_name == 'fused':
         mean_test_score = clf.cv_results_['mean_test_score']
         parameters = clf.cv_results_['params']
 
         # Array in die richtige 2-dimensionale Form bringen.
-        new_array = np.reshape(np.abs(mean_test_score), (20, 20))
+        new_array = np.reshape(np.abs(mean_test_score), (grid_density, grid_density))
         new_array_sorted = np.flip(new_array)
 
         # Extract s1 and s2 value for axis labeling
-        lists2 = np.zeros(20)
-        for i in range(20):
+        lists2 = np.zeros(grid_density)
+        for i in range(grid_density):
             lists2[i] = round(parameters[i]['s2'], 1)
 
         lists1 = np.zeros(len(mean_test_score))
