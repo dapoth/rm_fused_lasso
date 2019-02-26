@@ -25,7 +25,8 @@ def build(ctx):
   	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penalization_methods.pdf')
         )
 
-    # ctx(
-  	#  features='run_py_script',
-  	#  source='Tables.py'
-    #     )
+    ctx(
+  	 features='run_py_script',
+  	 source='Tables.py',
+     target=ctx.path_to(ctx, 'OUT_FIGURES', 'mytable.tex')
+        )

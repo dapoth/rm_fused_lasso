@@ -8,8 +8,8 @@ Created on Tue Feb 19 13:59:11 2019
 import matplotlib.pyplot as plt
 import pickle
 
-#   /home/clara/rm_fus…o/bld/out/analysis/beta_hat_one_block.pickle
-with open("/home/clara/rm_fused_lasso/bld/out/analysis/beta_hat_one_block.pickle", "rb") as block1:
+#   /home/clara/rm_fus…o/bld/out/analysis/beta_hat_blocks_levels.pickle
+with open("/home/clara/rm_fused_lasso/bld/out/analysis/beta_hat_blocks_levels.pickle", "rb") as block1:
     sim_block1 = pickle.load(block1)
 beta_hat = sim_block1[0]
 beta =sim_block1[1]

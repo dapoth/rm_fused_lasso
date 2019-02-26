@@ -41,7 +41,7 @@ def solution_path_unconstraint(y,x,lambda1=0,lambda2=0):
 
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
-    plt.figure(figsize=(6,10))
+    plt.figure(figsize=(6, 10))
 
     # Plot entries of x vs. lambda1.
     plt.subplot(211)
@@ -73,37 +73,42 @@ def solution_path_unconstraint(y,x,lambda1=0,lambda2=0):
     return print("The prcoess was",prob.status)
 
 
-def fused_lasso_primal(y,x,s1,s2):
+def fused_lasso_primal(y, x, s1, s2):
 
-    ### "from constraint import un_constraint" to import function
-    ### y and x data as usual
+    """Docstring."""
 
-    p = len(x[1,:])
+    # "from constraint import un_constraint" to import function
+    # y and x data as usual
+
+    p = len(x[1, :])
     b = cp.Variable(p)
     error = cp.sum_squares(x*b - y)
     obj = cp.Minimize(error)
-    constraints = [cp.norm(b,1) <= s1, cp.norm(b[1:p]-b[0:p-1],1) <= s2]
+    constraints = [cp.norm(b, 1) <= s1, cp.norm(b[1:p]-b[0:p-1], 1) <= s2]
     prob = cp.Problem(obj, constraints)
     prob.solve()
 
     return b.value
 
-def fused_lasso_dual(y,x,lambda1,lambda2):
 
-    p = len(x[1,:])
+def fused_lasso_dual(y, x, lambda1, lambda2):
+    """
+    Solves for given data and penalty constants the fused lasso dual form.
+    """
+    p = len(x[1, :])
     b = cp.Variable(p)
     error = cp.sum_squares(x*b - y)
-    obj = cp.Minimize(error+lambda1*cp.norm(b,1)  +lambda2*cp.norm(b[1:p]-b[0:p-1],1))
+    obj = cp.Minimize(error + lambda1 * cp.norm(b, 1) +
+                      lambda2 * cp.norm(b[1:p]-b[0:p-1], 1))
     prob = cp.Problem(obj)
     prob.solve()
 
     return b.value
 
 def return_beta_constraint(y,x,s1,s2):
-
-    ### "from constraint import un_constraint" to import function
-    ### y and x data as usual
-
+    """
+    Solves for given data and penalty constants the fused lasso primal form.
+    """
     p = len(x[1,:])
     b = cp.Variable(p)
     error = cp.sum_squares(x*b - y)
@@ -199,14 +204,18 @@ def crossvalidation(alpha):
 
     cv_criterion
 
-def generate_data(n, p, num_simulations, number_blocks, length_blocks, amplitude, spike_level,
-                   levels=False, spikes=0):
-    """Docstr"""
+
+def generate_data(n, p, num_simulations, number_blocks, length_blocks,
+                  amplitude, spike_level, levels=False, spikes=0):
+    """
+    Together with the generate_blocks function, it generates the data for
+    our simulations.
+    """
+
     beta = np.zeros([p, num_simulations])
     for sim in range(num_simulations):
-        beta[:, sim] = generate_blocks(p, number_blocks, length_blocks, amplitude, spike_level, levels, spikes)
-
-    beta_hat = np.ones([p, num_simulations])
+        beta[:, sim] = generate_blocks(p, number_blocks, length_blocks,
+                                       amplitude, spike_level, levels, spikes)
     mean = np.zeros(p)
     cov = np.identity(p)
     X = np.random.multivariate_normal(mean, cov, n)
@@ -215,47 +224,50 @@ def generate_data(n, p, num_simulations, number_blocks, length_blocks, amplitude
     epsilon = np.random.multivariate_normal(mean_eps, cov_eps, n)
     Y = np.matmul(X, beta) + epsilon
 
-    return beta,X, epsilon, Y
+    return beta, X, epsilon, Y
 
 
+def generate_blocks(p, number_blocks, length_blocks, amplitude,
+                    spike_level, levels=False, spikes=0):
+    """
+    Generate beta's for simulation purpose.
+    """
 
-def generate_blocks( p, number_blocks, length_blocks, amplitude,
-                    spike_level, levels = False, spikes = 0):
-    """Generate beta's for simulation purpose."""
-    container = np.zeros( p)
-    max_blocks = math.floor( p / length_blocks)
+    container = np.zeros(p)
+    max_blocks = math.floor(p / length_blocks)
 
     start_blocks = rd.sample(range(max_blocks), number_blocks)
 
 #    if max_blocks < number_blocks:
 #        break
 
-    if (levels == True):
+    if levels:
         """
         If the Blocks should not all have equal levels, we will randomly chose
         the level of each block as either amplitude or amplitude times 2.
         """
         amplitudes = [amplitude, amplitude*2]
-        for block in start_blocks :
+        for block in start_blocks:
             amp = rd.choice(amplitudes)
-            for i in range(p) :
-                if ( i >= block* length_blocks) and (i < (block+1)* length_blocks):
+            for i in range(p):
+                if (i >= block * length_blocks) and (i < (block+1) *
+                                                     length_blocks):
                     container[i] = amp
 
     else:
-        for block in start_blocks :
-            for i in range(p) :
-                if ( i >= block* length_blocks) and (i < (block+1)* length_blocks):
-                    container [i] = amplitude
+        for block in start_blocks:
+            for i in range(p):
+                if (i >= block * length_blocks) and (i < (block+1) *
+                                                     length_blocks):
+                    container[i] = amplitude
 
-    if spikes != 0 :
+    if spikes != 0:
         non_blocks = []
         for i in range(p):
-            if container[i]==0:
+            if container[i] == 0:
                 non_blocks.append(i)
         beta_spikes = rd.sample(non_blocks, spikes)
         for i in beta_spikes:
             container[i] = spike_level
-
 
     return container
