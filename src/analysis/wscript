@@ -14,19 +14,9 @@ def build(ctx):
                     ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}.pickle'.format(sim)),
                     ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
                 ],
-                target = [
+                target =
                     #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
-                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'.format(reg,sim))
-                    
-                    #ctx.path_to(ctx, 'OUT_ANALYSIS', 'heatmap_{}.png'.format(sim))
-                ],
+                    [ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'.format(reg,sim)),
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'heatmap_{}.png'.format(sim)),],
                 append = [reg, sim]
-            )
-
-
-# def build(ctx):
-#
-#     ctx(
-#     features = 'run_py_script',
-#     source = 'monte_carlo.py'
-#     )
+                )
