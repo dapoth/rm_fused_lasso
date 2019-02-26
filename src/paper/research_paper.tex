@@ -31,6 +31,12 @@
 \DeclareMathOperator*{\sgn}{sgn}
 \bibliographystyle{ecta}
 
+\mathchardef\ordinarycolon\mathcode`\:
+\mathcode`\:=\string"8000
+\begingroup \catcode`\:=\active
+\gdef:{\mathrel{\mathop\ordinarycolon}}
+\endgroup
+
 % python
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
@@ -708,20 +714,18 @@ One of the main goals of our estimators is model selection. That means in order 
 
 \section{Real Data Application}
 
-To investigate the fused lasso estimator in a real data setting we consider an application from medical science.
-We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer. \footnote{The data was taken from .}  
-CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cells with cancer mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
-The aim of the analysis of the data is to detect these regions of gains or losses of copy numbers.\newline 
+To investigate the fused lasso estimator in a real data setting we replicate an application from medical science described in \citep{spatial}.
+We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer.\footnote{The data was taken from https://web.stanford.edu/~hastie/StatLearnSparsity/data.html (the website was visited on 9th December 2018).}  
+CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cancer cells mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
+The aim of the analysis of the data is to detect these regions of gains and losses of copy numbers.\\ 
 %he DNA sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. 
-
-
 In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable. \\
-We will describe now why the fused lasso signal approximator is an appropriate method for the smoothing.
+The fused lasso signal approximator is an appropriate method for this type of smoothing.
 As seen above the fused lasso signal approximator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
-The regressors in this setting are the genes and the observations are the copy numbers, thus $p=n$. \citep{sparsity}.
-Also, we expect the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome. 
-The result $\hat{beta_j}$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
-Applying the fused lasso estimator with the penalty terms $s_1 = $ and $s_2 = $ leads to the result in figure (\ref{cghdata}). The estimator sets a large number of coefficients exactly equal to zero and suggests two regions, where DNA sequence copy number gains have possibly taken place, thus the true signal is unequal to zero.
+The regressors in this setting are the genes and the observations are the copy numbers, thus $p=n$.
+Also, we expect the underlying vector of true copy numbers to be piecewise constant over contiguous regions of a chromosome. 
+The result $\hat{\beta}_j$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
+Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in figure (\ref{cghdata}). The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
 
 \begin{figure}
 	\centering
@@ -780,19 +784,6 @@ Have looked at specific penalized regression.
 
 \section{Proofs}
 
-\subsection{}Equivalence of (\ref{Primal}) and (\ref{LassoLambda}):
-First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
-\begin{equation}
-	S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0).
-\end{equation}
-
-that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
-Thus we have
-\begin{equation*}
- \hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ ||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b)
-\end{equation*}
-so the two ways of writing the estimator are equivalent.
-
 \subsection{}\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
 Define the objective function
 \begin{align*}
@@ -805,8 +796,20 @@ h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1
 Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
-\subsection{} \begin{proof} Existence \newline
-Consider the problem written as in (\ref{Primal}). Observe that the arg min is taken over a compact set and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem.
+\subsection{} \begin{proof} Existence Lasso \newline
+First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
+\begin{equation}
+S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0),
+\end{equation}
+that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
+Thus we have
+\begin{equation*}
+\hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ 
+||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b).
+\end{equation*}
+Observe that $A:=\{b\in \mathbb{R}^p: ||b||_1 \leq \frac{||Y||^2}{\lambda}\}$ is compact and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem. \newline
+Existence Fused Lasso \newline
+The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B = \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
 \end{proof}
 
 \subsection{}
