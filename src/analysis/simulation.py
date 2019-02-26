@@ -21,8 +21,8 @@ if __name__ == "__main__":
     sim_name = sys.argv[2]
     sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
                          encoding="utf-8"))
-    with open(ppj("OUT_ANALYSIS", "data_{}_{}.pickle".
-                  format(reg_name, sim_name)), "rb") as in12_file:
+    with open(ppj("OUT_ANALYSIS", "data_{}.pickle".
+              format(sim_name)), "rb") as in12_file:
         beta_X_epsilon_Y = pickle.load(in12_file)
 
     """Data import from pickle files."""
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     if reg_name == 'fusion':
         lasso_grid = {
-            's1': list(np.linspace(1000, 120, 1))
+            's1': list(np.linspace(1000, 1200, 1))
         }
         fused_grid = {
             's2': list(np.linspace(1, 50, 50))
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     clf = GridSearchCV(fle(lasso_grid, fused_grid), two_d_grid,
                        scoring='neg_mean_squared_error',
                        n_jobs=-1, iid=False, refit=True,
-                       cv=None, verbose=0, pre_dispatch='2*n_jobs',
+                       cv=5, verbose=0, pre_dispatch='2*n_jobs',
                        error_score='raise-deprecating',
                        return_train_score='warn')
 

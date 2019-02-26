@@ -15,8 +15,8 @@ import ast
 
 
 if __name__ == "__main__":
-    reg_name = sys.argv[1]
-    sim_name = sys.argv[2]
+    #reg_name = sys.argv[1]
+    sim_name = sys.argv[1]
     sim = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
                     encoding="utf-8"))
 
@@ -39,5 +39,5 @@ if __name__ == "__main__":
 
     aux1 = [beta, X, epsilon, Y]
 
-    with open(ppj("OUT_ANALYSIS", "data_{}_{}.pickle".format(reg_name,sim_name)), "wb") as out12_file:
+    with open(ppj("OUT_ANALYSIS", "data_{}.pickle".format(sim_name)), "wb") as out12_file:
         pickle.dump(aux1, out12_file)
