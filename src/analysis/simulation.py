@@ -95,7 +95,7 @@ if __name__ == "__main__":
     clf = GridSearchCV(fle(lasso_grid, fused_grid), two_d_grid,
                        scoring='neg_mean_squared_error',
                        n_jobs=-1, iid=False, refit=True,
-                       cv=5, verbose=0, pre_dispatch='2*n_jobs',
+                       cv=3, verbose=0, pre_dispatch='2*n_jobs',
                        error_score='raise-deprecating',
                        return_train_score='warn')
 
