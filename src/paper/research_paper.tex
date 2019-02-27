@@ -289,7 +289,6 @@ This is often a corner of the set which corresponds to one component of the $\be
 \begin{figure}[h!]
 	\centering
 %	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
-
 	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
 	\label{lassopenalty}
 \end{figure}
@@ -338,7 +337,6 @@ Reordering of terms gives the following conditions for the Lasso solution, calle
 \end{theorem}
 
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}. \newline
-
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. Also the lasso has the following useful property.\todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
@@ -386,8 +384,8 @@ An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that cont
 
 \subsection{Definition and set-up}
 
-Consider the same linear model setting as for the lasso with the following extension. Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only have a few, that means much less than $n$, blocks with nonzero coefficients. So the sparsity assumption of the lasso setting is relaxed.\\
-Lasso does not use structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
+Consider the same linear model setting as for the lasso with the following extension: Assume that there is a structure in $\beta$, such that neighboring $\beta_i$'s often have equal values. That means we have blocks of neighboring coefficients with the same values. We assume further that we only a sparse number (much less than $N$) blocks with nonzero coefficients. Hence, the sparsity assumption is weakened compared to the lasso setting.\\
+Lasso would not capitalize on the structural information within the features for the estimation. However this structure can be exploited by adding to lasso's objective function a second penalty term that penalizes differences between neighboring $\beta_i$'s, i.e. $\lambda_2\sum_{j=2}^p|\beta_j- \beta_{j-1}|$. This addition leads to the fused lasso estimator 
 	\begin{equation}\label{eq: fusedlasso}
 		\hat{\beta}_{\lambda_1,\lambda_2}^{FL}=\argmin_{\beta \in\rm \mathbb{R}^p} \left\{   \sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2+\lambda_1 \sum_{j=1}^p|\beta_j|+ \lambda_2 \sum_{j=2}^p|\beta_j- \beta_{j-1}| \right \}.
 	\end{equation}
@@ -395,11 +393,10 @@ Lasso does not use structural information within the features for the estimation
 \todo{Es fehlt die analoge Schreibweise}
 
 \subsection{The penalty constants} \label{subsec: penalties}
-In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty. \todo{Die penalties beeinflussen sich auch gegenseitig, müssen wir noch was zu schreiben.} For $\lambda_2=0$, we remain in the lasso problem. For an increasing $\lambda_2$, more and more neighboring $\beta_j$'s get 'fused' together, in the sense that $\beta_j=\beta_{j-1}$. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, so all coefficients get the same value.\\
-As for the lasso, the penalty constants have to be chosen by the researcher.
-Chosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes that the true $\beta$ vector is very sparse or the blocks where coefficients are equal are large. \\
-A possible approach for chosing the penalty constants could be cross validation on a two dimensional grid. This can optionally be combined with a search strategy on the grid, for example a greedy strategy or meaningful starting points combined with fixed directions as proposed by \citep{fused}. Which method to use strongly depends on run time of the used algorithm as the problem can become computationally unfeasible. 
-When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
+In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and influences the estimator in the same way. $\lambda_2$ is the coefficient on the fusion penalty and for increasing $\lambda_2$, more and more $\beta_j$ get fused to equal values. Specifically, $\lambda_2=0$ will throw us back into the lasso problem. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, such that all coefficients are equal. \\
+Since both penalty terms are in the objective function, the choice of one penalty term would also influence the choice of the other. Unfortunately the exact impact of that influence is not always intuitive, as can be seen in section \ref{simulation}. However one restriction for the choice of the penalty constants can be obtained. Since both penalty terms enter positively in the objective function, the penalty constants should not be as strict, as those of the lasso or of a fused regression.\\
+
+As for the lasso, the penalty constants have to be chosen by the researcher. Choosing the penalty constants should incorporates the prior information to the estimation. Harsh penalties only makes sense if one believes the true $\beta$ vector to be very sparse or that $\beta_j$ blocks are large. One possible approach for choosing the penalty constants, is cross validation on a two dimensional grid, which we pursue in section \ref{implementation}.
 
 \begin{figure}
 %	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
@@ -417,13 +414,11 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 		\item \textbf{Uniqueness} \citep{ali2018generalized} Under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique.
 	\end{enumerate}
 \end{theorem}
-
 The proof of existence can be found in the appendix, the one for uniqueness in .
 
 \noindent\textbf{Advantages} \newline
 
 One of the main strengths of the fused lasso is its sparsity concerning the number of nonzero blocks.
-
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
 	Let $n_{seq}(\hat{\beta}) = \sum_{j=1}^{p} I \{\hat{\beta}_j \neq \hat{\beta}_{j-1}\}$ be the number of sequences of identical non-zero coefficients of the estimator. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
@@ -475,7 +470,7 @@ where $r_j = \sgn(\beta_j)$ if $\beta_j \neq 0$ and $r_j \in [-1,1] $ if $\beta_
 Similarly $t_j = \sgn(\beta_j - \beta_{j-1})$ if
 $\beta_j \neq \beta_{j-1}$ and 
 $t_j \in [-1,1] $ if $\beta_j = \beta_{j-1}$.
-	
+
 \end{theorem}
 
 In the differentiable case these are first order conditions as usual. In the case where $\beta_j = 0$ or $\beta_j = \beta_{j-1}$ the equations need to be interpreted as follows. Any $b_\lambda$ such that there exists $r_j\in [-1,1]$ respectively $t_j \in [-1,1]$ such that all the equations hold is a solution to the minimization problem.
@@ -677,7 +672,7 @@ Note that from equation \eqref{eq: subder} one can also see that when some of th
 
 \newpage
 
-\section{Implementation}
+\section{Implementation}\label{implementation}
 
 A problem when performing simulations with uncommon estimators, like the fused lasso, is that package availability for that estimator can often be scarce. Also it can not be assumed that the available packages are tested or whether their documentation is correct. After some research we decided to implement our own fused lasso estimator.\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}\\
 
@@ -686,9 +681,10 @@ To solve the decision problem of hyperparameters, we decided to resort to cross-
 
 We opted to build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}. This provided us a basis class for our implementation and interfaces allowing easy implementation of further methods. This way we can resort to the Scikit build-in ``GridsearchCV'' to determine an adequate neighborhood of hyperparameters $s_1,s_2$ over a chosen grid. In addition to this, \citet{fused}  implemented a search strategy to reduce the necessary amount of computations on the grid by omitting certain grid points. This was justified by ``empirical experimentation'' that was not always reproducible in our tests. Consequently we stuck with the more conservative choice and checked the whole grid. As scoring for the cross-validation we chose the prevalent mean squared error.
 
-\section{Simulation}
 
-To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
+\section{Simulation}\label{simulation}
+
+To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=200$ and $N=40$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we tried to chose the structure of the features generation process such that we cover relevant cases.\\
 
 For the four following simulation settings the number of relevant features was set to 30. This was done to show differences in performance depending rather on the structure than on the number of relevant features.\\
 The first setting was constructed as the basic example, where fused lasso might have advantages over lasso. We only include one block of relevant features of length 30. In the second setting we split the relevant features into 3 equally long blocks, that might or might not be neighboring each other. This provides us an intuition on how the estimation of $\beta$ with fused lasso might depend on the amount of blocks into which the relevant features are split. In the third setting we extend the setting by allowing the blocks in $\beta$ to have different height. In the fourth setting, we augment the number of relevant features by adding a small number of spikes into $\beta$, in the area of non relevant $\beta_j$. This illustrates a case where fused lasso might have problems, picking up the solitary relevant features.\\
@@ -757,6 +753,7 @@ Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 =
 \end{figure}
 
 \todo{Über Wahl von s1 und s2 sprechen}
+
 \section{Conclusion/Discussion}
 
 Have looked at specific penalized regression.
@@ -773,7 +770,7 @@ Have looked at specific penalized regression.
  \citep{elements}
 
 \appendix
-
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 \newpage
 
 \section{Code}
