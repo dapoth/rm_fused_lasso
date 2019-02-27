@@ -31,6 +31,12 @@
 \DeclareMathOperator*{\sgn}{sgn}
 \bibliographystyle{ecta}
 
+\mathchardef\ordinarycolon\mathcode`\:
+\mathcode`\:=\string"8000
+\begingroup \catcode`\:=\active
+\gdef:{\mathrel{\mathop\ordinarycolon}}
+\endgroup
+
 % python
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
@@ -331,12 +337,6 @@ Reordering of terms gives the following conditions for the Lasso solution, calle
 \end{theorem}
 
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}. \newline
-
-A different approach to find the solution is subdifferential calculus. 
-Subderivatives generalize the derivative to convex functions which are not necessarily differentiable.
-As our objective function is convex the theory is applicable.
-The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$.
-
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. Also the lasso has the following useful property.\todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
@@ -414,19 +414,23 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 		\item \textbf{Uniqueness} \citep{ali2018generalized} Under 'non-redundancy' conditions on the design matrix $X$, the fused lasso estimator is unique.
 	\end{enumerate}
 \end{theorem}
-
-\todo{Wir müssen schauen, ob man den Existenzbeweis von Lasso auf Fused Lasso verallgemeinern kann.}
+The proof of existence can be found in the appendix, the one for uniqueness in .
 
 \noindent\textbf{Advantages} \newline
 
-\noindent Piecewise constant
+One of the main strengths of the fused lasso is its sparsity concerning the number of nonzero blocks.
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
 	Let $n_{seq}(\hat{\beta}) = \sum_{j=1}^{p} I \{\hat{\beta}_j \neq \hat{\beta}_{j-1}\}$ be the number of sequences of identical non-zero coefficients of the estimator. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
 
-\todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
-\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
-\bigskip
+The sparsity of blocks property corresponds to a piecewise constant solution since it allows only a few jumps in coefficients. Also only a few blocks are unequal to zero.
+This makes the model easily interpretable. The piecewise constant solution simply corresponds to an averaging of the features. We will see an example illustrating this property in section \eqref{sec: real data}. \\
+
+If the true model is piecewise constant the fused lasso will perform much better than the lasso in terms of model selection. As lasso tends to select only one of two regressors if they are highly correlated it does not perform well in catching the block structure of the coefficients. In contrast to that the fused lasso promotes the estimator to have a block structure. \\
+
+%\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+%
+%Model becomes interpretable.
 
 \noindent\textbf{Drawbacks} \newline
 
@@ -445,7 +449,31 @@ In section \ref{Sec: Coordinate Lasso} we saw that the conditions for the coordi
 Assume that the previous iteration step set $\hat{\beta}_1=\hat{\beta}_2$ and we are in the new iteration step, where we minimize over $\beta_1$. Observe any change in $\beta_1$ introduces an increase of the absolute value of the difference of $\hat{\beta}_1$ and $\hat{\beta}_2$. Let us consider a situation in which it would be optimal to increase $\hat{\beta}_1$ a little to get rid of some squared differences in the model fit, but the difference in the absolute value is larger, so it is optimal for $\hat{\beta}_1$ to stay as in the previous iteration step. Assume we face the same problem in the iteration step for $\beta_2$, i.e. increasing it a little would be better for model fit, but it isn't done because of the combined penalty.
 in such a scenario coordinate descent gets stuck. Therefore we have to use algorithms like gradient descent because they can move $\beta_1$ and $\beta_2$ simultaneously, so that here both increase slightly, so that the squared error gets smaller and the absolute difference stays 0.
 A path algorithm is explained in the next section.
-\cite[chapter 5]{sparsity}
+\cite[chapter 5]{sparsity} \newline
+
+Deriving the Karush-Kuhn-Tucker conditions for the fused lasso problem is difficult. We can alternatively make use of a related approach to finding the solution, namely subdifferential calculus. 
+Subderivatives generalize the concept of derivatives to convex functions which are not necessarily differentiable.
+As our objective function is convex the theory is applicable. We do not want to go deeply into the theory, but look at it in our concrete case of the absolute value.
+If a function is differentiable at a point, then the subderivative equals the derivative. Thus in the case of the absolute value the subderivative is the sign function everywhere except at $zero$.
+At zero there are infinitely many tangent lines that go through the point, each line having a slope in the set $[-1,1]$.
+Therefore a natural idea is to say that the generalization of the derivative of the absolute value at $0$ is characterized by the set $[-1,1]$. The subderivative of the absolute value at zero is not a number, but the set $[-1,1]$. With the help of these subderivatives we can characterize the solution through the following equations.
+
+\begin{theorem}(Characterization Fused Lasso solution)
+	\begin{align*}
+	 	b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_{\lambda_1, \lambda_2}(b) \Leftrightarrow 
+	 	\begin{dcases}
+	 	-2(y_1 - \beta_1) + \lambda_1 r_1 + \lambda_2 t_2 = 0 \\
+	 	-2(y_j - \beta_j) + \lambda_1 r_j + \lambda_2 (t_j - t_{j+1}) = 0 \quad j= 2, \ldots, n,
+	 	\end{dcases}
+	\end{align*}
+where $r_j = \sgn(\beta_j)$ if $\beta_j \neq 0$ and $r_j \in [-1,1] $ if $\beta_j = 0$. 
+Similarly $t_j = \sgn(\beta_j - \beta_{j-1})$ if
+$\beta_j \neq \beta_{j-1}$ and 
+$t_j \in [-1,1] $ if $\beta_j = \beta_{j-1}$.
+
+\end{theorem}
+
+In the differentiable case these are first order conditions as usual. In the case where $\beta_j = 0$ or $\beta_j = \beta_{j-1}$ the equations need to be interpreted as follows. Any $b_\lambda$ such that there exists $r_j\in [-1,1]$ respectively $t_j \in [-1,1]$ such that all the equations hold is a solution to the minimization problem.
 
 %For the calculation of the solution one can make use of the following handy property of the fused lasso.
 %
@@ -499,6 +527,8 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \begin{lemma}[Monotone Fusion] (cf. \citep{sparsity}) \label{monotone_fusion}
 	Suppose that for some value of $\lambda$ and some index $i \in \{1, ..., -1 \}$ the optimal solution satisfies $\hat{\beta_i}(\lambda)$ = $\hat{\beta}_{i+1}(\lambda)$. Then for all $\lambda' > \lambda$, we also have $\hat{\beta_i}(\lambda')$ = $\hat{\beta}_{i+1}(\lambda')$.
 \end{lemma}
+
+\todo{How to construct solution path}
 
 \section{Asymptotics}
 
@@ -654,7 +684,7 @@ We opted to build our fused lasso estimator as an extension of the ``BaseEstimat
 
 \section{Simulation}\label{simulation}
 
-To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=500$ and $N=50$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we chose the structure of the features generation process such that we incorporate relevant cases.\\
+To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=200$ and $N=40$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we tried to chose the structure of the features generation process such that we cover relevant cases.\\
 
 For the four following simulation settings the number of relevant features was set to 30. This was done to show differences in performance depending rather on the structure than on the number of relevant features.\\
 The first setting was constructed as the basic example, where fused lasso might have advantages over lasso. We only include one block of relevant features of length 30. In the second setting we split the relevant features into 3 equally long blocks, that might or might not be neighboring each other. This provides us an intuition on how the estimation of $\beta$ with fused lasso might depend on the amount of blocks into which the relevant features are split. In the third setting we extend the setting by allowing the blocks in $\beta$ to have different height. In the fourth setting, we augment the number of relevant features by adding a small number of spikes into $\beta$, in the area of non relevant $\beta_j$. This illustrates a case where fused lasso might have problems, picking up the solitary relevant features.\\
@@ -699,13 +729,21 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 
-\section{Real Data Application}
+\section{Real Data Application} \label{sec: real data}
 
-\subsection{Comparative Genomic Hybridization Data}
-The first application we want to consider is from medical science. We want to look at data from Comparative Genomic Hybridization (CGH), a powerful method for molecular analysis of cancer.    
-CGH provides an overview of changes in DNA sequence copy number in a tumor sample 
-%and maps these changes on normal chrosomosomes
-relative to a control sample, i.e. normal chromosomes. Changes can be in form of losses, deletions, gains and amplifications\citep{cghmain}. The DNA  sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. This can for example look as in figure (\ref{cghdata}).
+To investigate the fused lasso estimator in a real data setting we replicate an application from medical science described in \citep{spatial}.
+We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer.\footnote{The data was taken from https://web.stanford.edu/~hastie/StatLearnSparsity/data.html (the website was visited on 9th December 2018).}  
+CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cancer cells mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
+The aim of the analysis of the data is to detect these regions of gains and losses of copy numbers.\\ 
+%he DNA sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. 
+In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable.
+The fused lasso signal approximator is an appropriate method for this type of smoothing.
+As seen above the estimator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
+Our data consists of 990 observations, where each observation is the $\log_2$ ration between the copy numbers of a gene in the tumor cells and the copy number in the healthy cells.  \\
+If we regress the copy number on the genes, we have $p=n$.
+Also, we expect the underlying vector of true copy numbers $\beta$ to be piecewise constant over contiguous regions of a chromosome. 
+The result $\hat{\beta}_j$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
+Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in figure (\ref{cghdata}). The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
 
 \begin{figure}
 	\centering
@@ -714,10 +752,7 @@ relative to a control sample, i.e. normal chromosomes. Changes can be in form of
 	\label{cghdata}
 \end{figure}
 
-The CGH data are coming from an experiment and are very noisy. This renders some kind of smoothing necessary before analysing the data. \\
-Biological considerations dictate that it is typically segments of a chromosome — rather than individual genes — that are replicated, Consequently, we might expect that the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome.
-In this specific example we have as many regressors (genes) as observations (copy numbers) \citep{sparsity}.
-As seen above the fused lasso signal approximator is designed for cases like these with $ p = n$ and a meaningful ordering of the coefficients
+\todo{Über Wahl von s1 und s2 sprechen}
 
 \section{Conclusion/Discussion}
 
@@ -1154,19 +1189,6 @@ if __name__ == "__main__":
 
 \section{Proofs}
 
-\subsection{}Equivalence of (\ref{Primal}) and (\ref{LassoLambda}):
-First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
-\begin{equation}
-	S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0).
-\end{equation}
-
-that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
-Thus we have
-\begin{equation*}
- \hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ ||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b)
-\end{equation*}
-so the two ways of writing the estimator are equivalent.
-
 \subsection{}\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
 Define the objective function
 \begin{align*}
@@ -1179,8 +1201,20 @@ h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1
 Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
-\subsection{} \begin{proof} Existence \newline
-Consider the problem written as in (\ref{Primal}). Observe that the arg min is taken over a compact set and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem.
+\subsection{} \begin{proof} Existence Lasso \newline
+First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
+\begin{equation}
+S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0),
+\end{equation}
+that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
+Thus we have
+\begin{equation*}
+\hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ 
+||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b).
+\end{equation*}
+Observe that $A:=\{b\in \mathbb{R}^p: ||b||_1 \leq \frac{||Y||^2}{\lambda}\}$ is compact and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem. \newline
+Existence Fused Lasso \newline
+The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B := \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
 \end{proof}
 
 \subsection{}
