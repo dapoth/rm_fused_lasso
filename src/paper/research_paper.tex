@@ -31,6 +31,12 @@
 \DeclareMathOperator*{\sgn}{sgn}
 \bibliographystyle{ecta}
 
+\mathchardef\ordinarycolon\mathcode`\:
+\mathcode`\:=\string"8000
+\begingroup \catcode`\:=\active
+\gdef:{\mathrel{\mathop\ordinarycolon}}
+\endgroup
+
 % python
 % Default fixed font does not support bold face
 \DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
@@ -169,27 +175,8 @@ Laufzeiten
 \pagenumbering{arabic}
 
 \section{Introduction}
-\input{../../bld/out/figures/mytable.tex}
-\input{../../bld/out/figures/timetable.tex}
-%\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_beta.pdf}
-%\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_raw.pdf}
-
-
-
-\begin{figure}
-\centering
-\begin{minipage}{0.45\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_raw.pdf}
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_beta.pdf}
-\end{minipage}
-\end{figure}
-
-\includegraphics[width=\textwidth]{../../bld/out/figures/plot_solutionpath_lasso.pdf}
-\includegraphics[width=\textwidth]{../../bld/out/figures/plot_solutionpath_fused_lasso.pdf}
+%\input{../../bld/out/figures/mytable.tex}
+%\input{../../bld/out/figures/timetable.tex}
 
 Methods for dealing with high-dimensional data are becoming more and more important in nearly all sciences among these empirical economics. This is due to the fact that data nowadays is often high-dimensional, i.e. it has a (much) larger number of variables than observations.
 
@@ -198,9 +185,6 @@ Therefore in order to analyze high-dimensional data “regularization” becomes
 %complexity regularization will be necessary.  We focus here on regularizationwith the l1-penalty.
 
 This paper examines one of the famous methods for dealing with this kind of set-up, the Least Absolute Shrinkage and Selection Operator, short Lasso estimator and a modification of it, the fused lasso estimator. They are both outputs of a penalized least squares regression.
-
-\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_beta.pdf}
-\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_raw.pdf}
 
 % Historical context
 The Lasso was introduced by \citet{lasso}. Thereafter a lot of extensions were and still are being proposed. The most prominent are the elastic net by \citet{zou2005regularization}, the fused lasso by \citet{fused}, the adaptive lasso by \citet{zou2006adaptive} and  the group lasso by \citet{meier2008group}. Recent literature combines these extensions for example  \citet{bleakley2011group} present the grouped fused lasso.
@@ -285,9 +269,7 @@ The most important advantage of the Lasso estimator is that the estimator is spa
 		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N.
 	\end{equation}
 \end{theorem}
-The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails. Standard criteria for model selection like BIC do not adapt to the high dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. A disadvantage of subset selection is also that it is not computationally feasible for large $p$ \citep{hastie2017extended}. An interest development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved by mixed integer optimization.\\
-
-This property of the lasso estimator is special since other regularization methods do not set some of the estimated coefficients exactly to zero. This makes the lasso a useful tool for model selection. This is especially helpful in the high-dimensional setting. For example the ols estimator is known to have low bias but very high variance. In a lot of cases the mean squared error would be lower if one were to introduce a small amount of bias but therefore decrease the variance by a large amount. One way of doing it is by using the lasso estimator. Other methods for model selection as backward selection cannot be applied any more  and other methods as for example best subset selection become computationally infeasible for large $p$. \\
+The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails. For example the ols estimator is known to have low bias but very high variance. In a lot of cases the mean squared error would be lower if one were to introduce a small amount of bias but therefore decrease the variance by a large amount. One way of doing it is by using the lasso estimator. Standard criteria for model selection like BIC do not adapt to the high dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. A disadvantage of subset selection is also that it is not computationally feasible for large $p$ \citep{hastie2017extended}. An interest development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved by mixed integer optimization.\\
 
 The reason for the sparsity property is visualized in figure \ref{lassopenalty}.
 The elliptic lines in the picture are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}. 
@@ -309,7 +291,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 %	\includegraphics[width=\textwidth]{../../bld/out/figures/penalty}
 
 	\caption{Lasso penalty and contour lines of least squares, NOTIZ: müssen wir selber erstellen das Bild}
-	
+	\label{lassopenalty}
 \end{figure}
 
 \noindent\textbf{Drawbacks} \newline
@@ -357,11 +339,6 @@ Reordering of terms gives the following conditions for the Lasso solution, calle
 
 This often leads to numerous components $\hat\beta_{\lambda,j}$ of the estimators dropping to 0 as described in Theorem \eqref{theo: sparsity_lasso}. \newline
 
-A different approach to find the solution is subdifferential calculus. 
-Subderivatives generalize the derivative to convex functions which are not necessarily differentiable.
-As our objective function is convex the theory is applicable.
-The derivative of the absolute value function everywhere except at 0 is the sign function. So a quite natural idea is to say that the derivative of the function at 0 is characterized by the set $[-1,1]$.
-
 \todo{Brauchen eine Zitierung für die Subderivatives und Kuhn-Tucker Bedingungen.}
 
 Since the optimization problem consists of sums of convex functions, computing the lasso estimator is in itself a convex optimization problem. That means we can use powerful algorithms to find the solution path. Also the lasso has the following useful property.\todo{An dieser Stelle sollten wir kurz und knapp den LARS Algorithmus erwähnen.}
@@ -401,8 +378,6 @@ We can write this more compactly as
  \hat\beta_{\lambda,j} = \sgn(y_j)(|y_j|-\frac{\lambda}{2})_+.
 \end{equation}
 
-\includegraphics[width=\textwidth]{../../bld/out/figures/signal_lasso_plot.pdf}
-
 \noindent In general we call $S_\lambda(z) := \sgn(z)(|z|-\lambda)_+$ the soft-thresholding operator. In the orthonormal setting the lasso is thus the soft-thresholded OLS solution.
 \todo{Könnten ein Bild einfügen.}
 An interpretation of the solution is that only $\hat\beta_{\lambda,j}$ that contribute more than $\frac{\lambda}{2}$ to explaining $y$ are unequal to zero. The coefficients that are unequal to zero are shrinked OLS estimates. The shrinkage is not proportional to the size of $y_j$, for all $y_j$ with $|y_j|\leq \frac{\lambda}{2}$ the shrinkage of the absolute coefficient is by $\frac{\lambda}{2}$.
@@ -427,7 +402,7 @@ A possible approach for chosing the penalty constants could be cross validation 
 When considering grids an upper bound for $\lambda_1$ should be the optimal $\lambda$ of the lasso estimator.
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/different_penaltys}
 	\caption{Different penalties}
 \end{figure}
 
@@ -443,18 +418,24 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 	\end{enumerate}
 \end{theorem}
 
-\todo{Wir müssen schauen, ob man den Existenzbeweis von Lasso auf Fused Lasso verallgemeinern kann.}
+The proof of existence can be found in the appendix, the one for uniqueness in .
 
 \noindent\textbf{Advantages} \newline
 
-\noindent Piecewise constant
+One of the main strengths of the fused lasso is its sparsity concerning the number of nonzero blocks.
+
 \begin{theorem}[Sparsity of Fused Lasso] \citep{fused}
 	Let $n_{seq}(\hat{\beta}) = \sum_{j=1}^{p} I \{\hat{\beta}_j \neq \hat{\beta}_{j-1}\}$ be the number of sequences of identical non-zero coefficients of the estimator. Then under 'non-redundancy' conditions on the design matrix $X$, we have $\hat{\beta}$ with $n_{seq}(\hat{\beta}) \leq N$.
 \end{theorem}
 
-\todo{Brauchen eine Interpretation der piecewise constant eigenschaft, averaging of the coefficients, außerdem müssen wir beschreiben wieso diese Eigenschaft wertvoll ist.}
-\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
-\bigskip
+The sparsity of blocks property corresponds to a piecewise constant solution since it allows only a few jumps in coefficients. Also only a few blocks are unequal to zero.
+This makes the model easily interpretable. The piecewise constant solution simply corresponds to an averaging of the features. We will see an example illustrating this property in section \eqref{sec: real data}. \\
+
+If the true model is piecewise constant the fused lasso will perform much better than the lasso in terms of model selection. As lasso tends to select only one of two regressors if they are highly correlated it does not perform well in catching the block structure of the coefficients. In contrast to that the fused lasso promotes the estimator to have a block structure. \\
+
+%\citet{rosset2007piecewise} give conditions under which the solution path of a regularized optimization problem is linear. They give conditions for a slightly different penalty term class but in chapter 5.2 they argue that the fused lasso is also piecewise constant.
+%
+%Model becomes interpretable.
 
 \noindent\textbf{Drawbacks} \newline
 
@@ -462,7 +443,7 @@ The fused lasso estimator is not robust to model misspecifications, that means i
 
 The penalization is the same for all the coefficients no matter what the block length is. A smaller block needs a stronger penalization since it is more difficult to detect, a larger block needs less regularization. One way to overcome this problem is a modification of the fused lasso, namely the adaptive fused lasso (see \citep{rinaldoproperties}).
 
-The fused lasso estimator is biased. The adaptive lasso was in part propsed to eliminate the bias in the lasso estimate. One could think of a similar procedure for the fused lasso case, where in the first stage we apply the fused-lasso estimator to the objective function. In the second stage we apply the fused lasso estimator on the same problem exept that this time we weight the coefficients with the estimates from the first estimation.
+
 \subsection{Solution methods}
 
 With the same argument as above for the lasso, computing the fused lasso estimator is a convex optimization problem. In contrast to the lasso problem the penalty term in the fused lasso problem is not separable in the single coefficients due to the second penalty. This makes the computation more complicated and coordinate descent is not an appropriate method any more as we will see now.
@@ -473,7 +454,31 @@ In section \ref{Sec: Coordinate Lasso} we saw that the conditions for the coordi
 Assume that the previous iteration step set $\hat{\beta}_1=\hat{\beta}_2$ and we are in the new iteration step, where we minimize over $\beta_1$. Observe any change in $\beta_1$ introduces an increase of the absolute value of the difference of $\hat{\beta}_1$ and $\hat{\beta}_2$. Let us consider a situation in which it would be optimal to increase $\hat{\beta}_1$ a little to get rid of some squared differences in the model fit, but the difference in the absolute value is larger, so it is optimal for $\hat{\beta}_1$ to stay as in the previous iteration step. Assume we face the same problem in the iteration step for $\beta_2$, i.e. increasing it a little would be better for model fit, but it isn't done because of the combined penalty.
 in such a scenario coordinate descent gets stuck. Therefore we have to use algorithms like gradient descent because they can move $\beta_1$ and $\beta_2$ simultaneously, so that here both increase slightly, so that the squared error gets smaller and the absolute difference stays 0.
 A path algorithm is explained in the next section.
-\cite[chapter 5]{sparsity}
+\cite[chapter 5]{sparsity} \newline
+
+Deriving the Karush-Kuhn-Tucker conditions for the fused lasso problem is difficult. We can alternatively make use of a related approach to finding the solution, namely subdifferential calculus. 
+Subderivatives generalize the concept of derivatives to convex functions which are not necessarily differentiable.
+As our objective function is convex the theory is applicable. We do not want to go deeply into the theory, but look at it in our concrete case of the absolute value.
+If a function is differentiable at a point, then the subderivative equals the derivative. Thus in the case of the absolute value the subderivative is the sign function everywhere except at $zero$.
+At zero there are infinitely many tangent lines that go through the point, each line having a slope in the set $[-1,1]$.
+Therefore a natural idea is to say that the generalization of the derivative of the absolute value at $0$ is characterized by the set $[-1,1]$. The subderivative of the absolute value at zero is not a number, but the set $[-1,1]$. With the help of these subderivatives we can characterize the solution through the following equations.
+
+\begin{theorem}(Characterization Fused Lasso solution)
+	\begin{align*}
+	 	b_\lambda \in \argmin_{b \in\rm \mathbb{R}^p} S_{\lambda_1, \lambda_2}(b) \Leftrightarrow 
+	 	\begin{dcases}
+	 	-2(y_1 - \beta_1) + \lambda_1 r_1 + \lambda_2 t_2 = 0 \\
+	 	-2(y_j - \beta_j) + \lambda_1 r_j + \lambda_2 (t_j - t_{j+1}) = 0 \quad j= 2, \ldots, n,
+	 	\end{dcases}
+	\end{align*}
+where $r_j = \sgn(\beta_j)$ if $\beta_j \neq 0$ and $r_j \in [-1,1] $ if $\beta_j = 0$. 
+Similarly $t_j = \sgn(\beta_j - \beta_{j-1})$ if
+$\beta_j \neq \beta_{j-1}$ and 
+$t_j \in [-1,1] $ if $\beta_j = \beta_{j-1}$.
+	
+\end{theorem}
+
+In the differentiable case these are first order conditions as usual. In the case where $\beta_j = 0$ or $\beta_j = \beta_{j-1}$ the equations need to be interpreted as follows. Any $b_\lambda$ such that there exists $r_j\in [-1,1]$ respectively $t_j \in [-1,1]$ such that all the equations hold is a solution to the minimization problem.
 
 %For the calculation of the solution one can make use of the following handy property of the fused lasso.
 %
@@ -527,6 +532,8 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \begin{lemma}[Monotone Fusion] (cf. \citep{sparsity}) \label{monotone_fusion}
 	Suppose that for some value of $\lambda$ and some index $i \in \{1, ..., -1 \}$ the optimal solution satisfies $\hat{\beta_i}(\lambda)$ = $\hat{\beta}_{i+1}(\lambda)$. Then for all $\lambda' > \lambda$, we also have $\hat{\beta_i}(\lambda')$ = $\hat{\beta}_{i+1}(\lambda')$.
 \end{lemma}
+
+\todo{How to construct solution path}
 
 \section{Asymptotics}
 
@@ -692,14 +699,14 @@ We chose to perform 3-fold cross-validation. That means our sample was divided i
 To evaluate which $s_1,s_2$ pair was to be preferred in this setting, we relied on the mean prediction error.\\
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{../../bld/out/figures/heatmap_blocks_few_spikes.png}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/heatmap_blocks_levels.png}
 	\caption{Heatmap}
 \end{figure}
 
 We implemented the fused lasso estimator with the cvxpy package for convex optimization problems \citep{cvxpy}\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}. The package enables a fast calculation of the estimators even for reasonably large $p$ and $n$. \\
 
 \begin{figure}
-		\includegraphics[width=\textwidth]{../../bld/out/figures/plot_fused}
+%		\includegraphics[width=\textwidth]{../../bld/out/figures/different_penalization_methods}
 		\caption{Estimators}
 \end{figure}
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
@@ -726,26 +733,30 @@ One of the main goals of our estimators is model selection. That means in order 
 
 
 
-\section{Real Data Application}
+\section{Real Data Application} \label{sec: real data}
 
-\subsection{Comparative Genomic Hybridization Data}
-The first application we want to consider is from medical science. We want to look at data from Comparative Genomic Hybridization (CGH), a powerful method for molecular analysis of cancer.    
-CGH provides an overview of changes in DNA sequence copy number in a tumor sample 
-%and maps these changes on normal chrosomosomes
-relative to a control sample, i.e. normal chromosomes. Changes can be in form of losses, deletions, gains and amplifications\citep{cghmain}. The DNA  sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. This can for example look as in figure (\ref{cghdata}).
+To investigate the fused lasso estimator in a real data setting we replicate an application from medical science described in \citep{spatial}.
+We analyze data from Comparative Genomic Hybridization (CGH), an increasingly popular method for the molecular analysis of cancer.\footnote{The data was taken from https://web.stanford.edu/~hastie/StatLearnSparsity/data.html (the website was visited on 9th December 2018).}  
+CGH provides an overview of changes in DNA sequence copy numbers in a tumor sample relative to a healthy control sample. Changes can be in form of losses, deletions, gains and amplifications \citep{cghmain}. The idea is that in cancer cells mutations can cause these changes . Biological knowledge suggest that it is typically segments of a chromosome, that means a couple of neighboring genes, that are replicated and not single genes. 
+The aim of the analysis of the data is to detect these regions of gains and losses of copy numbers.\\ 
+%he DNA sequence copy number is then given as a function of chromosomal location throughout the entire genome, the genetic material of an organism \citep{cghsecond}. 
+In the CGH experiment DNA sequence copy numbers are measured for selected genes on the chromosome. Unfortunately the data are very noisy and render some kind of smoothing necessary before being analyzable.
+The fused lasso signal approximator is an appropriate method for this type of smoothing.
+As seen above the estimator is designed for cases with $ p = n$ and a meaningful ordering of the coefficients.
+Our data consists of 990 observations, where each observation is the $\log_2$ ration between the copy numbers of a gene in the tumor cells and the copy number in the healthy cells.  \\
+If we regress the copy number on the genes, we have $p=n$.
+Also, we expect the underlying vector of true copy numbers $\beta$ to be piecewise constant over contiguous regions of a chromosome. 
+The result $\hat{\beta}_j$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
+Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in figure (\ref{cghdata}). The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot_beta.pdf}
+%	\includegraphics[width=\textwidth]{../../bld/out/figures/cgh_plot.pdf}
 	\caption{CGH Data}
 	\label{cghdata}
 \end{figure}
 
-The CGH data are coming from an experiment and are very noisy. This renders some kind of smoothing necessary before analysing the data. \\
-Biological considerations dictate that it is typically segments of a chromosome — rather than individual genes — that are replicated, Consequently, we might expect that the underlying vector of true copy numbers to be piecewise-constant over contiguous regions of a chromosome.
-In this specific example we have as many regressors (genes) as observations (copy numbers) \citep{sparsity}.
-As seen above the fused lasso signal approximator is designed for cases like these with $ p = n$ and a meaningful ordering of the coefficients
-
+\todo{Über Wahl von s1 und s2 sprechen}
 \section{Conclusion/Discussion}
 
 Have looked at specific penalized regression.
@@ -1181,19 +1192,6 @@ if __name__ == "__main__":
 
 \section{Proofs}
 
-\subsection{}Equivalence of (\ref{Primal}) and (\ref{LassoLambda}):
-First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
-\begin{equation}
-	S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0).
-\end{equation}
-
-that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
-Thus we have
-\begin{equation*}
- \hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ ||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b)
-\end{equation*}
-so the two ways of writing the estimator are equivalent.
-
 \subsection{}\begin{proof} Convexity of solution set for fixed $\lambda$ \newline
 Define the objective function
 \begin{align*}
@@ -1206,8 +1204,20 @@ h(\beta_3)&=h(\alpha\beta_1+(1-\alpha)\beta_2) \leq \alpha \underbrace{h(\beta_1
 Note that this implies that in case Lasso has two solutions there are uncountably many solutions.
 \end{proof}
 
-\subsection{} \begin{proof} Existence \newline
-Consider the problem written as in (\ref{Primal}). Observe that the arg min is taken over a compact set and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem.
+\subsection{} \begin{proof} Existence Lasso \newline
+First of all note that for any $b$ with $||b||_1 > \frac{||Y||^2}{\lambda}$ the following inequality holds:
+\begin{equation}
+S_\lambda(b) \geq \lambda ||b||_1 > ||Y||^2 = S_\lambda(0),
+\end{equation}
+that means the Lasso criterion is smaller for $\tilde{b}=0$, so $b$ is not a solution.
+Thus we have
+\begin{equation*}
+\hat{\beta}_\lambda^{Lasso} = \argmin_{\beta \in\rm \mathbb{R}^p} S_\lambda(b) = \argmin_{\substack{\beta \in\rm \mathbb{R}^p\\ 
+||b||_1 \leq \frac{||Y||^2}{\lambda}}} S_\lambda(b).
+\end{equation*}
+Observe that $A:=\{b\in \mathbb{R}^p: ||b||_1 \leq \frac{||Y||^2}{\lambda}\}$ is compact and the squared $\ell^2$ norm is a continuous function. By the extreme value theorem it follows that there always exists at least one solution to the minimization problem. \newline
+Existence Fused Lasso \newline
+The proof for the existence of the fused lasso works similar as the one for the lasso. The set over which we minimize now needs to be a subset of the set $A$, so the set is also bounded. By the same argument as above no $b \in \mathbb{R}^p$ with $\sum_{j=2}^{p} |b_j - b_{j-1}| > \frac{||Y||^2}{\lambda_2}$ can be a solution to the minimization problem. The set $B := \{b:\sum_{j=2}^{p} |b_j - b_{j-1}| \leq \frac{||Y||^2}{\lambda_2} \}$ is also closed. Since the intersection of two closed sets is closed $A\cap B$ is closed and the intersection is bounded due to $A$ being bounded, thus it is convex. By the extreme value theorem a solution to the fused lasso problem exists.
 \end{proof}
 
 \subsection{}
