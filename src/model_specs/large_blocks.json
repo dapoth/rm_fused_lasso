@@ -1,15 +1,15 @@
 {
-    "n": 50,
+    "n": 40,
     "p": 200,
     "number_of_blocks": 3,
     "amplitude": 3,
     "length_blocks": 10,
-    "spike_level": 0,
     "spikes": 0,
+    "spike_level": 0,
     "levels": 1,
-    "s1_min": 0.5,
-    "s1_max": 200,
-    "s2_min": 0.5,
-    "s2_max": 50,
+    "s1_min": 1,
+    "s1_max": 500,
+    "s2_min": 1,
+    "s2_max": 500,
     "num_simulations": 200
 }

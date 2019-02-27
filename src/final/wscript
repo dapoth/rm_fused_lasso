@@ -10,19 +10,19 @@ def build(ctx):
 	 features='run_py_script',
 	 source='cgh_plot.py',
 	 deps=ctx.path_to(ctx, 'IN_DATA', 'cgh.txt'),
-	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'cgh_plot.pdf')
+	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'cgh_plot_raw.png'),ctx.path_to(ctx, 'OUT_FIGURES', 'cgh_plot_beta.png')]
       )
 
     ctx(
   	 features='run_py_script',
   	 source='plot_different_penaltys.py',
-  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.pdf')
+  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.png')
         )
 
     ctx(
   	 features='run_py_script',
   	 source='plot_different_penalization_methods.py',
-  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penalization_methods.pdf')
+  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penalization_methods.png')
         )
 
     ctx(
@@ -30,3 +30,34 @@ def build(ctx):
   	 source='Tables.py',
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'mytable.tex')
         )
+
+    ctx(
+     features='run_py_script',
+  	 source='lasso_solution_path_plot.py',
+     target=ctx.path_to(ctx, 'OUT_FIGURES', 'plot_solutionpath_lasso.png')
+    )
+    ctx(
+     features='run_py_script',
+  	 source='fused_lasso_solution_path_plot.py',
+     target=ctx.path_to(ctx, 'OUT_FIGURES', 'plot_solutionpath_fused_lasso.png')
+    )
+    ctx(
+     features='run_py_script',
+  	 source='signal_lasso_plot.py',
+     target=ctx.path_to(ctx, 'OUT_FIGURES', 'signal_lasso_plot.png')
+    )
+    for reg in 'lasso', 'fused', 'fusion':
+        for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
+            ctx(
+                features = 'run_py_script',
+                source = 'analysing_the_simulation.py',
+                deps = [
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'.format(reg,sim)),
+                    ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+                ],
+                target = [
+                    #ctx.path_to(ctx, 'OUT_ANALYSIS', 'beta_hat_monte_Carlo_{}.pickle'.format(sim)),
+                    ctx.path_to(ctx, "OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)),
+                ],
+                append = [reg, sim]
+            )

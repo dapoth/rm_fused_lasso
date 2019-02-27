@@ -1,10 +1,10 @@
 {
     "n": 40,
     "p": 200,
-    "number_of_blocks": 0,
+    "number_of_blocks": 10,
     "amplitude": 3,
-    "length_blocks": 4,
-    "spikes": 20,
+    "length_blocks": 3,
+    "spikes": 0,
     "spike_level": 7,
     "levels": 1,
     "s1_min": 1,

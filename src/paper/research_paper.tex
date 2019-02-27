@@ -224,10 +224,10 @@ The Lasso estimator exploits the 'sparsity' assumption by adding a penalty term 
 \hat{\beta}_{Primal}(s)=\argmin_{\beta:||\beta||_1\leq s} \frac{1}{n}||Y-X\beta||_2^2 \label{Primal}.
 \end{equation} 
 
-Note that $\lambda$ and $s$ are connected through the data. \todo{Zitierung high-di}
+Note that $\lambda$ and $s$ are connected through the data. \citep{buhlmann2011statistics}
 % This result comes from convex optimization theory and we can apply it because $\frac{1}{n}||Y-X\beta||_2^2$ is convex in $\beta$ and $||\beta||_1\leq R$ a convex set.
 
-Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
+The objective function (3) describes a trade-off problem. On the one hand we want to choose $\beta$ such that the fit becomes as small as possible. On the other hand, requires the penalty term the coefficients to be close to zero. Lasso regression puts constraints on the size of the coefficients associated to each variable. The solution should not depend on the measurement scale and this is why we normalize regressors and observations as follows. We replace $x_{i,j}$ by $x_{i,j}/ (\frac{1}{n} \sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2}$, thus the empirical standard deviation of each regressor is one. In order to have the same model equation as before replace $\beta_j$ with $(\frac{1}{n}\sum_{i=1}^{n} x_{i,j}^2)^\frac{1}{2} \beta_j$. Also we center the observations, i.e. they have mean zero, so that the intercept in the regression can be omitted. This is important since we do not want to shrink and punish the intercept as this does not prevent overfitting.
 %Lasso sets to zero
 
 \subsection{The penalty constant}
@@ -269,7 +269,7 @@ The most important advantage of the Lasso estimator is that the estimator is spa
 		n_{\{\beta_i\neq 0\}}(\hat{\beta}) \leq N.
 	\end{equation}
 \end{theorem}
-The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails. Standard criteria for model selection like BIC do not adapt to the high dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. A disadvantage of subset selection is also that it is not computationally feasible for large $p$ \citep{hastie2017extended}. An interest development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved by mixed integer optimization.\\
+The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails. For example the ols estimator is known to have low bias but very high variance. In a lot of cases the mean squared error would be lower if one were to introduce a small amount of bias but therefore decrease the variance by a large amount. One way of doing it is by using the lasso estimator. Standard criteria for model selection like BIC do not adapt to the high dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. A disadvantage of subset selection is also that it is not computationally feasible for large $p$ \citep{hastie2017extended}. An interest development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved by mixed integer optimization.\\
 
 The reason for the sparsity property is visualized in figure \ref{lassopenalty}.
 The elliptic lines in the picture are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}. 
