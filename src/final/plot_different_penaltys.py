@@ -68,4 +68,4 @@ axes[1,1].set_xlabel('Both High')
 
 
 
-plt.savefig(ppj("OUT_FIGURES", "different_penaltys.pdf"))
+plt.savefig(ppj("OUT_FIGURES", "different_penaltys.png"))

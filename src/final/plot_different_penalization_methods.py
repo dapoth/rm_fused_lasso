@@ -13,7 +13,7 @@ list_true_beta = []
 list_beta_hat = []
 
 for reg in 'lasso', 'fused', 'fusion':
-    for sim in 'blocks_levels', 'blocks_few_spikes', 'blocks_many_spikes', 'spikes':
+    for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
 
         with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
              simulation_data = pickle.load(in12_file)
@@ -29,7 +29,7 @@ for reg in 'lasso', 'fused', 'fusion':
     fig, axes = plt.subplots(2, 2, gridspec_kw = {"height_ratios": [1,1]})
 
 
-    axes[0,0].set_title('blocks_levels')
+    axes[0,0].set_title('large_blocks')
     axes[0, 0].plot(list_true_beta[0])
     axes[0, 0].plot(list_beta_hat[0])
 
@@ -39,7 +39,7 @@ for reg in 'lasso', 'fused', 'fusion':
 
     axes[0, 1].plot(list_true_beta[2])
     axes[0, 1].plot(list_beta_hat[2])
-    axes[0,1].set_title('blocks_many_spikes')
+    axes[0,1].set_title('small_blocks')
 
     axes[1, 1].plot(list_true_beta[3])
     axes[1, 1].plot(list_beta_hat[3])
@@ -51,7 +51,7 @@ for reg in 'lasso', 'fused', 'fusion':
 
 
 
-    plt.savefig(ppj("OUT_FIGURES", "plot_{}.pdf".format(reg)))
+    plt.savefig(ppj("OUT_FIGURES", "plot_{}.png".format(reg)))
 
 
 
@@ -105,4 +105,4 @@ axes[0, 1].plot(betas)
 axes[0, 1].plot(beta_fused)
 axes[0,1].set_title('Fused')
 
-plt.savefig(ppj("OUT_FIGURES", "different_penalization_methods.pdf"))
+plt.savefig(ppj("OUT_FIGURES", "different_penalization_methods.png"))

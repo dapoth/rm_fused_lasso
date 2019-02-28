@@ -1,8 +1,0 @@
-\begin{tabular}{lrrrr}
-\toprule
-               &   Zerors &   Relevant &   Spikes &   Blocks \\
-\midrule
- Mean          &   467.15 &      28.51 &     0.00 &     0.95 \\
- Standarterror &    14.26 &       6.43 &     0.00 &     0.21 \\
-\bottomrule
-\end{tabular}

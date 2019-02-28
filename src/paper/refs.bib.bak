@@ -150,18 +150,6 @@
   publisher = {Institute of Mathematical Statistics},
 }
 
-@article{broman2002model,
-  title={A model selection approach for the identification of quantitative trait loci in experimental crosses},
-  author={Broman, Karl W and Speed, Terence P},
-  journal={Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
-  volume={64},
-  number={4},
-  pages={641--656},
-  year={2002},
-  publisher={Wiley Online Library}
-}
-
-
 @Article{rosset2007piecewise,
   author    = {Rosset, Saharon and Zhu, Ji},
   title     = {Piecewise linear regularized solution paths},
@@ -179,36 +167,6 @@
   number={Aug},
   pages={941--973},
   year={2004}
-}
-
-@article{bertsimas2016best,
-  title={Best subset selection via a modern optimization lens},
-  author={Bertsimas, Dimitris and King, Angela and Mazumder, Rahul and others},
-  journal={The annals of statistics},
-  volume={44},
-  number={2},
-  pages={813--852},
-  year={2016},
-  publisher={Institute of Mathematical Statistics}
-}
-
-
-@article{hastie2017extended,
-  title={Extended comparisons of best subset selection, forward stepwise selection, and the lasso},
-  author={Hastie, Trevor and Tibshirani, Robert and Tibshirani, Ryan J},
-  journal={arXiv preprint arXiv:1707.08692},
-  year={2017}
-}
-
-@article{rapaport2008classification,
-  title={Classification of arrayCGH data using fused SVM},
-  author={Rapaport, Franck and Barillot, Emmanuel and Vert, Jean-Philippe},
-  journal={Bioinformatics},
-  volume={24},
-  number={13},
-  pages={i375--i382},
-  year={2008},
-  publisher={Oxford University Press}
 }
 
 @article{cvxpy,
@@ -230,6 +188,18 @@
   number  = {1},
   pages   = {42--60},
 }
+
+@article{scikit-learn,
+ title={Scikit-learn: Machine Learning in {P}ython},
+ author={Pedregosa, F. and Varoquaux, G. and Gramfort, A. and Michel, V.
+         and Thirion, B. and Grisel, O. and Blondel, M. and Prettenhofer, P.
+         and Weiss, R. and Dubourg, V. and Vanderplas, J. and Passos, A. and
+         Cournapeau, D. and Brucher, M. and Perrot, M. and Duchesnay, E.},
+ journal={Journal of Machine Learning Research},
+ volume={12},
+ pages={2825--2830},
+ year={2011}
+
 
 @article{tibshirani2013lasso,
 	title={The lasso problem and uniqueness},
@@ -271,22 +241,15 @@
   year={2018}
 }
 
-@book{boyd2004convex,
-  title={Convex optimization},
-  author={Boyd, Stephen and Vandenberghe, Lieven},
-  year={2004},
-  publisher={Cambridge university press}
-}
-
-@article{tibshirani2011regression,
-title={Regression shrinkage and selection via the lasso: a retrospective},
-author={Tibshirani, Robert},
-journal={Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
-volume={73},
-number={3},
-pages={273--282},
-year={2011},
-publisher={Wiley Online Library}
+@article{spatial,
+title={Spatial smoothing and hot spot detection for CGH data using the fused lasso},
+author={Tibshirani, Robert and Wang, Pei},
+journal={Biostatistics},
+volume={9},
+number={1},
+pages={18--29},
+year={2007},
+publisher={Oxford University Press}
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}
