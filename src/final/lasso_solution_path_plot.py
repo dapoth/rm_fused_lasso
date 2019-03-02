@@ -36,6 +36,7 @@ def solution_path_unconstraint(y,x):
     plt.rc('font', family='serif')
 
     # Plot entries of x vs. lambda1.
+    
     for i in range(p):
         plt.plot(gamma_vals, [xi[i] for xi in x_values])
     plt.xlabel(r'$\lambda_1$', fontsize=16)
