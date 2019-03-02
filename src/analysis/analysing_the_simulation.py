@@ -38,22 +38,24 @@ if __name__ == "__main__":
 
 
     container_analysis = []
-    
-    
+
+
     # MSE
-    mse_list = []
-    for i in range(num_simulations):
-        mse_list.append(1 / n * np.sum(np.square(residuals[:,i]))
-                        
-    container_analysis.append(np.mean(mse_list))
-    container_analysis.append(np.std(mse_list))
-    
-    
-    
+    # mse_list = []
+    # for i in range(num_simulations):
+    #     mse_list.append(1 / n * np.sum(np.square(residuals[:,i]))
+    MSE = np.sum(np.square(residuals))
+
+    mean_mse = np.mean(MSE)
+    std_mse = np.std(MSE)
+    container_analysis.append(mean_mse)
+    container_analysis.append(std_mse)
+
+
+
 
     # number of relevant variables
-    correct_nonzero = sum((beta_hat >= 0.30*amplitude)  & (true_beta > 0))
-                          * 1 / np.sum(true_beta > 0,axis = 0)
+    correct_nonzero = sum((beta_hat >= 0.30*amplitude) & (true_beta > 0)) * 1 / np.sum(true_beta > 0, axis=0)
     container_analysis.append(np.mean(correct_nonzero))
     container_analysis.append(np.std(correct_nonzero))
 
@@ -70,7 +72,7 @@ if __name__ == "__main__":
     #count the spikes
     spike_count = []
     if sim_dict["spikes"] >= 1:
-        for i in range(num_simulations): 
+        for i in range(num_simulations):
 
             count = 0
 
@@ -79,17 +81,14 @@ if __name__ == "__main__":
                 if j == p-1:
                     break
 
-                if (j == 0) & (true_beta[1,i] == 0) & (beta_hat[j,i] > amplitude/2) 
-                    & (true_beta[0,i] > 0):
+                if (j == 0) & (true_beta[1, i] == 0) & (beta_hat[j, i] > amplitude / 2) & (true_beta[0, i] > 0):
 
                     count = count + 1
 
-                if (j == (p-1)) & (beta_hat[(p-1), i] > 2) & (true_beta[p-2, i] == 0) 
-                    & (true_beta[p-1, i] > 0):
+                if (j == (p-1)) & (beta_hat[(p-1), i] > 2) & (true_beta[p-2, i] == 0) & (true_beta[p-1, i] > 0):
                     count = count + 1
 
-                if (true_beta[j-1, i] == 0) & (true_beta[j+1, i] == 0) 
-                    & (beta_hat[j, i] > amplitude/2) & (true_beta[j, i] > 0):
+                if (true_beta[j-1, i] == 0) & (true_beta[j+1, i] == 0) & (beta_hat[j, i] > amplitude/2) & (true_beta[j, i] > 0):
 
                     count = count + 1
 
@@ -104,17 +103,20 @@ if __name__ == "__main__":
 
     # to avoid dividing by zero in the spike setting since in that case number of blocks is 0
     if reg_name == 'spikes':
-        number_blocks = 1
+        container_analysis.append('--')
+        container_analysis.append('--')
+
+    else:
+        counter_blocks = np.sum(((beta_hat >= 0.50*amplitude) & (beta_hat <= 1.5*amplitude)
+                                & (true_beta == amplitude)) |
+                                ((beta_hat >= 0.75*levels) & (beta_hat <= 1.25*levels)
+                                & (true_beta == levels)),axis = 0)
+
+        percent_blocks = np.array(counter_blocks) / 1 *  (length_blocks * number_blocks)
+        container_analysis.append(np.mean(percent_blocks))
+        container_analysis.append(np.std(percent_blocks))
 
 
-    counter_blocks = np.sum(((beta_hat >= 0.50*amplitude) & (beta_hat <= 1.5*amplitude) 
-                            & (true_beta == amplitude)) |
-                            ((beta_hat >= 0.75*levels) & (beta_hat <= 1.25*levels) 
-                            & (true_beta == levels)),axis = 0)
-
-    percent_blocks = np.array(counter_blocks) / (length_blocks * number_blocks)
-    container_analysis.append(np.mean(percent_blocks))
-    container_analysis.append(np.std(percent_blocks))
 
     with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle"
                   .format(reg_name, sim_name)), "wb") as out_file:

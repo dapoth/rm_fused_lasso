@@ -28,47 +28,37 @@ def solution_path_unconstraint(y,x):
 
 
     x2_values = []
-    gamma2_vals = np.logspace(-2,6)
+    gamma2_vals = np.linspace(0,100)
     for val in gamma2_vals:
         gamma1.value = 1
         gamma2.value = val
         prob.solve()
         x2_values.append(b.value)
 
-    plt.rc('text', usetex=True)
-    plt.rc('font', family='serif')
-    plt.figure(figsize=(6, 10))
+
 
     # Plot entries of x vs. lambda1.
 
 
-    plt.subplot(212)
     for i in range(p):
         plt.plot(gamma2_vals, [xi[i] for xi in x2_values])
     plt.xlabel(r'$\lambda_2$', fontsize=16)
-    plt.ylabel(r'$\beta_{i}$', fontsize=16)
-    plt.xscale('log')
-    plt.title(r'Entries of $\beta$ vs. $\lambda_2$')
+    plt.ylabel(r'$\hat{\beta}_{i}$', fontsize=16)
+
+    plt.title('Neighbouring to the block')
 
 
     plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_fused_lasso.png"))
-
-
-
-
-    #prob.solve()
 
     return
 
 
 
 
-p = 20
+p = 10
 n = 10
-betas = np.ones(20)
-betas[1:3] = 3
-betas[5:7] = 2
-betas[15:19] = -1
+betas = np.zeros(p)
+betas[3:6] = 3
 
 
 np.random.seed(1000)

@@ -24,7 +24,7 @@ def solution_path_unconstraint(y,x):
 
 
     x_values = []
-    gamma_vals = np.linspace(0, 100)
+    gamma_vals = np.linspace(0, 75)
     for val in gamma_vals:
         gamma1.value = val
         prob.solve()
@@ -34,22 +34,22 @@ def solution_path_unconstraint(y,x):
 
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
-    plt.figure(figsize=(6,10))
 
     # Plot entries of x vs. lambda1.
-    
+
     for i in range(p):
         plt.plot(gamma_vals, [xi[i] for xi in x_values])
     plt.xlabel(r'$\lambda_1$', fontsize=16)
-    plt.ylabel(r'$\beta_{i}$', fontsize=16)
+    plt.ylabel(r'$\hat{\beta}_{i}$', fontsize=16)
     plt.xscale('log')
-    plt.title(r'Entries of $\beta$ vs. $\lambda_1$')
+    plt.title(r'Entries of $\hat{\beta}$ vs. $\lambda_1$')
 
 
 
 
 
     plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_lasso.png"))
+
 
 
 
@@ -61,9 +61,10 @@ def solution_path_unconstraint(y,x):
 
 
 
-p = 20
+p = 10
 n = 10
-betas = np.ones(p)
+betas = np.zeros(p)
+betas[3:6] = 1
 
 
 np.random.seed(1000)
@@ -74,6 +75,9 @@ eps = np.random.randn(n)
 Y = np.matmul(X, betas) + eps
 
 solution_path_unconstraint(Y,X)
+
+
+betas
 
 
 

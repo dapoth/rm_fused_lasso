@@ -9,6 +9,6 @@ def build(ctx):
                 features='run_py_script',
                 source='data_generation.py',
                 deps=ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
-                target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'data_{}.pickle'.format(sim)),
+                target=ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
                 append=sim
             )
