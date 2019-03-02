@@ -48,12 +48,7 @@ def solution_path_unconstraint(y,x):
     plt.title('Neighbouring to the block')
 
 
-    plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_fused_lasso.pdf"))
-
-
-
-
-    #prob.solve()
+    plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_fused_lasso.png"))
 
     return
 
