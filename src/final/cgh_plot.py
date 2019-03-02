@@ -11,7 +11,7 @@ import numpy as np
 from bld.project_paths import project_paths_join as ppj
 import sys
 import pickle
-from src.model_code.functions import fused_lasso_primal
+from src.model_code.fused_lasso_primal import fused_lasso_primal
 import json
 import cvxpy as cp
 

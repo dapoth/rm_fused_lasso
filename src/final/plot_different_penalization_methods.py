@@ -4,7 +4,7 @@ import numpy as np
 import math
 import random as rd
 import matplotlib.pyplot as plt
-from src.model_code.functions import fused_lasso_dual
+from src.model_code.fused_lasso_dual import fused_lasso_dual
 from bld.project_paths import project_paths_join as ppj
 
 
