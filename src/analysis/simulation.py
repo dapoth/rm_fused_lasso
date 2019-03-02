@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
 
 
-    container = [beta_hat, true_beta, penalty_cv, y_hat, residuals]
+    container = [beta_hat, true_beta, penalty_cv, y_hat, residuals, clf.cv_results_['mean_test_score'], clf.cv_results_['params']]
     with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".format(reg_name, sim_name)), "wb") as out_file:
         pickle.dump(container, out_file)
 
@@ -275,40 +275,3 @@ if __name__ == "__main__":
     plt.savefig(ppj("OUT_FIGURES", "plot_{}_{}.png".format(reg_name, sim_name)))
 
     fig.clf()
-
-
-
-
-
-
-    """Heatmap."""
-
-
-    if reg_name == 'fused':
-        mean_test_score = clf.cv_results_['mean_test_score']
-        parameters = clf.cv_results_['params']
-
-        # Array in die richtige 2-dimensionale Form bringen.
-        new_array = np.reshape(np.abs(mean_test_score), (grid_density, grid_density))
-        new_array_sorted = np.flip(new_array)
-
-        # Extract s1 and s2 value for axis labeling
-        lists2 = np.zeros(grid_density)
-        for i in range(grid_density):
-            lists2[i] = round(parameters[i]['s2'], 1)
-
-        lists1 = np.zeros(len(mean_test_score))
-        for i in range(len(mean_test_score)):
-            lists1[i] = round(parameters[i]['s1'], 1)
-        lists1unique = np.flip(np.unique(lists1))
-
-        # Create Heatmap
-        heatmap = seaborn.heatmap(new_array_sorted,
-                                  xticklabels=lists2, yticklabels=lists1unique)
-        plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(sim_name)))
-
-        # Changing colour of the heatmap
-        cmap = "YlGnBu"
-        cmap = "RdYlGn"
-        cmap = "RdYlGn"
-        linewidths = .1

@@ -17,8 +17,6 @@ for reg in 'lasso', 'fused', 'fusion':
 
         with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
              simulation_data = pickle.load(in12_file)
-        # with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/simulation_{}_{}.pickle".format(reg,sim), "rb") as in12_file:
-        #     simulation_data = pickle.load(in12_file)
 
         beta_hat = simulation_data[0][:, 1]
         true_beta = simulation_data[1][:, 1]
