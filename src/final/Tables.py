@@ -20,10 +20,8 @@ from bld.project_paths import project_paths_join as ppj
 list = []
 for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
     for reg in 'lasso', 'fused', 'fusion':
-         # with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
-         #     analysis = pickle.load(in12_file)
-         with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/analysis_{}_{}.pickle".format(reg, sim), "rb") as in12_file:
-             analysis = pickle.load(in12_file)
+          with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
+              analysis = pickle.load(in12_file)
              analysis.append(sim)
              analysis.append(reg)
              list.append(analysis)
@@ -53,9 +51,7 @@ with open(ppj("OUT_FIGURES", "mytable.tex"), 'w') as tf:
 """Time Table"""
 list_time = []
 for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
-    #with open(ppj("OUT_ANALYSIS", "time_table_{}.pickle".format(sim_name)), "rb") as in12_file:
-    #    time_list = pickle.load(in12_file)
-    with open("/home/christopher/Dokumente/rm_fused_lasso/bld/out/analysis/time_list_{}.pickle".format(sim), "rb") as in12_file:
+    with open(ppj("OUT_ANALYSIS", "time_table_{}.pickle".format(sim_name)), "rb") as in12_file:
         time_list = pickle.load(in12_file)
         time_list.append(sim)
         list_time.append(time_list)
