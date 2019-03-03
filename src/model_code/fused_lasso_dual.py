@@ -1,16 +1,24 @@
 import cvxpy as cp
-import numpy as np
 
-def fused_lasso_dual(y, x, lambda1, lambda2):
+def fused_lasso_dual(y, X, lambda1, lambda2):
+    """Solves for given data and penalty constants the fused lasso dual form.
+
+    Args:
+        y (np.ndarray): 1d array of dependent variables
+        X (np.ndarray): 2d array of independent variables
+        s1 (float): constraint on ||b||_1
+        s2 (float): constraint on the absolute jumps in beta
+
+    Returns:
+        beta.value (np.ndarray)
+
     """
-    Solves for given data and penalty constants the fused lasso dual form.
-    """
-    p = len(x[1, :])
-    b = cp.Variable(p)
-    error = cp.sum_squares(x*b - y)
-    obj = cp.Minimize(error + lambda1 * cp.norm(b, 1) +
-                      lambda2 * cp.norm(b[1:p]-b[0:p-1], 1))
+    n_features = len(X[1, :])
+    beta = cp.Variable(n_features)
+    error = cp.sum_squares(X*beta - y)
+    obj = cp.Minimize(error + lambda1 * cp.norm(beta, 1) + lambda2*
+                      cp.norm(beta[1:n_features]-beta[0:n_features-1], 1))
     prob = cp.Problem(obj)
     prob.solve()
 
-    return b.value
+    return beta.value

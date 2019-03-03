@@ -16,10 +16,11 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
     Technically this is a Convex optimization problem that is solved by cvxpy.
     """
 
-    def __init__(self, s1, s2):
+    def __init__(self, s1, s2, beta):
         """Call when initializing the Fused Lasso Estimator."""
         self.s1 = s1
         self.s2 = s2
+        self.beta = beta
 
     def fit(self, X, y=None):
         """Fit unkown parameters *beta* to *X* and *y*.
@@ -36,11 +37,11 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
             b.value (np.ndarray)
 
         """
-        p = len(X[1, :])
-        b = cp.Variable(p)
+        n_features = len(X[1, :])
+        b = cp.Variable(n_features)
         error = cp.sum_squares(X*b - y)
         obj = cp.Minimize(error)
-        constraints = [cp.norm(b, 1) <= self.s1, cp.norm(b[1:p]-b[0:p-1], 1)
+        constraints = [cp.norm(b, 1) <= self.s1, cp.norm(b[1:n_features]-b[0:n_features-1], 1)
                        <= self.s2]
         prob = cp.Problem(obj, constraints)
         prob.solve()
@@ -48,7 +49,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
 
         return b.value
 
-    def predict(self, X, beta=None):
+    def predict(self, X):
         """Predict dependent variable from estimated parameters *beta*.
 
         Args:
@@ -65,5 +66,5 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         #       raise RuntimeError("You must train classifer
         #             before predicting data!")
         y_hat = np.matmul(X, self.beta)
-        
+
         return y_hat

@@ -1,13 +1,8 @@
-import cvxpy as cp
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
-import random as rd
-from sklearn import model_selection
 import math
+import random as rd
+import numpy as np
 
-def generate_blocks( p, number_blocks, length_blocks, block_height,
+def generate_blocks(num_features, number_blocks, length_blocks, block_height,
                     spike_height, levels=False, spikes=0):
     """Generate non-overlapping *generate_blocks* for one simulation step.
 
@@ -15,7 +10,7 @@ def generate_blocks( p, number_blocks, length_blocks, block_height,
     randomly setting *number_blocks* of them non-zero.
 
     Args:
-        p (int): number of features
+        num_features (int): number of features
         number_blocks (int): non overlapping feature blocks to create
         length_blocks (int): the length of feature blocks to create
         block_height (int): height of basis feature blocks
@@ -26,10 +21,10 @@ def generate_blocks( p, number_blocks, length_blocks, block_height,
 
     Returns:
         generated_blocks (np.ndarray)
-        
+
     """
-    generated_blocks = np.zeros(p)
-    max_blocks = math.floor(p / length_blocks)
+    generated_blocks = np.zeros(num_features)
+    max_blocks = math.floor(num_features / length_blocks)
 
     start_blocks = rd.sample(range(max_blocks), number_blocks)
 
@@ -44,21 +39,21 @@ def generate_blocks( p, number_blocks, length_blocks, block_height,
         heights = [block_height, block_height*2]
         for block in start_blocks:
             random_height = rd.choice(heights)
-            for i in range(p):
+            for i in range(num_features):
                 if (i >= block * length_blocks) and (i < (block+1) *
                                                      length_blocks):
                     generated_blocks[i] = random_height
 
     else:
         for block in start_blocks:
-            for i in range(p):
+            for i in range(num_features):
                 if (i >= block * length_blocks) and (i < (block+1) *
                                                      length_blocks):
                     generated_blocks[i] = block_height
 
     if spikes != 0:
         non_blocks = []
-        for i in range(p):
+        for i in range(num_features):
             if generated_blocks[i] == 0:
                 non_blocks.append(i)
         beta_spikes = rd.sample(non_blocks, spikes)
