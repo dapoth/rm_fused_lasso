@@ -1,7 +1,9 @@
 import cvxpy as cp
 import numpy as np
+import matplotlib.pyplot as plt
 
-def solution_path_unconstraint(y,x,lambda1=0,lambda2=0):
+
+def solution_path_unconstraint(y, x, lambda1=0, lambda2=0):
 
     ### "from constraint import constraint" to import function
     ### y and x data as usual
