@@ -71,3 +71,13 @@ def build(ctx):
     # source='project_dependency_graph.py',
     # target=ctx.path_to(ctx, 'OUT_FIGURES', 'dag')
     # )
+    from src.final.project_dependency_graph import(
+        make_project_dependency_graph
+    )
+    ctx.add_post_fun(make_project_dependency_graph)
+
+    ctx(
+     features='run_py_script',
+  	 source='graph_to_png.py'
+     #target=ctx.path_to(ctx, 'PROJECT_ROOT', 'project_graph.png')
+    )

@@ -20,7 +20,7 @@ def setup_param():
     out['x'] = np.identity(2)
     out['lambda1'] = 1
     out['lamda2'] = 0
-    
+
 def test_fused_lasso_dual(setup_param):
     calculated_beta = fused_lasso_dual(**setup_param)
     assert_allclose(expected_beta, calculated_beta)
