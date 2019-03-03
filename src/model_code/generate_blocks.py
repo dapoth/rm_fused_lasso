@@ -1,26 +1,20 @@
-import cvxpy as cp
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
 import random as rd
-from sklearn import model_selection
 import math
 
 def generate_blocks(p, number_blocks, length_blocks, amplitude,
                     spike_level, levels=False, spikes=0):
     """
-    Generate beta's for simulation purpose.
+    Generate betas for simulation purpose.
     """
-
-    container = np.zeros(p)
+    
     max_blocks = math.floor(p / length_blocks)
-
+    if max_blocks < number_blocks:
+        raise TypeError("""The number of blocks must not exceed the maximal number 
+                        of blocks possible for given p and length of blocks""")
+    
+    container = np.zeros(p)
     start_blocks = rd.sample(range(max_blocks), number_blocks)
-
-#    if max_blocks < number_blocks:
-#        break
-
     if levels:
         """
         If the Blocks should not all have equal levels, we will randomly chose
@@ -51,3 +45,6 @@ def generate_blocks(p, number_blocks, length_blocks, amplitude,
             container[i] = spike_level
 
     return container
+
+
+container = generate_blocks(10, 6, 2, 3, 0)
