@@ -5,19 +5,7 @@ import random as rd
 import matplotlib.pyplot as plt
 from src.model_code.fused_lasso_dual import fused_lasso_dual
 from bld.project_paths import project_paths_join as ppj
-import cvxpy as cp
 
-
-def fused_lasso_dual(y,x,lambda1,lambda2):
-
-    p = len(x[1,:])
-    b = cp.Variable(p)
-    error = cp.sum_squares(x*b - y)
-    obj = cp.Minimize(error+lambda1*cp.norm(b,1)  +lambda2*cp.norm(b[1:p]-b[0:p-1],1))
-    prob = cp.Problem(obj)
-    prob.solve()
-
-    return b.value
 
 
 p = 300
@@ -68,4 +56,4 @@ axes[1,1].set_xlabel('Both High')
 
 
 
-plt.savefig(ppj("OUT_FIGURES", "different_penaltys.png"))
+plt.savefig(ppj("OUT_FIGURES", "different_penaltys.pdf"))
