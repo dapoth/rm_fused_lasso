@@ -4,9 +4,10 @@ from sklearn.base import BaseEstimator, RegressorMixin
 
 
 class FusedLassoEstimator(BaseEstimator, RegressorMixin):
-    """
-    Fused Lasso Estimator that makes a penalized least squares regression
-    where diffferences between neighboring betas and non-zero betas get
+    """Define Fused Lasso estimator as extension of Scikit basis class.
+
+    The Fused Lasso Estimator makes a penalized least squares regression
+    where diffferences between neighboring betas and non-zero betas are
     penalized.
     The optimization objective for Fused Lasso is:
         (1 / (2 * n_samples)) * ||y - Xb||^2_2
@@ -14,21 +15,26 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
              sum(|b_i-b_{i-1]|) <= s2
     Technically this is a Convex optimization problem that is solved by cvxpy.
     """
+
     def __init__(self, s1, s2):
-        """ Called when initializing the Fused Lasso Estimator. """
+        """Call when initializing the Fused Lasso Estimator."""
         self.s1 = s1
         self.s2 = s2
 
     def fit(self, X, y=None):
-        """
-        The code for the fused lasso estimator. The penalties s1 and s2 are
-        included as additional restriction equations.
-        Examples
+        """Fit unkown parameters *beta* to *X* and *y*.
+
+        Examples:
         --------
         >>> reg = FusedLassoEstimator( s1 = 1, s2 = 10).fit(X, y)
 
-        Note: assert is not a good choice here and you should rather
-        use try/except blog with exceptions. This is just for short syntax.
+        Args:
+            X (np.ndarray): n x p dimensional matrix of independent variables.
+            y (np.ndarray): n dimensional vector of dependent variables.
+
+        Returns:
+            b.value (np.ndarray)
+
         """
         p = len(X[1, :])
         b = cp.Variable(p)
@@ -43,11 +49,21 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         return b.value
 
     def predict(self, X, beta=None):
-        """Docstring."""
+        """Predict dependent variable from estimated parameters *beta*.
+
+        Args:
+            X (np.ndarray): n x p dimensional matrix of independent variables.
+            beta (np.ndarray): p dimensional vector of regression parametes.
+
+        Returns:
+            y_hat (np.ndarray)
+
+        """
         #   try:
         #       getattr(self, "treshold_")
         #   except AttributeError:
         #       raise RuntimeError("You must train classifer
         #             before predicting data!")
-
-        return np.matmul(X, self.beta)
+        y_hat = np.matmul(X, self.beta)
+        
+        return y_hat
