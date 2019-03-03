@@ -31,12 +31,6 @@ if __name__ == "__main__":
     s1_max = sim_dict["s1_max"]
     s2_min = sim_dict["s2_min"]
     s2_max = sim_dict["s2_max"]
-    number_blocks = sim_dict['number_of_blocks']
-    length_blocks = sim_dict['length_blocks']
-    amplitude = sim_dict['amplitude']
-    spike_level = sim_dict['spike_level']
-    levels = sim_dict['levels']
-    spikes = sim_dict['spikes']
     num_simulations = 200    #sim_dict['num_simulations']
 
     beta_container = np.ones((p, num_simulations))

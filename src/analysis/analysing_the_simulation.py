@@ -23,15 +23,9 @@ if __name__ == "__main__":
     residuals = simulated_data[4]
 
     p = sim_dict["p"]
-    n = sim_dict["n"]
-    s1_min = sim_dict["s1_min"]
-    s1_max = sim_dict["s1_max"]
-    s2_min = sim_dict["s2_min"]
-    s2_max = sim_dict["s2_max"]
     number_blocks = sim_dict['number_of_blocks']
     length_blocks = sim_dict['length_blocks']
     amplitude = sim_dict['amplitude']
-    spike_level = sim_dict['spike_level']
     levels = sim_dict['levels']
     spikes = sim_dict['spikes']
     num_simulations = sim_dict['num_simulations']
@@ -81,7 +75,8 @@ if __name__ == "__main__":
                 if j == p-1:
                     break
 
-                if (j == 0) & (true_beta[1, i] == 0) & (beta_hat[j, i] > amplitude / 2) & (true_beta[0, i] > 0):
+                if ((j == 0) & (true_beta[1, i] == 0) &
+                   (beta_hat[j, i] > amplitude / 2) & (true_beta[0, i] > 0)):
 
                     count = count + 1
 
