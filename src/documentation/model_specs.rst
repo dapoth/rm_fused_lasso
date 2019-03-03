@@ -10,3 +10,12 @@ The best way to use this is to save a model as ``[model_name].json`` and then pa
 
  .. [#] Stata is the only execption I know of. You find a  converter in the wscript file of the Stata branch. Note that there is `insheetjson <http://ideas.repec.org/c/boc/bocode/s457407.html>`_, but that will read a JSON file into the data set rather than into macros, which is what we need here.
  
+ 
+ The JSON files contain the following model parameters for the simulations:
+ 
+ * Number of observations
+ * Number of regressors
+ * Number of blocks, their lengths and their values
+ * Number of spikes
+ * Number of simulations
+ * Minimum and maximum value for the s1 and s2 grid
