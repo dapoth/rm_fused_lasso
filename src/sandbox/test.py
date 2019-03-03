@@ -50,13 +50,15 @@ def calc_lambda(y, X, s1, beta_s):
     lambda1 = 0
     beta_l = fused_lasso_dual(y, X, lambda1, 0)
 
-    while np.sum(np.square(beta_l-beta_s)) > 0.001:
+    while np.sum(beta_l-beta_s) > 0.0000001:
 
-        lambda1 = lambda1 + 0.1
+        lambda1 = lambda1 + 0.05
 
         beta_l = fused_lasso_dual(y, X, lambda1, 0)
 
-        if lambda1 > 10:
+        print(np.sum(beta_l-beta_s))
+
+        if lambda1 > 100:
             break
 
     return lambda1
