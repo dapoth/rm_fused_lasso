@@ -5,9 +5,9 @@ import pickle
 import numpy as np
 import cvxpy as cp
 from src.model_code.flestimator import FusedLassoEstimator as fle
-from src.model_code.functions import fused_lasso_primal
+from src.model_code.fused_lasso_primal import fused_lasso_primal
 from sklearn.model_selection import GridSearchCV
-from src.model_code.functions import generate_blocks
+from src.model_code.generate_blocks import generate_blocks
 import math
 import matplotlib.pyplot as plt
 import seaborn
