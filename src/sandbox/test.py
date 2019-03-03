@@ -56,7 +56,7 @@ def calc_lambda(y, X, s1, beta_s):
 
         beta_l = fused_lasso_dual(y, X, lambda1, 0)
 
-        if lambda1 == 10:
+        if lambda1 > 10:
             break
 
     return lambda1
