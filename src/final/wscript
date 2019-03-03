@@ -65,3 +65,9 @@ def build(ctx):
      ],
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'timetable.tex')
     )
+
+    ctx(
+    features='run_py_script',
+    source='project_dependency_graph.py',
+    target=ctx.path_to(ctx, 'OUT_FIGURES', 'dag')
+    )
