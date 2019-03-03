@@ -29,7 +29,7 @@ def set_project_paths(ctx):
     # can be safely deleted otherwise
     pp["OUT_MODEL_SPECS"] = f"{out}/src/model_specs"
     pp["OUT_TABLES"] = f"{out}/out/tables"
-    pp["OUT_PAPER"] = f"{out}/src/paper"
+    
     
     
 

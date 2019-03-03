@@ -13,7 +13,7 @@ def build(ctx):
     ctx(
   	 features='run_py_script',
   	 source='plot_different_penaltys.py',
-  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.png')
+  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.pdf')
         )
 
     ctx(
@@ -26,7 +26,7 @@ def build(ctx):
   	 features='run_py_script',
   	 source='create_analysis_table.py',
      deps=ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_large_blocks.pickle'), # müssen wildcard machen
-     target=ctx.path_to(ctx, 'OUT_PAPER', 'mytable.tex')
+     target=ctx.path_to(ctx, 'OUT_FIGURES', 'mytable.tex')
         )
 
     ctx(
