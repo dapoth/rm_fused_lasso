@@ -26,7 +26,7 @@ def build(ctx):
   	 features='run_py_script',
   	 source='create_analysis_table.py',
      deps=ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_large_blocks.pickle'), # müssen wildcard machen
-     target=ctx.path_to(ctx, 'OUT_FIGURES', 'mytable.tex')
+     target=ctx.path_to(ctx, 'OUT_PAPER', 'mytable.tex')
         )
 
     ctx(
@@ -65,3 +65,9 @@ def build(ctx):
      ],
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'timetable.tex')
     )
+
+    # ctx(
+    # features='run_py_script',
+    # source='project_dependency_graph.py',
+    # target=ctx.path_to(ctx, 'OUT_FIGURES', 'dag')
+    # )

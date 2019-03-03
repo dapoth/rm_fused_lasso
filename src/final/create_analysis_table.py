@@ -45,5 +45,5 @@ list_pd = list_pd.set_index(["Setting","Method"])
 
 list_pd.to_latex()
 
-with open(ppj("OUT_FIGURES", "mytable.tex"), 'w') as tf:
+with open(ppj("OUT_PAPER", "mytable.tex"), 'w') as tf:
      tf.write(list_pd.to_latex())
