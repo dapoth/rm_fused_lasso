@@ -1,5 +1,4 @@
 import cvxpy as cp
-import numpy as np
 
 def fused_lasso_dual(y, x, lambda1, lambda2):
     """
