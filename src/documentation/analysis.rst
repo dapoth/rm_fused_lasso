@@ -14,8 +14,14 @@ Fused Lasso example
     :members:
 
     
+Monte Carlo
+============
+    
 .. automodule:: src.analysis.monte_carlo
     :members:
 
+
+Analysis of simulation
+=======================
 .. automodule:: src.analysis.analysing_the_simulation
     :members:
