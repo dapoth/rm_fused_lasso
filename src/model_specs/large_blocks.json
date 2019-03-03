@@ -11,5 +11,6 @@
     "s1_max": 500,
     "s2_min": 1,
     "s2_max": 500,
-    "num_simulations": 200
+    "num_simulations": 200,
+    "grid_density": 40
 }

@@ -1,34 +1,24 @@
-import cvxpy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
-import random as rd
-from sklearn import model_selection
-import math
 from bld.project_paths import project_paths_join as ppj
 import sys
 import pickle
 import seaborn
-
-
-
-
-
-
+import json
 
 if __name__ == "__main__":
     """Heatmap."""
     sim_name = sys.argv[1]
 
-
+    sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
+                         encoding="utf-8"))
     with open(ppj("OUT_ANALYSIS", "simulation_fused_{}.pickle".
                   format(sim_name)), "rb") as in12_file:
         simulated_data = pickle.load(in12_file)
 
     mean_test_score = simulated_data[5]
     parameters = simulated_data[6]
-    grid_density = 40
+    grid_density = sim_dict['grid_density']
 
     # Array in die richtige 2-dimensionale Form bringen.
     new_array = np.reshape(np.abs(mean_test_score), (grid_density, grid_density))

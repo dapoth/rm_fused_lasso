@@ -10,7 +10,8 @@ if __name__ == "__main__":
     """ waf """
     sim_name = sys.argv[2]
     reg_name = sys.argv[1]
-    sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"), encoding="utf-8"))
+    sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
+                              encoding="utf-8"))
     with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".
                   format(reg_name, sim_name)), "rb") as in12_file:
         simulated_data = pickle.load(in12_file)
@@ -23,22 +24,14 @@ if __name__ == "__main__":
     residuals = simulated_data[4]
 
     p = sim_dict["p"]
-    n = sim_dict["n"]
-    s1_min = sim_dict["s1_min"]
-    s1_max = sim_dict["s1_max"]
-    s2_min = sim_dict["s2_min"]
-    s2_max = sim_dict["s2_max"]
     number_blocks = sim_dict['number_of_blocks']
     length_blocks = sim_dict['length_blocks']
     amplitude = sim_dict['amplitude']
-    spike_level = sim_dict['spike_level']
     levels = sim_dict['levels']
     spikes = sim_dict['spikes']
     num_simulations = sim_dict['num_simulations']
 
-
     container_analysis = []
-
 
     # MSE
     # mse_list = []
@@ -61,27 +54,26 @@ if __name__ == "__main__":
 
 
 
-    #count number of correctly estimated zero coefficients
-    percent_correct_zero = np.sum((np.absolute(beta_hat) <= 0.01) & (true_beta == 0),
-                                  axis=0) / np.sum(true_beta == 0,axis = 0)
+    # count number of correctly estimated zero coefficients
+    percent_correct_zero = np.sum((np.absolute(beta_hat) <= 0.01) & (true_beta == 0), axis=0) / np.sum(true_beta == 0,axis = 0)
 
     container_analysis.append(np.mean(percent_correct_zero))
     container_analysis.append(np.std(percent_correct_zero))
 
-
-    #count the spikes
+    # count the spikes
     spike_count = []
     if sim_dict["spikes"] >= 1:
         for i in range(num_simulations):
 
             count = 0
 
-            for j in range(p): #0 bis 499
+            for j in range(p):  # 0 bis 499
 
                 if j == p-1:
                     break
 
-                if (j == 0) & (true_beta[1, i] == 0) & (beta_hat[j, i] > amplitude / 2) & (true_beta[0, i] > 0):
+                if ((j == 0) & (true_beta[1, i] == 0) &
+                   (beta_hat[j, i] > amplitude / 2) & (true_beta[0, i] > 0)):
 
                     count = count + 1
 
@@ -110,7 +102,7 @@ if __name__ == "__main__":
         counter_blocks = np.sum(((beta_hat >= 0.50*amplitude) & (beta_hat <= 1.5*amplitude)
                                 & (true_beta == amplitude)) |
                                 ((beta_hat >= 0.75*levels) & (beta_hat <= 1.25*levels)
-                                & (true_beta == levels)),axis = 0)
+                                & (true_beta == levels)), axis = 0)
 
         percent_blocks = np.array(counter_blocks) / 1 *  (length_blocks * number_blocks)
         container_analysis.append(np.mean(percent_blocks))

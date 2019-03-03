@@ -1,14 +1,12 @@
 """Docstring."""
 
 import pickle
-import math
-import random as rd
 import sys
 import json
 import numpy as np
 from bld.project_paths import project_paths_join as ppj
 from src.model_code.generate_data import generate_data
-#from src.model_code import generate_blocks
+
 np.random.seed(12345)
 import ast
 

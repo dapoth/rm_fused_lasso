@@ -1,22 +1,11 @@
 import sys
 import json
-import logging
 import pickle
 import numpy as np
-import cvxpy as cp
-from src.model_code.flestimator import FusedLassoEstimator as fle
 from src.model_code.fused_lasso_primal import fused_lasso_primal
 from sklearn.model_selection import GridSearchCV
-from src.model_code.generate_blocks import generate_blocks
-import math
-import matplotlib.pyplot as plt
-import seaborn
-import pandas as pd
-from time import time
 from bld.project_paths import project_paths_join as ppj
-
-
-
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     """ waf """
@@ -42,12 +31,6 @@ if __name__ == "__main__":
     s1_max = sim_dict["s1_max"]
     s2_min = sim_dict["s2_min"]
     s2_max = sim_dict["s2_max"]
-    number_blocks = sim_dict['number_of_blocks']
-    length_blocks = sim_dict['length_blocks']
-    amplitude = sim_dict['amplitude']
-    spike_level = sim_dict['spike_level']
-    levels = sim_dict['levels']
-    spikes = sim_dict['spikes']
     num_simulations = 200    #sim_dict['num_simulations']
 
     beta_container = np.ones((p, num_simulations))
