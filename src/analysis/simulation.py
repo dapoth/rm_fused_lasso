@@ -3,16 +3,10 @@ import json
 import logging
 import pickle
 import numpy as np
-import cvxpy as cp
 from src.model_code.flestimator import FusedLassoEstimator as fle
 from src.model_code.fused_lasso_primal import fused_lasso_primal
 from bld.project_paths import project_paths_join as ppj
 from sklearn.model_selection import GridSearchCV
-from src.model_code.generate_blocks import generate_blocks
-import math
-import matplotlib.pyplot as plt
-import seaborn
-import pandas as pd
 from time import time
 
 if __name__ == "__main__":
@@ -232,46 +226,46 @@ if __name__ == "__main__":
     # with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg_name, sim_name)), "wb") as out_file:
     #    pickle.dump(container_analysis, out_file)
 
-    """Plot distribution."""
-    beta = true_beta[:, 1]  # nimm ein echtes beta
-    beta_container = np.ones((p, num_simulations))
-    mean_x = np.zeros(p)
-    cov_X = np.identity(p)
-    X = np.random.multivariate_normal(mean_x, cov_X, n)
-
-    for j in range(num_simulations):
-
-        eps = np.random.rand(n)
-        y = np.matmul(X, beta) + eps
-        beta_container[:, j] = fused_lasso_primal(y, X, penalty_cv[0], penalty_cv[1])
-
-
-
-    """Plot distribution of beta_j before block at break of block and inside block"""
-    list_index = []
-    for ch in range(p):
-        if ch == (p-4):
-            list_index = [4, 7, 9, 12]
-            break
-
-        if (beta[ch] == 0) & (beta[(ch+1)] == 0) & (beta[(ch+2)] != 0) & (beta[(ch+3)] != 0):
-            list_index = [ch+3, ch, ch+2, ch+1]
-            break
-
-    fig, axes = plt.subplots(2, 2)
-
-    axes[0, 0].set_title('center')
-    axes[0, 0].hist(beta_container[list_index[0], :])
-
-    axes[1, 0].set_xlabel('zero')
-    axes[1, 0].hist(beta_container[list_index[1], :])
-
-    axes[0, 1].hist(beta_container[list_index[2], :])
-    axes[0, 1].set_title('block_in')
-
-    axes[1, 1].hist(beta_container[list_index[3], :])
-    axes[1, 1].set_xlabel('block_out')
-
-    plt.savefig(ppj("OUT_FIGURES", "plot_{}_{}.png".format(reg_name, sim_name)))
-
-    fig.clf()
+    # """Plot distribution."""
+    # beta = true_beta[:, 1]  # nimm ein echtes beta
+    # beta_container = np.ones((p, num_simulations))
+    # mean_x = np.zeros(p)
+    # cov_X = np.identity(p)
+    # X = np.random.multivariate_normal(mean_x, cov_X, n)
+    #
+    # for j in range(num_simulations):
+    #
+    #     eps = np.random.rand(n)
+    #     y = np.matmul(X, beta) + eps
+    #     beta_container[:, j] = fused_lasso_primal(y, X, penalty_cv[0], penalty_cv[1])
+    #
+    #
+    #
+    # """Plot distribution of beta_j before block at break of block and inside block"""
+    # list_index = []
+    # for ch in range(p):
+    #     if ch == (p-4):
+    #         list_index = [4, 7, 9, 12]
+    #         break
+    #
+    #     if (beta[ch] == 0) & (beta[(ch+1)] == 0) & (beta[(ch+2)] != 0) & (beta[(ch+3)] != 0):
+    #         list_index = [ch+3, ch, ch+2, ch+1]
+    #         break
+    #
+    # fig, axes = plt.subplots(2, 2)
+    #
+    # axes[0, 0].set_title('center')
+    # axes[0, 0].hist(beta_container[list_index[0], :])
+    #
+    # axes[1, 0].set_xlabel('zero')
+    # axes[1, 0].hist(beta_container[list_index[1], :])
+    #
+    # axes[0, 1].hist(beta_container[list_index[2], :])
+    # axes[0, 1].set_title('block_in')
+    #
+    # axes[1, 1].hist(beta_container[list_index[3], :])
+    # axes[1, 1].set_xlabel('block_out')
+    #
+    # plt.savefig(ppj("OUT_FIGURES", "plot_{}_{}.png".format(reg_name, sim_name)))
+    #
+    # fig.clf()

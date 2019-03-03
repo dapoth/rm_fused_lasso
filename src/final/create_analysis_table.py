@@ -5,7 +5,6 @@ Created on Mon Feb 18 11:55:21 2019
 @author: clara
 """
 
-import scipy
 from tabulate import tabulate
 import pickle
 import numpy as np

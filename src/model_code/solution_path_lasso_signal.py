@@ -1,11 +1,5 @@
 import cvxpy as cp
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
-import random as rd
-from sklearn import model_selection
-import math
 
 def solution_path_lasso_signal(y):
 

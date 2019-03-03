@@ -1,13 +1,5 @@
-import cvxpy as cp
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import UnivariateSpline
-import pandas as pd
-import random as rd
-from sklearn import model_selection
-import math
 from src.model_code.generate_blocks import generate_blocks
-
 
 def generate_data(n, p, num_simulations, number_blocks, length_blocks,
                   amplitude, spike_level, levels=False, spikes=0):

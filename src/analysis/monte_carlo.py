@@ -1,22 +1,11 @@
 import sys
 import json
-import logging
 import pickle
 import numpy as np
-import cvxpy as cp
-from src.model_code.flestimator import FusedLassoEstimator as fle
 from src.model_code.fused_lasso_primal import fused_lasso_primal
 from sklearn.model_selection import GridSearchCV
-from src.model_code.generate_blocks import generate_blocks
-import math
-import matplotlib.pyplot as plt
-import seaborn
-import pandas as pd
-from time import time
 from bld.project_paths import project_paths_join as ppj
-
-
-
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     """ waf """
