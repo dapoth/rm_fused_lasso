@@ -13,6 +13,8 @@ from __future__ import with_statement
 
 import atexit, os, sys, errno, inspect, re, datetime, platform, base64, signal, functools, time
 
+sys.path.insert(0, '/home/christopher/Dokumente/rm_fused_lasso/.mywaflib/waflib')
+
 try:
 	import cPickle
 except ImportError:
@@ -43,7 +45,7 @@ except ImportError:
 	except ImportError:
 		winreg = None
 
-from waflib import Errors
+import Errors
 
 try:
 	from hashlib import md5

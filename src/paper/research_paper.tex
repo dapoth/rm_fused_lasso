@@ -703,7 +703,7 @@ exceeds. This could be interpreted such that if it is not sure if a
 $\beta$-structure exists, fused lasso might still deliver viable results if applied on a suited grid for cross-validation.
 
 \begin{figure}
-	\centering		\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/plot_fused.pdf}
+	\centering		\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/plot_fused}
 \caption{Fused Lasso estimator applied to the four settings.}
 \end{figure}
 
@@ -725,7 +725,8 @@ We observe that for both coefficients inside the block it seems like the estimat
 \begin{table}
 	\centering
 	\scriptsize
-	\input{../../bld/out/figures/mytable.tex}
+	%\input{../../bld/src/paper/mytable.tex}
+	\input{mytable.tex}
 	\caption{Results of the simulation study.}
 \end{table}
 \section{Real Data Application} \label{sec: real data}
@@ -1231,7 +1232,7 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/lasso_penalty.png}
+	\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/lasso_penalty}
 	\caption{Lasso penalty and contour lines of least squares for $p=2$.}
 	\label{lassopenalty}
 \end{figure}
@@ -1248,18 +1249,18 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 \subsubsection{Solution paths}
 \begin{figure}
 	\centering
-	\includegraphics[width=.7\textwidth]{../../src/sandbox/figures/plot_solutionpath_lasso.png}
+	\includegraphics[width=.7\textwidth]{../../src/sandbox/figures/plot_solutionpath_lasso}
 	\caption{Solution path of the lasso}
 	\label{fig:sollasso}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/plot_solutionpath_fused_lasso.pdf}
+	\includegraphics[width=0.7\textwidth]{../../src/sandbox/figures/plot_solutionpath_fused_lasso}
 	\caption{Solution path of the fused lasso for fixed $\lambda_1$ and $log(\lambda_2)$.}
 	\label{lassopenalty}
 \end{figure}
-%\clearpage
+\clearpage
 \FloatBarrier
 \subsubsection{Heat maps}
 
@@ -1284,22 +1285,24 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 	\caption{Blocks with a few spikes}
 	\label{heatmap}
 \end{figure}
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_large_blocks_fused}
-%	\caption{Large Blocks}
-%\end{figure}
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_small_blocks_fused}
-%	\caption{Small blocks}
-%\end{figure}
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_spikes_fused}
-%	\caption{Spikes}
-%\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_large_blocks_fused}
+	\caption{Large Blocks}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_small_blocks_fused}
+	\caption{Small blocks}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_spikes_fused}
+	\caption{Spikes}
+\end{figure}
 
 \clearpage
 \FloatBarrier

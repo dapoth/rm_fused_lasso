@@ -4,7 +4,15 @@ from pathlib import Path
 
 import graphviz as gv
 
-from waflib import Utils
+#from waflib import Utils
+
+import sys
+sys.path.insert(0, '/home/christopher/Dokumente/rm_fused_lasso/.mywaflib/waflib')
+
+import Utils
+
+
+
 
 graph = functools.partial(gv.Graph, format="png")
 digraph = functools.partial(gv.Digraph, format="png")
