@@ -5,8 +5,7 @@ Original data
 *************
 
 
-Documentation of the different datasets in *original_data*.
+Comparative Genomic Hybridization Data
+=======================================
 
-In the original data section you would store the raw data, which you should not manipulate to ensure reproducibility.
-
-If you want to include multiple data sets, you can also create subfolders for the sake of a clear structure.
+The dataset was taken from https://web.stanford.edu/~hastie/StatLearnSparsity/data.html (the website was visited on 9th Decmber 2018). It contains 990 0bservations and for each observation the log 2 raio of the copy number of the gene in the tumor cell in comparison to the healthy cells.

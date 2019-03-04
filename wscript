@@ -29,10 +29,7 @@ def set_project_paths(ctx):
     # can be safely deleted otherwise
     pp["OUT_MODEL_SPECS"] = f"{out}/src/model_specs"
     pp["OUT_TABLES"] = f"{out}/out/tables"
-    pp["OUT_PAPER"] = f"{out}/src/paper"
     
-    
-
 
 
     # Convert the directories into Waf nodes.
@@ -78,7 +75,7 @@ def configure(ctx):
     ctx.load("run_py_script")
     ctx.load("sphinx_build")
     ctx.load("write_project_headers")
-    # ctx.find_program("dot")
+    ctx.find_program("dot")
     ctx.load("tex")
 
 

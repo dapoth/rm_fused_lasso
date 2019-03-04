@@ -7,10 +7,8 @@ from numba import jit
 def generate_blocks(num_features, number_blocks, length_blocks, block_height,
                     spike_height, levels=False, spikes=0):
     """Generate non-overlapping *generate_blocks* for one simulation step.
-
     Divide the generated_blocks into 1/*length_blocks* possible blocks and
     randomly setting *number_blocks* of them non-zero.
-
     Args:
         num_features (int): number of features
         number_blocks (int): non overlapping feature blocks to create
@@ -20,21 +18,16 @@ def generate_blocks(num_features, number_blocks, length_blocks, block_height,
         levels (boolean): indicate whether blocks should two different
             possible heights
         spikes (int): number of spikes to be added
-
     Returns:
         generated_blocks (np.ndarray)
-
     """
+    max_blocks = math.floor(num_features / length_blocks)
+    if max_blocks < number_blocks:
+        raise TypeError("""The number of blocks must not exceed the maximal number 
+                        of blocks possible for given p and length of blocks.""")
 
     generated_blocks = np.zeros(num_features)
-    max_blocks = np.floor(num_features / length_blocks)
-
-
     start_blocks = np.random.choice(np.arange(max_blocks), number_blocks)
-
-
-#    if max_blocks < number_blocks:
-#        break
 
     if levels:
         """
