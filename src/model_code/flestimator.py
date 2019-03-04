@@ -16,11 +16,11 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
     Technically this is a Convex optimization problem that is solved by cvxpy.
     """
 
-    def __init__(self, s1, s2, beta):
+    def __init__(self, s1, s2):
         """Call when initializing the Fused Lasso Estimator."""
         self.s1 = s1
         self.s2 = s2
-        self.beta = beta
+        
 
     def fit(self, X, y=None):
         """Fit unkown parameters *beta* to *X* and *y*.
