@@ -96,10 +96,3 @@ def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
     setup_param_fused_lasso["data_dual"]['X'] = np.array([[1, 0.5, 0], [0, 1, 0.5], [0.5, 0, 1]])
     calculated_beta_dual = fused_lasso_dual(**setup_param_fused_lasso["data_dual"])
     assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual, atol=1e-2)
-    
-# =============================================================================
-# def test_lasso_signal_primal(setup_param_fused_lasso):
-#     calculated_beta_primal = fused_lasso_primal(**setup_param_fused_lasso["data_primal"])
-#     assert_allclose(**expected_beta["values_signal"], calculated_beta_primal, atol=1e-2)
-# 
-# =============================================================================
