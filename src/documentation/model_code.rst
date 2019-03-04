@@ -9,7 +9,11 @@ The directory *src.model_code* contains source files that might differ by model 
 
 For example, you may have a class that is used both in the :ref:`analysis` and the :ref:`final` steps. Additionally, maybe you have different utility functions in the baseline version and for your robustness check. You can just inherit from the baseline class and override the utility function then.
     
-``Fused lasso estimator of the dual problem``
+    
+The implementation of the fused lasso :cite:`fused` includes the implementation of the lasso :cite:`lasso` and fusion estimator :cite:`land1996variable` for appropriate penalty constants.
+
+
+``Fused lasso estimator of the lagrange problem``
 =============================================
 
 .. automodule:: src.model_code.fused_lasso_dual
