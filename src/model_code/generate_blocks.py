@@ -1,7 +1,9 @@
 import math
 import random as rd
 import numpy as np
+from numba import jit
 
+@jit(nopython=True)
 def generate_blocks(num_features, number_blocks, length_blocks, block_height,
                     spike_height, levels=False, spikes=0):
     """Generate non-overlapping *generate_blocks* for one simulation step.
@@ -25,16 +27,16 @@ def generate_blocks(num_features, number_blocks, length_blocks, block_height,
                         of blocks possible for given p and length of blocks.""")
 
     generated_blocks = np.zeros(num_features)
-    start_blocks = rd.sample(range(max_blocks), number_blocks)
+    start_blocks = np.random.choice(np.arange(max_blocks), number_blocks)
 
     if levels:
         """
         If the Blocks should not all have equal levels, we will randomly chose
         the level of each block as either block_height or block_height *2.
         """
-        heights = [block_height, block_height*2]
+        heights = np.array([block_height, block_height*2])
         for block in start_blocks:
-            random_height = rd.choice(heights)
+            random_height = np.random.choice(heights)
             for i in range(num_features):
                 if (i >= block * length_blocks) and (i < (block+1) *
                                                      length_blocks):
@@ -46,13 +48,15 @@ def generate_blocks(num_features, number_blocks, length_blocks, block_height,
                 if (i >= block * length_blocks) and (i < (block+1) *
                                                      length_blocks):
                     generated_blocks[i] = block_height
-
     if spikes != 0:
-        non_blocks = []
+        non_blocks = np.arange(num_features-number_blocks * length_blocks - spikes)
         for i in range(num_features):
             if generated_blocks[i] == 0:
-                non_blocks.append(i)
-        beta_spikes = rd.sample(non_blocks, spikes)
+                for j in range(len(non_blocks)):
+                    non_blocks[j] = i
+        beta_spikes = np.random.choice(non_blocks, spikes)
+        for k in range(len(beta_spikes)):
+            beta_spikes[k] = int(beta_spikes[k])
         for i in beta_spikes:
             generated_blocks[i] = spike_height
 

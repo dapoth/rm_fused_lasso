@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
     for i in range(num_simulations):
         start_time_estimation = time()
-        beta_hat[:, i] = fle(penalty_cv[0], penalty_cv[1]).fit(X, y[:, i])
+        beta_hat[:, i] = fused_lasso_primal(y[:,i], X, penalty_cv[0], penalty_cv[1]) #fle(penalty_cv[0], penalty_cv[1]).fit(X, y[:, i])
         y_hat[:, i] = np.matmul(X, beta_hat[:, i])
         residuals[:, i] = y[:, i] - y_hat[:, i]
         end_time_estimation = time()
