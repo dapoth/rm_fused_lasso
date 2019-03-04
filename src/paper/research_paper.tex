@@ -12,7 +12,7 @@
 \usepackage{tikz}
 \usepackage{url} % needed for waf
 \usepackage{todonotes}
-\usepackage{bbm}
+%\usepackage{bbm}
 \usepackage{booktabs}
 \usepackage{placeins}
 \usepackage{subcaption}
@@ -32,7 +32,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\sgn}{sgn}
-\bibliographystyle{ecta}
+\bibliographystyle{alpha}
 \usepackage[pdf]{graphviz}
 
 
@@ -704,7 +704,8 @@ exceeds. This could be interpreted such that if it is not sure if a
 $\beta$-structure exists, fused lasso might still deliver viable results if applied on a suited grid for cross-validation.
 
 \begin{figure}
-	\centering		\includegraphics[width=0.7\textwidth]{../../out/figures/plot_fused.png}
+	\centering		
+	\includegraphics[width=0.7\textwidth]{../../out/figures/plot_fused.png}
 \caption{Fused Lasso estimator applied to the four settings.}
 \end{figure}
 \subsection{Monte Carlo Simulation}
@@ -725,7 +726,7 @@ We observe that for both coefficients inside the block it seems like the estimat
 \begin{table}
 	\centering
 	\scriptsize
-	\input{../../out/figures/mytable.tex}	
+	%\input{../../out/figures/mytable.tex}	
 	\caption{Results of the simulation study.}
 \end{table}
 \section{Real Data Application} \label{sec: real data}
@@ -1228,19 +1229,19 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 
 \subsubsection{Penalties}
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{../../out/figures/Geogebra/lasso_penalty}
-%	\caption{Lasso penalty and contour lines of least squares for $p=2$.}
-%	\label{lassopenalty}
-%\end{figure}
-%
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.5\textwidth]{../../out/figures/Geogebra/fused_and_lasso_penalty}
-%	\caption{Lasso penalty (red) and fused lasso penalty (gray)}
-%	\label{lassopenalty}
-%\end{figure}
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width=0.7\textwidth]{lasso_penalty}
+	\caption{Lasso penalty and contour lines of least squares for $p=2$.}
+	\label{lassopenalty}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width=0.5\textwidth]{fused_and_lasso_penalty}
+	\caption{Lasso penalty (red) and fused lasso penalty (gray)}
+	\label{lassopenalty}
+\end{figure}
 
 \clearpage
 \FloatBarrier
@@ -1285,22 +1286,6 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 \end{figure}
 
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_large_blocks_fused}
-%	\caption{Large Blocks}
-%\end{figure}
-%
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_small_blocks_fused}
-%	\caption{Small blocks}
-%\end{figure}
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_spikes_fused}
-%	\caption{Spikes}
-%\end{figure}
 
 \clearpage
 \FloatBarrier
@@ -1328,6 +1313,22 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 
 \end{document}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_large_blocks_fused}
+	\caption{Large Blocks}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_small_blocks_fused}
+	\caption{Small blocks}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../../src/sandbox/figures/heatmap_spikes_fused}
+	\caption{Spikes}
+\end{figure}
 %
 %\section{Lasso}
 %    \subsection{Characterization of the LASSO-Solution}
