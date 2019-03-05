@@ -1,3 +1,8 @@
+"""Class that implements the fused lasso estimator.
+
+Class was written as an sklearn.base extension. Notation was therefore adapted
+from sklearn. To solve the convex problem we resport to CVXPY.
+"""
 import cvxpy as cp
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
@@ -22,7 +27,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         self.s2 = s2
 
 
-    def fit(self, X, y=None):
+    def fit(self, y, X):
         """Fit unkown parameters *beta* to *X* and *y*.
 
         Examples:
@@ -37,17 +42,26 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
             b.value (np.ndarray)
 
         """
+        if len(y) != len(X):
+            raise TypeError("The length of y must be equal to the number of rows of x.")
+
+        if np.size(self.s1) > 1 or np.size(self.s2) > 1:
+            raise TypeError("The penalty constants need to have length one.")
+
+        if self.s1 < 0 or self.s2 < 0:
+            raise ValueError("The penalty constants need to be nonnnegative.")
+
         n_features = len(X[1, :])
-        b = cp.Variable(n_features)
-        error = cp.sum_squares(X*b - y)
+        beta_hat = cp.Variable(n_features)
+        error = cp.sum_squares(X*beta_hat - y)
         obj = cp.Minimize(error)
-        constraints = [cp.norm(b, 1) <= self.s1, cp.norm(b[1:n_features]-b[0:n_features-1], 1)
-                       <= self.s2]
+        constraints = [cp.norm(beta_hat, 1) <= self.s1,
+                       cp.norm(beta_hat[1:n_features] - beta_hat[0:n_features-1], 1) <= self.s2]
         prob = cp.Problem(obj, constraints)
         prob.solve()
-        self.beta = b.value
+        self.beta = beta_hat.value
 
-        return b.value
+        return beta_hat.value
 
     def predict(self, X):
         """Predict dependent variable from estimated parameters *beta*.
