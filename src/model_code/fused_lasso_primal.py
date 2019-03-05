@@ -18,7 +18,7 @@ def fused_lasso_primal(y, X, s1, s2):
 
     n_features = len(X[1, :])
     beta = cp.Variable(n_features)
-    error = cp.sum_squares(X* beta - y)
+    error = cp.sum_squares(X * beta - y)
     obj = cp.Minimize(error)
     constraints = ([cp.norm(beta, 1) <= s1,
                     cp.norm(beta[1:n_features]-beta[0:n_features-1], 1) <= s2])

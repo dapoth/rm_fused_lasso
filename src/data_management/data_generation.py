@@ -32,7 +32,7 @@ if __name__ == "__main__":
     spikes = sim['spikes']
 
     #this function call returns the following elements: beta, beta_hat, X, X_t, epsilon, Y
-    [beta, X, epsilon, Y] = generate_data(num_simulations, n, p, number_blocks,
+    [beta, X, epsilon, Y] = generate_data(num_simulations,n,p, number_blocks,
                                                           length_blocks, amplitude,  spike_level, levels, spikes)
 
     aux1 = [beta, X, epsilon, Y]
