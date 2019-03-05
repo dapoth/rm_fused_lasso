@@ -18,6 +18,19 @@ def build(ctx):
     ctx(
   	 features='run_py_script',
   	 source='plot_different_penalization_methods.py',
+     deps=[ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_blocks_few_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_lasso_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_lasso_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_lasso_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_lasso_blocks_few_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fused_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fused_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fused_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fused_blocks_few_spikes.pickle')
+           ],
   	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'plot_fused.png'),
              ctx.path_to(ctx, 'OUT_FIGURES', 'plot_fusion.png'),
              ctx.path_to(ctx, 'OUT_FIGURES', 'plot_lasso.png')
