@@ -27,7 +27,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         self.s2 = s2
 
 
-    def fit(self, y, X):
+    def fit(self, X, y):
         """Fit unkown parameters *beta* to *X* and *y*.
 
         Examples:

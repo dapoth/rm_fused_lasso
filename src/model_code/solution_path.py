@@ -4,18 +4,25 @@ import matplotlib.pyplot as plt
 
 
 def solution_path_unconstraint(y, X, lambda1=0, lambda2=0):
+    """Calculate and plot solution path for both penalties of fused lasso.
 
-    ### "from constraint import constraint" to import function
-    ### y and x data as usual
-    ### lambda1 and lambda2 optional to make vertical line in the plot
+    Args:
+        response (np.ndarray): 1d array of responses
+        explanatory_var (np.ndarray): 2d array of explanatory variables
+        lambda1 (float):
+        lambda2 (float):
 
+    Returns:
+
+    """
     n_features = len(X[1, :])
     gamma1 = cp.Parameter(nonneg=True)
     gamma2 = cp.Parameter(nonneg=True)
     beta_hat = cp.Variable(n_features)
     error = cp.sum_squares(X*beta_hat - y)
-    obj = cp.Minimize(error+gamma1*cp.norm(beta_hat, 1)
-                      +gamma2*cp.norm(beta_hat[1:n_features]-beta_hat[0:n_features-1], 1))
+    obj = cp.Minimize(error + gamma1*cp.norm(beta_hat, 1)
+                      + gamma2*cp.norm(beta_hat[1:n_features]
+                                       - beta_hat[0:n_features-1], 1))
     prob = cp.Problem(obj)
 
 
