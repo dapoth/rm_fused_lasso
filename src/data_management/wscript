@@ -12,3 +12,11 @@ def build(ctx):
                 target=ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
                 append=sim
             )
+
+    # ctx(
+    #     features='run_py_script',
+    #     source='run_pytest.py',
+    #     deps=[ctx.path_to(ctx, 'IN_DATA_MANAGEMENT', 'generate_data.py'),
+    #           ctx.path_to(ctx, 'IN_DATA_MANAGEMENT', 'generate_blocks.py')
+    #          ]
+    # )

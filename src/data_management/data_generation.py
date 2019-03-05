@@ -5,7 +5,8 @@ import sys
 import json
 import numpy as np
 from bld.project_paths import project_paths_join as ppj
-from src.model_code.generate_data import generate_data
+#from src.model_code.generate_data import generate_data
+from generate_data import generate_data
 
 np.random.seed(12345)
 import ast
@@ -31,7 +32,6 @@ if __name__ == "__main__":
     levels = sim['levels']
     spikes = sim['spikes']
 
-    #this function call returns the following elements: beta, beta_hat, X, X_t, epsilon, Y
     [beta, X, epsilon, Y] = generate_data(num_simulations,n,p, number_blocks,
                                                           length_blocks, amplitude,  spike_level, levels, spikes)
 
