@@ -18,13 +18,28 @@ def build(ctx):
     ctx(
   	 features='run_py_script',
   	 source='plot_different_penalization_methods.py',
-  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penalization_methods.png')
+  	 target=[ctx.path_to(ctx, 'OUT_FIGURES', 'plot_fused.png'),
+             ctx.path_to(ctx, 'OUT_FIGURES', 'plot_fusion.png'),
+             ctx.path_to(ctx, 'OUT_FIGURES', 'plot_lasso.png')
+            ]
         )
 
     ctx(
   	 features='run_py_script',
   	 source='create_analysis_table.py',
-     deps=ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_large_blocks.pickle'), # müssen wildcard machen
+     deps=[ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fusion_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fusion_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fusion_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fusion_blocks_few_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_lasso_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_lasso_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_lasso_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_lasso_blocks_few_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_spikes.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_small_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_large_blocks.pickle'),
+           ctx.path_to(ctx, 'OUT_ANALYSIS', 'analysis_fused_blocks_few_spikes.pickle')
+           ], # müssen wildcard machen
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'mytable.tex')
         )
 
@@ -65,18 +80,18 @@ def build(ctx):
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'timetable.tex')
     )
 
-    # ctx(
+    #ctx(
     # features='run_py_script',
     # source='project_dependency_graph.py',
     # target=ctx.path_to(ctx, 'OUT_FIGURES', 'dag')
-    # )
+    #)
     from src.final.project_dependency_graph import(
         make_project_dependency_graph
     )
     ctx.add_post_fun(make_project_dependency_graph)
 
-    ctx(
-     features='run_py_script',
-  	 source='graph_to_png.py'
-     #target=ctx.path_to(ctx, 'PROJECT_ROOT', 'project_graph.png')
-    )
+    #ctx(
+     #features='run_py_script',
+  	 #source='graph_to_png.py',
+     #target=ctx.path_to(ctx, 'OUT_FIGURES', 'dag.png')
+    #)
