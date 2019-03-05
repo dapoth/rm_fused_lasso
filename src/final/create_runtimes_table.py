@@ -1,34 +1,21 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Feb 18 11:55:21 2019
-@author: clara
-"""
-
-from tabulate import tabulate
+"""Load Results from timing simulation and save them as tex table."""
 import pickle
-import numpy as np
 import pandas as pd
 from bld.project_paths import project_paths_join as ppj
 
-"""Load analysis data"""
-
-
-
-
-"""Time Table"""
-list_time = []
+# Load results from timing simulation and add them to RESULTS_TIMING.
+RESULTS_TIMING = []
 for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
-    with open(ppj("OUT_ANALYSIS", "time_list_{}.pickle".format(sim)), "rb") as in12_file:
-        time_list = pickle.load(in12_file)
+    with open(ppj("OUT_ANALYSIS", "time_list_{}.pickle".format(sim)), "rb") as in_file:
+        time_list = pickle.load(in_file)
         time_list.append(sim)
-        list_time.append(time_list)
-time_pd = pd.DataFrame(list_time)
-columns_rename = {0:"p"   ,1:"n", 2:"time: cv" , 3:"time: estimation",4:"Setting"}
-time_pd = time_pd.rename( columns=columns_rename)
-time_pd = time_pd.set_index(["Setting"])
+        RESULTS_TIMING.append(time_list)
+RESULTS_TIMING = pd.DataFrame(RESULTS_TIMING)
+COLUMN_NAMES = {0:"Features", 1:"Number of Obs", 2:"time: CV", 3:"time: Estimation", 4:"Setting"}
+RESULTS_TIMING = RESULTS_TIMING.rename(columns=COLUMN_NAMES)
+RESULTS_TIMING = RESULTS_TIMING.set_index(["Setting"])
 
-time_pd.to_latex()
-
+# Transform table to latex and save it.
+RESULTS_TIMING.to_latex()
 with open(ppj("OUT_FIGURES", "timetable.tex"), 'w') as tf:
-     tf.write(time_pd.to_latex())
+    tf.write(RESULTS_TIMING.to_latex())

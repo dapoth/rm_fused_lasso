@@ -1,46 +1,42 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from bld.project_paths import project_paths_join as ppj
+"""Plot heatmap of gridCV for given results and grid (s1,s2) values."""
 import sys
 import pickle
-import seaborn
 import json
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn
+from bld.project_paths import project_paths_join as ppj
+
 
 if __name__ == "__main__":
-    """Heatmap."""
-    sim_name = sys.argv[1]
 
-    sim_dict = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
-                         encoding="utf-8"))
+    SIM_NAME = sys.argv[1]
+
+    SIM_DICT = json.load(open(ppj("IN_MODEL_SPECS", SIM_NAME + ".json"),
+                              encoding="utf-8"))
     with open(ppj("OUT_ANALYSIS", "simulation_fused_{}.pickle".
-                  format(sim_name)), "rb") as in12_file:
-        simulated_data = pickle.load(in12_file)
+                  format(SIM_NAME)), "rb") as in_file:
+        SIM_DATA = pickle.load(in_file)
 
-    mean_test_score = simulated_data[5]
-    parameters = simulated_data[6]
-    grid_density = sim_dict['grid_density']
+    MEAN_TEST_SCORE = SIM_DATA[5]
+    PARAMETERS = SIM_DATA[6]
+    GRID_DENSITY = SIM_DICT['grid_density']
 
-    # Array in die richtige 2-dimensionale Form bringen.
-    new_array = np.reshape(np.abs(mean_test_score), (grid_density, grid_density))
-    new_array_sorted = np.flip(new_array)
+    # Adapt 1d-array of test scores to a 2d-array for the heatmap.
+    TEST_SCORE_MATRIX = np.reshape(np.abs(MEAN_TEST_SCORE), (GRID_DENSITY, GRID_DENSITY))
+    TEST_SCORE_MATRIX = np.flip(TEST_SCORE_MATRIX)
 
     # Extract s1 and s2 value for axis labeling
-    lists2 = np.zeros(grid_density)
-    for i in range(grid_density):
-        lists2[i] = round(parameters[i]['s2'], 1)
+    S2_GRID = np.zeros(GRID_DENSITY)
+    for i in range(GRID_DENSITY):
+        S2_GRID[i] = round(PARAMETERS[i]['s2'], 1)
 
-    lists1 = np.zeros(len(mean_test_score))
-    for i in range(len(mean_test_score)):
-        lists1[i] = round(parameters[i]['s1'], 1)
-    lists1unique = np.flip(np.unique(lists1))
+    S1_GRID = np.zeros(len(MEAN_TEST_SCORE))
+    for i in range(len(MEAN_TEST_SCORE)):
+        S1_GRID[i] = round(PARAMETERS[i]['s1'], 1)
+    S1_GRID_UNI = np.flip(np.unique(S1_GRID))   #Values repeat them self, therefore unique.
 
-    # Create Heatmap
-    heatmap = seaborn.heatmap(new_array_sorted,
-                              xticklabels=lists2, yticklabels=lists1unique)
-    plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(sim_name)))
-
-    # Changing colour of the heatmap
-    cmap = "YlGnBu"
-    cmap = "RdYlGn"
-    cmap = "RdYlGn"
-    linewidths = .1
+    # Create heatmap
+    HEATMAP = seaborn.heatmap(TEST_SCORE_MATRIX,
+                              xticklabels=S2_GRID, yticklabels=S1_GRID_UNI)
+    plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(SIM_NAME)))
