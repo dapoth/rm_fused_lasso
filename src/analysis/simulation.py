@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
         two_d_grid = [{
             's1': list(np.linspace(s1_min, s1_max, grid_density)),
-            's2': list(np.linspace(1190, 1200, 5))
+            's2': list(np.linspace(1190, 1200, 1))
         }]
 
     if reg_name == 'fusion':
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             's2': list(np.linspace(s2_min, s2_max, grid_density))
         }
         two_d_grid = [{
-            's1': list(np.linspace(1190, 1200, 5)),
+            's1': list(np.linspace(1190, 1200, 1)),
             's2': list(np.linspace(s2_min, s2_max, grid_density))
         }]
 
