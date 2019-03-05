@@ -1,4 +1,5 @@
 import cvxpy as cp
+import numpy as np
 
 def fused_lasso_dual(y, X, lambda1, lambda2):
     """Solves for given data and penalty constants the fused lasso dual form.
@@ -12,11 +13,15 @@ def fused_lasso_dual(y, X, lambda1, lambda2):
     Returns:
         beta.value (np.ndarray)
 
-    """    
+    """   
     if len(y) != len(X):
-        raise ValueError("The length of y must be equal to the number of rows of x.") 
-    #if lambda1 < 0 | lambda2 < 0:
-    #    raise ValueError("The penalty constraints need to be nonnnegative.")
+        raise TypeError("The length of y must be equal to the number of rows of x.") 
+        
+    if np.size(lambda1) > 1 or np.size(lambda2) > 1:
+        raise TypeError("The penalty constants need to have length one.")
+        
+    if lambda1 < 0 or lambda2 < 0:
+        raise ValueError("The penalty constants need to be nonnnegative.")
     
     n_features = len(X[1, :])
     beta = cp.Variable(n_features)

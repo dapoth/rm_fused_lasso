@@ -20,7 +20,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
         """Call when initializing the Fused Lasso Estimator."""
         self.s1 = s1
         self.s2 = s2
-        
+
 
     def fit(self, X, y=None):
         """Fit unkown parameters *beta* to *X* and *y*.
