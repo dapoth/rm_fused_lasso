@@ -1,5 +1,5 @@
 import numpy as np
-from src.model_code.generate_blocks import generate_blocks
+from generate_blocks import generate_blocks
 
 
 def generate_data(num_simulations, num_observations, num_features, num_blocks,

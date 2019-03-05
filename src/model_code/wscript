@@ -8,9 +8,7 @@ def build(ctx):
     ctx(
         features='run_py_script',
         source='run_pytest.py',
-        deps=[ctx.path_to(ctx, 'IN_MODEL_CODE', 'generate_blocks.py'),
-             ctx.path_to(ctx, 'IN_MODEL_CODE', 'generate_data.py'),
-             ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_dual.py'),
-             ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_primal.py')
+        deps=[ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_dual.py'),
+              ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_primal.py')
              ]
     )
