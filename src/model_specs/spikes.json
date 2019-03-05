@@ -8,9 +8,9 @@
     "spike_level": 7,
     "levels": 1,
     "s1_min": 1,
-    "s1_max": 500,
+    "s1_max": 250,
     "s2_min": 1,
-    "s2_max": 500,
+    "s2_max": 250,
     "num_simulations": 200,
-    "grid_density": 40
+    "grid_density": 20
 }
