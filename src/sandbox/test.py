@@ -230,3 +230,44 @@ def generate_blocks(num_features, number_blocks, length_blocks, block_height,
             generated_blocks[i] = spike_height
 
     return generated_blocks
+
+import cvxpy as cp
+
+def fused_lasso_dual(y, X, lambda1, lambda2):
+    """Solves for given data and penalty constants the fused lasso dual form.
+
+    Args:
+        y (np.ndarray): 1d array of dependent variables
+        X (np.ndarray): 2d array of independent variables
+        s1 (float): constraint on ||b||_1
+        s2 (float): constraint on the absolute jumps in beta
+
+    Returns:
+        beta.value (np.ndarray)
+
+    """
+    if len(y) != len(X):
+        raise ValueError("The length of y must be equal to the number of rows of x.")
+    #if lambda1 < 0 | lambda2 < 0:
+    #    raise ValueError("The penalty constraints need to be nonnnegative.")
+    n = len(X)
+    n_features = len(X[1, :])
+    beta = cp.Variable(n_features)
+    error = cp.sum_squares(X*beta - y)
+    obj = cp.Minimize( (1 / (2 * n )) * error + lambda1 * cp.norm(beta, 1) + lambda2*
+                      cp.norm(beta[1:n_features]-beta[0:n_features-1], 1))
+    prob = cp.Problem(obj)
+    prob.solve()
+
+    return beta.value
+
+import numpy as np
+from sklearn import linear_model
+clf = linear_model.Lasso(alpha=1,fit_intercept=False)
+clf.fit(X,[0.25,3])
+clf.coef_
+
+fused_lasso_dual([0.25, 3], X, 1, 0)
+
+
+X = np.random.multivariate_normal(np.zeros(2), np.identity(2), 2)
