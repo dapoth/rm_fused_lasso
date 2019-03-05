@@ -11,7 +11,8 @@ if __name__ == "__main__":
     #Load Penalty constants and CGH data and estimate fused lasso results.
     PIC_DICT = json.load(open(ppj("IN_MODEL_SPECS", "picture_cgh.json"), encoding="utf-8"))
     CGH_DATA = np.loadtxt(ppj("IN_DATA", "cgh.txt"))
-    BETA = fused_lasso_primal(CGH_DATA, np.identity(len(CGH_DATA)), PIC_DICT["s1"], PIC_DICT["s2"])
+    BETA_HAT = fused_lasso_primal(CGH_DATA, np.identity(len(CGH_DATA)),
+                                  PIC_DICT["s1"], PIC_DICT["s2"])
 
     # Plot CGH data.
     plt.xlabel('Genome Order')
@@ -25,5 +26,5 @@ if __name__ == "__main__":
     plt.ylabel('Copy Number')
     plt.plot(CGH_DATA, "bo")
     plt.axhline(color='r')
-    plt.plot(BETA, color='orange')
+    plt.plot(BETA_HAT, color='orange')
     plt.savefig(ppj("OUT_FIGURES", "cgh_plot_beta.png"))
