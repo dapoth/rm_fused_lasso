@@ -96,3 +96,19 @@ def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
     setup_param_fused_lasso["data_dual"]['X'] = np.array([[1, 0.5, 0], [0, 1, 0.5], [0.5, 0, 1]])
     calculated_beta_dual = fused_lasso_dual(**setup_param_fused_lasso["data_dual"])
     assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual, atol=1e-2)
+    
+# Test that the function does not work with incorrect input.
+def test_fused_lasso_negative_penalty(setup_param_lasso):
+    setup_param_lasso["data_dual"]['lambda1'] = -1
+    with pytest.raises(ValueError):
+        fused_lasso_dual(**setup_param_lasso["data_dual"])
+    
+def test_fused_lasso_wrong_dimensions(setup_param_lasso):
+    setup_param_lasso["data_primal"]['y'] = [1, 2, 3]
+    with pytest.raises(TypeError):
+        fused_lasso_primal(**setup_param_lasso["data_primal"])
+        
+def test_fused_lasso_wrong_dimension_penalty(setup_param_lasso):
+    setup_param_lasso["data_dual"]['lambda1'] = [1, 2]
+    with pytest.raises(TypeError):
+        fused_lasso_dual(**setup_param_lasso["data_dual"])
