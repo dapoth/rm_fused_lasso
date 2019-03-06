@@ -3,9 +3,10 @@
 Class was written as an sklearn.base extension. Notation was therefore adapted
 from sklearn. To solve the convex problem we resport to CVXPY.
 """
-import cvxpy as cp
+# import cvxpy as cp
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
+from src.model_code.fused_lasso_primal import fused_lasso_primal
 
 
 class FusedLassoEstimator(BaseEstimator, RegressorMixin):
@@ -28,7 +29,7 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
 
 
     def fit(self, X, y):
-        """Fit unkown parameters *beta* to *X* and *y*.
+        """Fit unkown parameters *beta_hat* to *X* and *y*.
 
         Examples:
         --------
@@ -42,26 +43,27 @@ class FusedLassoEstimator(BaseEstimator, RegressorMixin):
             b.value (np.ndarray)
 
         """
-        if len(y) != len(X):
-            raise TypeError("The length of y must be equal to the number of rows of x.")
+        # if len(y) != len(X):
+        #     raise TypeError("The length of y must be equal to the number of rows of x.")
+        #
+        # if np.size(self.s1) > 1 or np.size(self.s2) > 1:
+        #     raise TypeError("The penalty constants need to have length one.")
+        #
+        # if self.s1 < 0 or self.s2 < 0:
+        #     raise ValueError("The penalty constants need to be nonnnegative.")
+        #
+        # n_features = len(X[1, :])
+        # beta_hat = cp.Variable(n_features)
+        # error = cp.sum_squares(X*beta_hat - y)
+        # obj = cp.Minimize(error)
+        # constraints = [cp.norm(beta_hat, 1) <= self.s1,
+        #                cp.norm(beta_hat[1:n_features] - beta_hat[0:n_features-1], 1) <= self.s2]
+        # prob = cp.Problem(obj, constraints)
+        # prob.solve()
 
-        if np.size(self.s1) > 1 or np.size(self.s2) > 1:
-            raise TypeError("The penalty constants need to have length one.")
+        self.beta = fused_lasso_primal(y, X, self.s1, self.s2)
 
-        if self.s1 < 0 or self.s2 < 0:
-            raise ValueError("The penalty constants need to be nonnnegative.")
-
-        n_features = len(X[1, :])
-        beta_hat = cp.Variable(n_features)
-        error = cp.sum_squares(X*beta_hat - y)
-        obj = cp.Minimize(error)
-        constraints = [cp.norm(beta_hat, 1) <= self.s1,
-                       cp.norm(beta_hat[1:n_features] - beta_hat[0:n_features-1], 1) <= self.s2]
-        prob = cp.Problem(obj, constraints)
-        prob.solve()
-        self.beta = beta_hat.value
-
-        return beta_hat.value
+        return self.beta
 
     def predict(self, X):
         """Predict dependent variable from estimated parameters *beta*.
