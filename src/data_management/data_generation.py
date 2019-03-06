@@ -1,4 +1,8 @@
-"""Docstring."""
+"""
+Generate data for all four settings with the help of the generate_data function
+and the model parameters for each seetting as specified in the JSON files.
+
+"""
 
 import pickle
 import sys
@@ -9,7 +13,6 @@ from bld.project_paths import project_paths_join as ppj
 from generate_data import generate_data
 
 np.random.seed(12345)
-import ast
 
 
 
@@ -35,7 +38,7 @@ if __name__ == "__main__":
     [beta, X, epsilon, Y] = generate_data(num_simulations,n,p, number_blocks,
                                                           length_blocks, amplitude,  spike_level, levels, spikes)
 
-    aux1 = [beta, X, epsilon, Y]
+    dataset = [beta, X, epsilon, Y]
 
-    with open(ppj("OUT_DATA", "data_{}.pickle".format(sim_name)), "wb") as out12_file:
-        pickle.dump(aux1, out12_file)
+    with open(ppj("OUT_DATA", "data_{}.pickle".format(sim_name)), "wb") as out_file:
+        pickle.dump(dataset, out_file)
