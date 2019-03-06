@@ -21,7 +21,7 @@ def build(ctx):
         for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
             ctx(
                 features='run_py_script',
-                source='analysing_the_simulation.py',
+                source='analysis_of_simulations.py',
                 deps=[
                     ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'
                                 .format(reg, sim)),
