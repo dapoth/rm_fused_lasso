@@ -11,13 +11,7 @@ def build(ctx):
 
     ctx(
   	 features='run_py_script',
-  	 source='plot_different_penaltys.py',
-  	 target=ctx.path_to(ctx, 'OUT_FIGURES', 'different_penaltys.pdf')
-        )
-
-    ctx(
-  	 features='run_py_script',
-  	 source='plot_different_penalization_methods.py',
+  	 source='plot_different_estimators.py',
      deps=[ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_spikes.pickle'),
            ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_small_blocks.pickle'),
            ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fusion_large_blocks.pickle'),
@@ -76,7 +70,7 @@ def build(ctx):
     for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
             ctx(
              features='run_py_script',
-          	 source='Heatmap.py',
+          	 source='heatmap.py',
              deps=[ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)), ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_fused_{}.pickle'.format(sim))],
              target=ctx.path_to(ctx, 'OUT_FIGURES', 'heatmap_{}.png'.format(sim)),
              append=sim
