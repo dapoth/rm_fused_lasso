@@ -1,8 +1,14 @@
+"""
+For each of the four settings and for the lasso, fusion estimator and fused 
+lasso compute the mean sqaured error, the standard errors and the proportion of 
+correctly estimated blocks and zeros.
+
+"""
+
 import pickle
 import json
 import numpy as np
 import sys
-import matplotlib.pyplot as plt
 from bld.project_paths import project_paths_join as ppj
 
 

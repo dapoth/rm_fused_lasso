@@ -1,4 +1,8 @@
-"""Docstring."""
+"""
+Generate data for all four settings with the help of the generate_data function
+and the model parameters for each seetting as specified in the JSON files.
+
+"""
 
 import pickle
 import sys
