@@ -37,5 +37,5 @@ Create solution paths for lasso and fused lasso
 Create heatmaps for the results of grid cv
 ===========================================
 
-.. automodule:: src.final.Heatmap
+.. automodule:: src.final.heatmap
     :members:

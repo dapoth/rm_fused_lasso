@@ -18,5 +18,4 @@ Welcome to the Fused Lasso project's documentation!
     paper
     model_code
     model_specs
-    library
     references

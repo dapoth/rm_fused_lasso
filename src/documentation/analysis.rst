@@ -10,12 +10,18 @@ Documentation of the code in *src.analysis*. This is the core of the project. It
 Fused Lasso example
 ===================
 
-At first the optimal penalty constants s1 and s2 are computed via cross-validation over a two-dimensional grid. Then the three estimators lasso, fusion and fused lasso are computed for the four different settings described in :ref:`data_management`.
+At first the optimal penalty constants s1 and s2 are computed via cross-validation over a two-dimensional grid. 
 
-.. automodule:: src.analysis.simulation
+.. automodule:: src.analysis.grid_cross_validation
     :members:
 
     
+Then the three estimators lasso, fusion and fused lasso are computed for the four different settings described in :ref:`data_management`.
+
+.. automodule:: src.analysis.estimation
+    :members:
+
+
 Monte Carlo
 ============
 
