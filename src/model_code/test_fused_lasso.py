@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+    #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
 from numpy.testing import assert_allclose
@@ -48,11 +48,11 @@ def setup_param_flestimator():
     out_penalties = {}
     out_penalties['s1'] = 4.600003
     out_penalties['s2'] = 2.149997
-    
+
     out_data = {}
     out_data['y'] = [0.1, 3, 3]
     out_data['X'] = np.identity(3)
-    
+
     out = {"penalties": out_penalties, "data": out_data}
     return out
 
@@ -131,7 +131,7 @@ def test_flestimator(setup_param_flestimator, expected_beta):
                                                                       'lasso']
     assert_allclose(expected_beta_fused_lasso_signal, beta_hat,
                     atol=1e-2)
-    
+
 
 # Test that the function does not work with incorrect input.
 def test_fused_lasso_dual_negative_penalty(setup_param_lasso):
@@ -167,4 +167,3 @@ def test_fused_lasso_primal_wrong_dimension_penalty(setup_param_lasso):
     setup_param_lasso["data_primal"]['s1'] = [1, 2]
     with pytest.raises(TypeError):
         fused_lasso_primal(**setup_param_lasso["data_primal"])
-
