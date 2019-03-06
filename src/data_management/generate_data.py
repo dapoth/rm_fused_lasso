@@ -40,17 +40,17 @@ def generate_beta(num_features, number_blocks, length_blocks, block_height,
         heights = [block_height, block_height*2]
         for block in start_blocks:
             random_height = rd.choice(heights)
-            for i in range(num_features):
-                if (i >= block * length_blocks) and (i < (block+1) *
-                                                     length_blocks):
-                    generated_blocks[i] = random_height
+            lower_bound = block * length_blocks
+            upper_bound = (block+1) * length_blocks
+            for i in range(lower_bound, upper_bound):
+                generated_blocks[i] = random_height
 
     else:
         for block in start_blocks:
-            for i in range(num_features):
-                if (i >= block * length_blocks) and (i < (block+1) *
-                                                     length_blocks):
-                    generated_blocks[i] = block_height
+            lower_bound = block * length_blocks
+            upper_bound = (block+1) * length_blocks
+            for i in range(lower_bound, upper_bound):
+                generated_blocks[i] = block_height
 
     if spikes != 0:
         non_blocks = []
