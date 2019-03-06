@@ -1,13 +1,6 @@
-import matplotlib.pyplot as plt
 import pickle
-import numpy as np
 import matplotlib.pyplot as plt
-from src.model_code.fused_lasso_dual import fused_lasso_dual
 from bld.project_paths import project_paths_join as ppj
-
-
-
-
 
 for reg in 'lasso', 'fused', 'fusion':
     list_true_beta = []
@@ -26,7 +19,6 @@ for reg in 'lasso', 'fused', 'fusion':
 
     fig, axes = plt.subplots(2, 2, gridspec_kw={"height_ratios": [1, 1]})
 
-
     axes[0, 0].set_title('large_blocks')
     axes[0, 0].plot(list_true_beta[0])
     axes[0, 0].plot(list_beta_hat[0])
@@ -42,7 +34,5 @@ for reg in 'lasso', 'fused', 'fusion':
     axes[1, 1].plot(list_true_beta[3])
     axes[1, 1].plot(list_beta_hat[3])
     axes[1, 1].set_xlabel('Spikes')
-
-
 
     plt.savefig(ppj("OUT_FIGURES", "plot_{}.png".format(reg)))
