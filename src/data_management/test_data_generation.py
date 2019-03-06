@@ -3,6 +3,7 @@
 import numpy
 from src.data_management.generate_data import generate_beta
 import pytest
+import sys
 
 @pytest.fixture
 def setup_block_generation():
@@ -44,3 +45,8 @@ def test_generate_too_many_blocks(setup_block_generation):
     setup_block_generation['number_blocks'] = 4
     with pytest.raises(TypeError):
         generate_beta(**setup_block_generation)
+
+
+if __name__== '__main__':
+    status = pytest.main([sys.argv[1]])
+    sys.exit(status)

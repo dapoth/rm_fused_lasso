@@ -1,14 +1,17 @@
 #! python
 
+import os
 
 def build(ctx):
 
-
-
+    
+    abspath = os.path.join(ctx.path.abspath(),'test_fused_lasso.py')
     ctx(
         features='run_py_script',
-        source='run_pytest.py',
+        source='test_fused_lasso.py',
         deps=[ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_dual.py'),
-              ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_primal.py')
-             ]
+              ctx.path_to(ctx, 'IN_MODEL_CODE', 'fused_lasso_primal.py'),
+              ctx.path_to(ctx, 'IN_MODEL_CODE', 'flestimator.py')
+             ],
+        append=abspath
     )
