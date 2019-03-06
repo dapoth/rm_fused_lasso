@@ -33,5 +33,6 @@ A coefficient:
 
 Analysis of simulation
 =======================
+
 .. automodule:: src.analysis.analysing_the_simulation
     :members:
