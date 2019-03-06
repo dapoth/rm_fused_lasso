@@ -1,19 +1,12 @@
 import cvxpy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-from bld.project_paths import project_paths_join as ppj
 from src.model_code.lasso_solution_path import lasso_solution_path
-
-
-
-
-
 
 p = 10
 n = 10
 betas = np.zeros(p)
 betas[3:6] = 1
-
 
 np.random.seed(1000)
 mean = np.zeros(p)
@@ -22,13 +15,10 @@ X = np.random.multivariate_normal(mean, cov, n)
 eps = np.random.randn(n)
 Y = np.matmul(X, betas) + eps
 
-lasso_solution_path(Y,X)
+lasso_solution_path(Y, X)
 
 
 betas
-
-
-
 
 n = 15
 m = 10

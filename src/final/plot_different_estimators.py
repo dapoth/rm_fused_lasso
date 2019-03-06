@@ -14,8 +14,9 @@ for reg in 'lasso', 'fused', 'fusion':
     list_beta_hat = []
     for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
 
-        with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
-            simulation_data = pickle.load(in12_file)
+        with open(ppj("OUT_ANALYSIS", "simulation_{}_{}.pickle".
+                      format(reg, sim)), "rb") as in_file:
+            simulation_data = pickle.load(in_file)
 
         beta_hat = simulation_data[0][:, 1]
         true_beta = simulation_data[1][:, 1]
