@@ -14,16 +14,16 @@ Documentation of the code in *src.data_management*. In this section are all the 
 
 These settings were chosen to demonstrate the performance of the fused lasso in settings where it is more or less appropriate.
 
-
-Generate data for one simulation
-=================================
-
-.. automodule:: src.data_management.generate_blocks
-    :members:
-
 Generate data for all simulations
 ==================================
 
 .. automodule:: src.data_management.generate_data
+    :members:
+
+    
+Tests
+======
+
+.. automodule:: src.data_management.test_data_generation
     :members:
     

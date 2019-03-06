@@ -3,6 +3,7 @@
 import numpy as np
 from numpy.testing import assert_allclose
 import pytest
+import sys
 from src.model_code.fused_lasso_dual import fused_lasso_dual
 from src.model_code.fused_lasso_primal import fused_lasso_primal
 from src.model_code.flestimator import FusedLassoEstimator as fle
@@ -167,3 +168,9 @@ def test_fused_lasso_primal_wrong_dimension_penalty(setup_param_lasso):
     setup_param_lasso["data_primal"]['s1'] = [1, 2]
     with pytest.raises(TypeError):
         fused_lasso_primal(**setup_param_lasso["data_primal"])
+
+
+if __name__== '__main__':
+    status = pytest.main([sys.argv[1]])
+    sys.exit(status)
+

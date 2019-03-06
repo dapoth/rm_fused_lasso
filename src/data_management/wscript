@@ -1,4 +1,6 @@
 
+import os
+
 def build(ctx):
 
     for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
@@ -10,11 +12,12 @@ def build(ctx):
             target=ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
             append=sim
         )
-
-    # ctx(
-    #     features='run_py_script',
-    #     source='run_pytest.py',
-    #     deps=[ctx.path_to(ctx, 'IN_DATA_MANAGEMENT', 'generate_data.py'),
-    #           ctx.path_to(ctx, 'IN_DATA_MANAGEMENT', 'generate_beta.py')
-    #          ]
-    # )
+     
+     
+    abspath = os.path.join(ctx.path.abspath(),'test_data_generation.py')
+    ctx(
+        features='run_py_script',
+        source='test_data_generation.py',
+        deps='generate_data.py',
+        append=abspath
+    )
