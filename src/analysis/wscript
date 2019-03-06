@@ -7,10 +7,24 @@ def build(ctx):
         for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
             ctx(
                 features='run_py_script',
-                source='simulation.py',
+                source='grid_cross_validation.py',
                 deps=[
                     ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
                     ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+                ],
+                target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'cv_{}_{}.pickle'.format(reg, sim)),
+                append=[reg, sim]
+                )
+
+    for reg in 'lasso', 'fused', 'fusion':
+        for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
+            ctx(
+                features='run_py_script',
+                source='estimation.py',
+                deps=[
+                    ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
+                    ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim)),
+                    ctx.path_to(ctx, 'OUT_ANALYSIS', 'cv_{}_{}.pickle'.format(reg, sim)),
                 ],
                 target=ctx.path_to(ctx, 'OUT_ANALYSIS', 'simulation_{}_{}.pickle'
                                    .format(reg, sim)),
@@ -43,7 +57,7 @@ def build(ctx):
     #                             .format(reg, sim)),
     #                 ctx.path_to(ctx, 'IN_MODEL_SPECS', '{}.json'.format(sim))
     #             ],
-    #             target= ctx.path_to(ctx, "OUT_FIGURES", "monte_carlo_{}_{}.png"
+    #             target= ctx.path_to(ctx, "OUT_FIGURES", "monte_carlo_{}_{}.png"ulation_f
     #                                 .format(reg, sim)),
     #
     #             append=[reg, sim]
