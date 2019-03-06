@@ -33,4 +33,3 @@ def fused_lasso_primal(y, X, s1, s2):
     prob.solve()
 
     return beta.value
-4

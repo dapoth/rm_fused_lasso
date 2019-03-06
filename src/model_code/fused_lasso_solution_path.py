@@ -5,7 +5,7 @@ from bld.project_paths import project_paths_join as ppj
 
 
 def fused_lasso_solution_path(response, explanatory_var):
-    """Calculate and plot solution path of fused lasso for fixed lasso penatlyself.
+    """Calculate and plot solution path of fused lasso for fixed lasso penatly.
 
     Args:
         response (np.ndarray): 1d array of responses

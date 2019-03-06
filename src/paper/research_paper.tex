@@ -783,9 +783,8 @@ def generate_data(n, p, num_simulations, number_blocks, length_blocks,
 
     beta = np.zeros([p, num_simulations])
     for sim in range(num_simulations):
-        beta[:, sim] = generate_blocks(p, number_blocks, length_blocks,
-                                       amplitude, spike_level, 
-                                       levels, spikes)
+        beta[:, sim] = generate_beta(p, number_blocks, length_blocks,
+                                       amplitude, levels, spikes, spike_level)
     mean = np.zeros(p)
     cov = np.identity(p)
     X = np.random.multivariate_normal(mean, cov, n)
@@ -799,11 +798,11 @@ def generate_data(n, p, num_simulations, number_blocks, length_blocks,
 
 \lstset{title=Generate $\beta$ with block strucure}
 \begin{python}
-def generate_blocks(p, number_blocks, length_blocks, amplitude,
-                    spike_level, levels=False, spikes=0):
-    """Generate betas with desired block structure for 
+def generate_beta(p, number_blocks, length_blocks, amplitude,
+                  levels=False, spikes=0, spike_level):
+    """Generate betas with desired block structure for
     simulation purposes."""
-    
+
     container = np.zeros(p)
     max_blocks = math.floor(p / length_blocks)
 
