@@ -1,14 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar  5 23:30:29 2019
-
-@author: clara
-"""
-
 import numpy
-from src.data_management.generate_data import generate_beta
 import pytest
+from src.data_management.generate_data import generate_beta
+
 
 @pytest.fixture
 def setup_block_generation():
