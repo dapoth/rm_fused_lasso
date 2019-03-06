@@ -1,4 +1,4 @@
-"""Plot heatmap of gridCV for given results and grid (s1,s2) values."""
+"""Plot heatmaps of gridCV for given results and grid (s1,s2) values."""
 import sys
 import pickle
 import json
