@@ -5,6 +5,7 @@ from numpy.testing import assert_allclose
 import pytest
 from src.model_code.fused_lasso_dual import fused_lasso_dual
 from src.model_code.fused_lasso_primal import fused_lasso_primal
+from src.model_code.flestimator import FusedLassoEstimator as fle
 
 
 @pytest.fixture
@@ -42,6 +43,18 @@ def setup_param_fused_lasso():
     out = {"data_dual": out_dual, "data_primal": out_primal}
     return out
 
+@pytest.fixture
+def setup_param_flestimator():
+    out_penalties = {}
+    out_penalties['s1'] = 4.600003
+    out_penalties['s2'] = 2.149997
+    
+    out_data = {}
+    out_data['y'] = [0.1, 3, 3]
+    out_data['X'] = np.identity(3)
+    
+    out = {"penalties": out_penalties, "data": out_data}
+    return out
 
 @pytest.fixture
 def expected_beta():
@@ -109,6 +122,16 @@ def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
     assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual,
                     atol=1e-2)
 
+
+# Test the functionality of the flestimator.
+def test_flestimator(setup_param_flestimator, expected_beta):
+    clf = fle(**setup_param_flestimator["penalties"])
+    beta_hat = clf.fit(**setup_param_flestimator["data"])
+    expected_beta_fused_lasso_signal = expected_beta["values_signal"]['fused_'
+                                                                      'lasso']
+    assert_allclose(expected_beta_fused_lasso_signal, beta_hat,
+                    atol=1e-2)
+    
 
 # Test that the function does not work with incorrect input.
 def test_fused_lasso_dual_negative_penalty(setup_param_lasso):
