@@ -26,3 +26,4 @@ if __name__ == "__main__":
     plt.axhline(color='r')
     plt.plot(BETA_HAT, color='orange')
     plt.savefig(ppj("OUT_FIGURES", "cgh_plot_beta.png"))
+    plt.clf()

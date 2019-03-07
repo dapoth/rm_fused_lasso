@@ -40,3 +40,4 @@ if __name__ == "__main__":
     HEATMAP = seaborn.heatmap(TEST_SCORE_MATRIX,
                               xticklabels=S2_GRID, yticklabels=S1_GRID_UNI)
     plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(SIM_NAME)))
+    plt.clf()

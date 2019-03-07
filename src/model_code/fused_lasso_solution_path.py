@@ -42,3 +42,4 @@ def fused_lasso_solution_path(response, explanatory_var):
     plt.title(r'Entries of $\hat{\beta}$ vs. $\lambda_1$')
 
     plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_fused_lasso.png"))
+    plt.clf()

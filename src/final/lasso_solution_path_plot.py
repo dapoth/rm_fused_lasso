@@ -16,3 +16,4 @@ Y = np.matmul(X, BETA) + EPSILON
 
 PLOT = lasso_solution_path(Y, X)
 PLOT.savefig(ppj("OUT_FIGURES", "plot_solutionpath_lasso.png"))
+PLOT.clf()

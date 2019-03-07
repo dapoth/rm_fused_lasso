@@ -40,3 +40,4 @@ for reg in 'lasso', 'fused', 'fusion':
     axes[1, 1].set_xlabel('Spikes')
 
     plt.savefig(ppj("OUT_FIGURES", "plot_{}.png".format(reg)))
+    plt.clf()

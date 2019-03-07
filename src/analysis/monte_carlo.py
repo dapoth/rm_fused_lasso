@@ -61,3 +61,4 @@ if __name__ == "__main__":
     AXES[1, 1].set_xlabel('block_out')
 
     plt.savefig(ppj("OUT_FIGURES", "monte_carlo_fused_large_blocks.png"))
+    plt.clf()
