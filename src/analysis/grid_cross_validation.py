@@ -1,3 +1,9 @@
+"""
+Perform cross-validation over a two-dimensional grid of penalty constants.
+
+Cross-validation is performed with the sklearn package model_selection.GridSearchCV.
+
+"""
 import sys
 import json
 import pickle
@@ -8,7 +14,7 @@ from bld.project_paths import project_paths_join as ppj
 from src.model_code.flestimator import FusedLassoEstimator as fle
 
 if __name__ == "__main__":
-    """Waf."""
+    
     SIM_NAME = sys.argv[2]
     REG_NAME = sys.argv[1]
 
@@ -20,7 +26,7 @@ if __name__ == "__main__":
         BETA_X_EPSILON_Y = pickle.load(in_file)
 
 
-    #Pull Information out of json file.
+    # Load data from json file.
     N_FEATURES = SIM_DICT["p"]
     N_OBS = SIM_DICT["n"]
     S1_MIN = SIM_DICT["s1_min"]
@@ -29,13 +35,12 @@ if __name__ == "__main__":
     S2_MAX = SIM_DICT["s2_max"]
     GRID_DENSITY = SIM_DICT['grid_density']
 
-    """Data import from pickle files."""
-    X = BETA_X_EPSILON_Y[1]                         # n x p
+    # Load data from pickle file.
+    X = BETA_X_EPSILON_Y[1]
     y = BETA_X_EPSILON_Y[3]
 
 
-    """Assessing of optimal lambda."""
-
+    # Construct two-dimensional fused-lasso grid for cross-validation.
     LASSO_GRID = {
         's1': list(np.linspace(S1_MIN, S1_MAX, GRID_DENSITY))
     }
@@ -47,6 +52,7 @@ if __name__ == "__main__":
         's2': list(np.linspace(S2_MIN, S2_MAX, GRID_DENSITY))
     }]
 
+    # Construct two-dimensional lasso grid for cross-validation.
     if REG_NAME == 'lasso':
         LASSO_GRID = {
             's1': list(np.linspace(S1_MIN, SIM_DICT["s1_max_lasso"], GRID_DENSITY))
@@ -60,6 +66,7 @@ if __name__ == "__main__":
             's2': list(np.linspace(11900, 12000, 1))
         }]
 
+    # Construct two-dimensional fusion grid for cross-validation.
     if REG_NAME == 'fusion':
         LASSO_GRID = {
             's1': list(np.linspace(11900, 12000, 1))
@@ -74,6 +81,8 @@ if __name__ == "__main__":
 
 
     START_TIME_CV = time()
+
+    # Assess optimal penalty costants.
     CLF = GridSearchCV(fle(LASSO_GRID, FUSION_GRID), TWO_D_GRID,
                        scoring='neg_mean_squared_error',
                        n_jobs=-1, iid=False, refit=True,
@@ -85,7 +94,7 @@ if __name__ == "__main__":
     PENALTY_CV = [CLF.best_params_["s1"], CLF.best_params_["s2"]]
     END_TIME_CV = time()
 
-
+    # Save timings for fused lasso cross-validation.
     if REG_NAME == 'fused':
 
         TIMINGS_FUSED_LASSO = [N_FEATURES, N_OBS, np.round((END_TIME_CV - START_TIME_CV), 2)]
