@@ -12,7 +12,8 @@ from bld.project_paths import project_paths_join as ppj
 #from src.model_code.generate_data import generate_data
 from generate_data import generate_data
 
-np.random.seed(12345)
+
+
 
 if __name__ == "__main__":
     #reg_name = sys.argv[1]
@@ -20,6 +21,7 @@ if __name__ == "__main__":
     SIM = json.load(open(ppj("IN_MODEL_SPECS", SIN_NAME + ".json"),
                          encoding="utf-8"))
 
+    np.random.seed(420)
     ##### Load Model specs
     N_SIMULATIONS = SIM['num_simulations']
     N_FEATURES = SIM['p']

@@ -1,6 +1,6 @@
 """
 For each of the four settings and for the lasso, fusion estimator and fused
-lasso compute the mean sqaured error, the standard errors and the proportion of
+lasso compute the mean squared error, the standard errors and the proportion of
 correctly estimated blocks and zeros.
 
 """
@@ -90,8 +90,8 @@ if __name__ == "__main__":
 
     # to avoid dividing by zero in the spike setting since in that case number of blocks is 0
     if SIM_NAME == 'spikes':
-        SIMULATION_RESULTS.append('--')
-        SIMULATION_RESULTS.append('--')
+        SIMULATION_RESULTS.append(np.NAN)
+        SIMULATION_RESULTS.append(np.NAN)
 
     else:
         COUNTER_BLOCKS = np.sum(((BETA_HAT >= 0.50*HEIGHT) & (BETA_HAT <= 1.5*HEIGHT)

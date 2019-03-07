@@ -49,7 +49,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"Fused Lasso"
-copyright = u"2019-, Clara Brünn, David Poth, Christopher Thiemann genannt Trappmann"
+copyright = u"2019-, Clara Brünn, David Poth, Christopher Thiemann gen. Trappmann"
 
 # The version info for the project you"re documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -198,7 +198,7 @@ latex_documents = [(
     "index",
     "project_documentation.tex",
     "Documentation of the Fused Lasso project",
-    "Clara Brünn, David Poth, Christopher Thiemann genannt Trappmann",
+    "C. Brünn, D. Poth, C. Thiemann gen. Trappmann",
     "manual"
 )]
 

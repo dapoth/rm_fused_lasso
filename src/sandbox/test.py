@@ -93,8 +93,9 @@ end_time_new = time()
 print( end_time_new-start_time_new)
 
 
+
 def generate_blocks(num_features, number_blocks, length_blocks, block_height,
-                    spike_height, levels=False, spikes=0):
+                    levels=False, spikes=0, spike_height=7):
     """Generate non-overlapping *generate_blocks* for one simulation step.
 
     Divide the generated_blocks into 1/*length_blocks* possible blocks and
@@ -233,7 +234,7 @@ def generate_blocks(num_features, number_blocks, length_blocks, block_height,
 
 import cvxpy as cp
 
-def fused_lasso_dual(y, X, lambda1, lambda2):
+def fused_lasso_lagrange(y, X, lambda1, lambda2):
     """Solves for given data and penalty constants the fused lasso dual form.
 
     Args:
@@ -267,7 +268,7 @@ clf = linear_model.Lasso(alpha=1,fit_intercept=False)
 clf.fit(X,[0.25,3])
 clf.coef_
 
-fused_lasso_dual([0.25, 3], X, 1, 0)
+fused_lasso_lagrange([0.25, 3], X, 1, 0)
 
 
 X = np.random.multivariate_normal(np.zeros(2), np.identity(2), 2)
