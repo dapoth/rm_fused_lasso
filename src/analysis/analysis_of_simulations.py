@@ -1,7 +1,7 @@
 """
 For each of the four settings and for the lasso, fusion estimator and fused
 lasso compute the mean squared error, the standard errors and the proportion of
-correctly estimated blocks and zeros.
+correctly estimated blocks, nonzeros and zeros.
 
 """
 
@@ -13,7 +13,7 @@ from bld.project_paths import project_paths_join as ppj
 
 
 if __name__ == "__main__":
-    """ waf """
+    
     SIM_NAME = sys.argv[2]
     REG_NAME = sys.argv[1]
     SIM_DICT = json.load(open(ppj("IN_MODEL_SPECS", SIM_NAME + ".json"),
@@ -22,11 +22,12 @@ if __name__ == "__main__":
                   format(REG_NAME, SIM_NAME)), "rb") as in_file:
         SIMULATED_DATA = pickle.load(in_file)
 
-    # Load Data from pickle file
+    # Load data from pickle file.
     BETA_HAT = SIMULATED_DATA[0]
     TRUE_BETA = SIMULATED_DATA[1]
     RESIDUALS = SIMULATED_DATA[4]
 
+    # Load data from json file.
     N_FEATURES = SIM_DICT["p"]
     N_OBS = SIM_DICT["n"]
     N_BLOCKS = SIM_DICT['number_of_blocks']
@@ -45,50 +46,20 @@ if __name__ == "__main__":
     SIMULATION_RESULTS.append(MEAN_MSE)
     SIMULATION_RESULTS.append(STD_MSE)
 
-    # Percent of relevant variables recognized
+    # Calculate percentage of relevant variables recognized.
     CORRECT_NONZERO = (sum((BETA_HAT >= 0.30*HEIGHT) & (TRUE_BETA > 0))
                        / np.sum(TRUE_BETA > 0, axis=0))
     SIMULATION_RESULTS.append(np.mean(CORRECT_NONZERO))
     SIMULATION_RESULTS.append(np.std(CORRECT_NONZERO))
 
-    # Percent of correctly estimated zero coefficients
+    # Calculate percentage of correctly estimated zero coefficients.
     CORRECT_ZERO = (np.sum((np.absolute(BETA_HAT) <= 0.01) & (TRUE_BETA == 0), axis=0)
                     / np.sum(TRUE_BETA == 0, axis=0))
     SIMULATION_RESULTS.append(np.mean(CORRECT_ZERO))
     SIMULATION_RESULTS.append(np.std(CORRECT_ZERO))
 
-    # count the spikes
-    # SPIKE_COUNT = []
-    # if SIM_DICT["spikes"] >= 1:
-    #     for i in range(N_SIMULATIONS):
-    #
-    #         count = 0
-    #         for j in range(N_FEATURES):  # 0 bis 499
-    #             if j == (N_FEATURES-1):
-    #                 break
-    #
-    #             if ((j == 0) and (TRUE_BETA[1, i] == 0) and
-    #                     (BETA_HAT[j, i] > HEIGHT / 2) and (TRUE_BETA[0, i] > 0)):
-    #                 count = count + 1
-    #
-    #             if ((j == (N_FEATURES-1)) and (BETA_HAT[(N_FEATURES-1), i] > 2) and
-    #                     (TRUE_BETA[N_FEATURES-2, i] == 0) and (TRUE_BETA[N_FEATURES-1, i] > 0)):
-    #                 count = count + 1
-    #
-    #             if ((TRUE_BETA[j-1, i] == 0) and (TRUE_BETA[j+1, i] == 0) and
-    #                     (BETA_HAT[j, i] > HEIGHT/2) and (TRUE_BETA[j, i] > 0)):
-    #                 count = count + 1
-    #
-    #         SPIKE_COUNT.append(count)
-    #     SPIKE_COUNT = np.array(SPIKE_COUNT) / SPIKES
-    #     SIMULATION_RESULTS.append(np.mean(SPIKE_COUNT))
-    #     SIMULATION_RESULTS.append(np.std(SPIKE_COUNT))
-    #
-    # else:
-    #     SIMULATION_RESULTS.append('--')
-    #     SIMULATION_RESULTS.append('--')
-
-    # to avoid dividing by zero in the spike setting since in that case number of blocks is 0
+    # Calculate percentage of correctly estimated blocks.
+    # Avoid dividing by zero in the spike setting, in that case number_of_blocks is 0.
     if SIM_NAME == 'spikes':
         SIMULATION_RESULTS.append(np.NAN)
         SIMULATION_RESULTS.append(np.NAN)

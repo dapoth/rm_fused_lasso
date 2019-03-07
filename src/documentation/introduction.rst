@@ -19,14 +19,14 @@ Getting started
 ===============
 
 This assumes you have completed the installation instructions in the `README.md <https://github.com/dapoth/rm_fused_lasso/blob/master/README.md>`_ of the project.
-The used `template <https://github.com/hmgaudecker/econ-project-templates>`_ ensures that the directory is split into logical steps of the analysis as described now. 
+The used `template <https://github.com/hmgaudecker/econ-project-templates>`_ ensures that the directory is split into logical steps of the analysis as described below. 
 
 .. _structure:
 
 Structure
 ==========
 
-First we call :ref:`data_management`. Here the data for the simulation is generated and stored in bld.out.data as `pickle files <https://docs.python.org/3/library/pickle.html>`_. It is generated according to different model settings stored in :ref:`model_specifications`. Secondly, in :ref:`model_analysis` we perform a simulation study and Monte Carlo simulation with the estimators we implemented in :ref:`model_code`. The implementation of the estimators including the appropriate choice of penalty constants via two-dimensional cross-validation are the main achievement of this repository. 
+First we call :ref:`data_management`. Here the data for the simulation is generated and stored in bld.out.data as `pickle files <https://docs.python.org/3/library/pickle.html>`_. It is generated according to different model settings stored in :ref:`model_specifications`. Secondly, in :ref:`analysis` we perform a simulation study and Monte Carlo simulation with the estimators we implement in :ref:`model_code`. The implementation of the estimators including the appropriate choice of penalty constants via two-dimensional cross-validation are the main achievement of this repository. 
 
 The estimators as well as the data generation are tested by means of unit tests.
 

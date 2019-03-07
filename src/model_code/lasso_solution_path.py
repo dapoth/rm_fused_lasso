@@ -5,15 +5,17 @@ import matplotlib.pyplot as plt
 
 
 def lasso_solution_path(y,X):
-    """Calculate and plot solution path for increasing lasso penatly.
+    """Calculate and plot solution path for lasso.
 
     Args:
-        y (np.ndarray): 1d array of responses
-        X (np.ndarray): 2d array of explanatory variables
+        | y (np.ndarray): 1d array of responses
+        | X (np.ndarray): 2d array of explanatory variables
 
     Returns:
+        | plt (matplotlib.pyplot)
 
     """
+    # Set up lasso problem.
     n_features = len(X[1, :])
     gamma1 = cp.Parameter(nonneg=True)
     beta_hat = cp.Variable(n_features)
@@ -28,17 +30,15 @@ def lasso_solution_path(y,X):
         prob.solve()
         x_values.append(beta_hat.value)
 
-
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
 
-    # Plot entries of x vs. lambda1.
-
+    # Plot entries of estimated beta vs. lambda1.
     for i in range(n_features):
         plt.plot(gamma_vals, [xi[i] for xi in x_values])
     plt.xlabel(r'$\lambda_1$', fontsize=16)
     plt.ylabel(r'$\hat{\beta}_{i}$', fontsize=16)
     plt.xscale('log')
     plt.title(r'Entries of $\hat{\beta}$ vs. $\lambda_1$')
-    
+
     return plt

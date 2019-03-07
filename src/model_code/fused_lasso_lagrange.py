@@ -2,7 +2,7 @@ import cvxpy as cp
 import numpy as np
 
 def fused_lasso_lagrange(y, X, lambda1, lambda2):
-    """Solves for given data and penalty constants the fused lasso lagrange form.
+    """Solve the fused lasso lagrange form for given data and penalty constants.
 
     Args:
         | y (np.ndarray): 1d array of dependent variables
@@ -11,14 +11,14 @@ def fused_lasso_lagrange(y, X, lambda1, lambda2):
         | s2 (float): constraint on the absolute jumps in beta
 
     Returns:
-        beta.value (np.ndarray)
+        | beta.value (np.ndarray)
 
     """
     if len(y) != len(X):
-        raise TypeError("The length of y must be equal to the number of rows of x.")
+        raise TypeError("The length of y must be equal to the number of rows of X.")
 
     if np.size(lambda1) > 1 or np.size(lambda2) > 1:
-        raise TypeError("The penalty constants need to have length one.")
+        raise TypeError("The penalty constants need to be a scalar.")
 
     if lambda1 < 0 or lambda2 < 0:
         raise ValueError("The penalty constants need to be nonnegative.")

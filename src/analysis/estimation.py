@@ -1,3 +1,8 @@
+"""
+Perform estimation of betas for all simulation settings and different
+estimation methods.
+
+"""
 import sys
 import json
 import pickle
@@ -8,7 +13,7 @@ from src.model_code.fused_lasso_primal import fused_lasso_primal
 from bld.project_paths import project_paths_join as ppj
 
 if __name__ == "__main__":
-    """Waf."""
+    
     REG_NAME = sys.argv[1]
     SIM_NAME = sys.argv[2]
     SIM_DICT = json.load(open(ppj("IN_MODEL_SPECS", SIM_NAME + ".json"),
@@ -22,29 +27,29 @@ if __name__ == "__main__":
         CROSSVALIDATION_RESULTS = pickle.load(in_file)
 
 
-    """Data import from pickle files."""
-    TRUE_BETA = BETA_X_EPSILON_Y[0]                 # p x num_simulations
-    X = BETA_X_EPSILON_Y[1]                         # n x p
-    y = BETA_X_EPSILON_Y[3]                         # n x num_simulations
+    # Load data from pickle file.
+    TRUE_BETA = BETA_X_EPSILON_Y[0]         # p x num_simulations
+    X = BETA_X_EPSILON_Y[1]                 # n x p
+    y = BETA_X_EPSILON_Y[3]                 # n x num_simulations
 
-    """Data import from pickle files."""
+    # Load data from pickle file.
     MSE = CROSSVALIDATION_RESULTS[0]
     PARAMETER_GRID = CROSSVALIDATION_RESULTS[1]
     S1_OPT = CROSSVALIDATION_RESULTS[2][0]
     S2_OPT = CROSSVALIDATION_RESULTS[2][1]
 
-    """Pull Information out of json file."""
+    # Load data from json file.
     N_FEATURES = SIM_DICT["p"]
     N_OBS = SIM_DICT["n"]
-    N_SIMULATIONS = SIM_DICT['num_simulations']  # how many times simulation gets run
+    N_SIMULATIONS = SIM_DICT['num_simulations']
 
-    """Building containers to store simulation results."""
+    # Building containers to store simulation results.
     BETA_HAT = np.empty((N_FEATURES, N_SIMULATIONS))
     Y_HAT = np.empty((N_OBS, N_SIMULATIONS))
     RESIDUALS = np.empty((N_OBS, N_SIMULATIONS))
 
 
-    """Calculation of beta to corresponding optimal lambda."""
+    # Calculate beta estimates for cross-validated penalty terms.
 
     for i in range(N_SIMULATIONS):
         start_time_estimation = time()
@@ -54,7 +59,7 @@ if __name__ == "__main__":
         RESIDUALS[:, i] = y[:, i] - Y_HAT[:, i]
         end_time_estimation = time()
 
-
+    # Save timings for fused lasso setting.
     if REG_NAME == 'fused':
 
         with open(ppj("OUT_ANALYSIS", "time_list_{}.pickle".
@@ -68,6 +73,7 @@ if __name__ == "__main__":
                       format(SIM_NAME)), "wb") as out_file:
             pickle.dump(TIMINGS, out_file)
 
+    # Save estimation results.
     PENALTY_CV = [S1_OPT, S2_OPT]
     CONTAINER = [BETA_HAT, TRUE_BETA, PENALTY_CV, Y_HAT, RESIDUALS,
                  MSE, PARAMETER_GRID]

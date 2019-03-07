@@ -26,20 +26,22 @@ def generate_beta(num_features, number_blocks, length_blocks, block_height,
         | generated_blocks (np.ndarray)
 
     """
-
     max_blocks = math.floor(num_features / length_blocks)
     if max_blocks < number_blocks:
-        raise TypeError("""The number of blocks must not exceed the maximal number
+        raise ValueError("""The number of blocks must not exceed the maximal number
                         of blocks possible for given p and length of blocks.""")
-    generated_blocks = np.zeros(num_features)
 
+    non_zero = number_blocks* length_blocks + spikes
+    if num_features < non_zero:
+        raise ValueError("""The number of nonzero coefficients must not exceed p.""")
+
+    generated_blocks = np.zeros(num_features)
     start_blocks = np.random.choice(np.arange(max_blocks), number_blocks, replace=False)
 
+    # If the blocks should not all have equal levels, randomly chose
+    # block level from block_height and block_height *2.
     if levels:
-        """
-        If the Blocks should not all have equal levels, we will randomly chose
-        the level of each block as either block_height or block_height *2.
-        """
+
         heights = np.array([block_height, block_height*2])
         for block in start_blocks:
             random_height = np.random.choice(heights)
@@ -55,6 +57,7 @@ def generate_beta(num_features, number_blocks, length_blocks, block_height,
             for i in range(lower_bound, upper_bound):
                 generated_blocks[i] = block_height
 
+    # Set spikes if they should be inculded.
     if spikes != 0:
         non_blocks = []
         for i in range(num_features):
@@ -92,7 +95,6 @@ def generate_data(num_simulations, num_observations, num_features, num_blocks,
         | y (np.ndarray)
 
     """
-
     beta = np.zeros([num_features, num_simulations])
     for sim in range(num_simulations):
         beta[:, sim] = generate_beta(num_features, num_blocks, length_blocks,

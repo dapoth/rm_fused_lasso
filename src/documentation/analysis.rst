@@ -8,15 +8,11 @@ Documentation of the code in *src.analysis*. It contains a simulation study and 
 
 
 Fused lasso applied to simulated datasets
-==========================================
-
-At first the optimal penalty constants s1 and s2 are computed via cross-validation over a two-dimensional grid. 
+========================================== 
 
 .. automodule:: src.analysis.grid_cross_validation
     :members:
 
-    
-Then the three estimators lasso, fusion and fused lasso are computed for the four different settings described in :ref:`data_management`.
 
 .. automodule:: src.analysis.estimation
     :members:
@@ -25,16 +21,13 @@ Then the three estimators lasso, fusion and fused lasso are computed for the fou
 Monte Carlo
 ============
 
-For the setting **Large_blocks** (see :ref:`data_management`) a Monte Carlo simulation is conducted. The distribution of four different specific coefficients is analysed.
+For the setting **Large_blocks** (see :ref:`data_management`) a Monte Carlo simulation is conducted. The distribution of four different specific coefficients is analysed and plotted in a histogram.
 A coefficient:
 
 * in the center of a block
 * at the boundary of a block
 * which is zero and not next to a block
 * which is zero, but next to a block.
-    
-.. automodule:: src.analysis.monte_carlo
-    :members:
 
 
 Analysis of simulation

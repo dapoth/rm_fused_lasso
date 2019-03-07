@@ -1,3 +1,4 @@
+"""Transform directed acyclical graph to png file."""
 from subprocess import check_call
 from bld.project_paths import project_paths_join as ppj
 

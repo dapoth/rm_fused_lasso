@@ -4,7 +4,6 @@ import os
 
 def build(ctx):
 
-
     abspath = os.path.join(ctx.path.abspath(),'test_fused_lasso.py')
     ctx(
         features='run_py_script',

@@ -1,23 +1,21 @@
-"""Load simulation results from analysis and save them as a table."""
+"""Load results from simulation analysis and save them as a table."""
 import pickle
 import pandas as pd
 from bld.project_paths import project_paths_join as ppj
 
-# Load results from simulation analysis and add them to the list RESULTS.
+# Load results from simulation analysis and store them.
 RESULTS = []
 for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
     for reg in 'lasso', 'fused', 'fusion':
-        # with open("/home/david/uni/rm_fused_lasso/bld/out/analysis/analysis_fused_blocks_few_spikes.pickle", "rb") as in12_file:
-        #     analysis = pickle.load(in12_file)
-        #     analysis
-        with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
+        with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".
+                      format(reg, sim)), "rb") as in12_file:
             analysis = pickle.load(in12_file)
             analysis.append(sim)
             analysis.append(reg)
             RESULTS.append(analysis)
 RESULTS_PD = pd.DataFrame(RESULTS).round(2)
 
-# Add '(' and ')' around estimated standard errors.
+# Add brackets around estimated standard errors.
 COL_STD_ERR = [1, 3, 5, 7]
 for i in COL_STD_ERR:
     for j in range(12):

@@ -1,9 +1,8 @@
 import numpy
-from src.data_management.generate_data import generate_beta
-from src.data_management.generate_data import generate_data
 import pytest
 import sys
-from src.data_management.generate_data import generate_beta
+from src.data_management.functions_for_data_generation import generate_beta
+from src.data_management.functions_for_data_generation import generate_data
 
 
 @pytest.fixture
@@ -14,7 +13,7 @@ def setup_beta_generation():
     out['length_blocks'] = 3
     out['block_height'] = 3
     return out
-                      
+
 @pytest.fixture
 def setup_data_generation():
     out = {}
@@ -46,20 +45,20 @@ def expected_dimensions():
     out['y'] = (20, 100)
     out_dimensions = [out['beta'], out['X'], out['epsilon'], out['y']]
     return out_dimensions
-    
+
 def test_generate_beta(setup_beta_generation, expected_output):
     beta_hat = generate_beta(**setup_beta_generation)
     number_of_nonzeros = numpy.count_nonzero(beta_hat)
     expected_nonzeros = expected_output['blocks']
     numpy.testing.assert_array_equal(expected_nonzeros, number_of_nonzeros)
-    
+
 def test_generate_beta_with_levels(setup_beta_generation, expected_output):
     setup_beta_generation['levels'] = True
     beta_hat = generate_beta(**setup_beta_generation)
     number_of_nonzeros = numpy.count_nonzero(beta_hat)
     expected_nonzeros = expected_output['blocks']
     numpy.testing.assert_array_equal(expected_nonzeros, number_of_nonzeros)
-    
+
 def test_generate_beta_with_spikes(setup_beta_generation, expected_output):
     setup_beta_generation['spikes'] = 2
     beta_hat = generate_beta(**setup_beta_generation)
@@ -69,9 +68,9 @@ def test_generate_beta_with_spikes(setup_beta_generation, expected_output):
 
 def test_generate_too_many_blocks(setup_beta_generation):
     setup_beta_generation['number_blocks'] = 4
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         generate_beta(**setup_beta_generation)
-        
+
 def test_dimensionality_output_data_generation(setup_data_generation, expected_dimensions):
     beta, X, epsilon, y = generate_data(**setup_data_generation)
     dim_beta = beta.shape
@@ -80,9 +79,10 @@ def test_dimensionality_output_data_generation(setup_data_generation, expected_d
     dim_y = y.shape
     dimension = [dim_beta, dim_X, dim_epsilon, dim_y]
     numpy.testing.assert_array_equal(dimension, expected_dimensions)
-    
+
 
 
 if __name__== '__main__':
+    
     status = pytest.main([sys.argv[1]])
     sys.exit(status)

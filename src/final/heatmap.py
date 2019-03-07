@@ -1,4 +1,4 @@
-"""Plot heatmaps of gridCV for the calculated mean squared errors and grid (s1,s2) values."""
+"""Plot heatmaps for calculated mean squared errors of GridCV over s1 and s2."""
 import sys
 import pickle
 import json
@@ -22,11 +22,11 @@ if __name__ == "__main__":
     PARAMETERS = SIM_DATA[6]
     GRID_DENSITY = SIM_DICT['grid_density']
 
-    # Adapt 1d-array of test scores to a 2d-array for the heatmap.
+    # Reshape 1d-array of test scores to a 2d-array for the heatmaps.
     TEST_SCORE_MATRIX = np.reshape(np.abs(MEAN_TEST_SCORE), (GRID_DENSITY, GRID_DENSITY))
     TEST_SCORE_MATRIX = np.flip(TEST_SCORE_MATRIX)
 
-    # Extract s1 and s2 value for axis labeling
+    # Extract s1 and s2 values for axis labeling.
     S2_GRID = np.zeros(GRID_DENSITY)
     for i in range(GRID_DENSITY):
         S2_GRID[i] = round(PARAMETERS[i]['s2'], 1)
@@ -34,9 +34,10 @@ if __name__ == "__main__":
     S1_GRID = np.zeros(len(MEAN_TEST_SCORE))
     for i in range(len(MEAN_TEST_SCORE)):
         S1_GRID[i] = round(PARAMETERS[i]['s1'], 1)
-    S1_GRID_UNI = np.flip(np.unique(S1_GRID))   #Values repeat them self, therefore unique.
+    S1_GRID_UNI = np.flip(np.unique(S1_GRID))   # s1 values repeat themselves
 
-    # Create heatmap
+    # Create heatmaps.
     HEATMAP = seaborn.heatmap(TEST_SCORE_MATRIX,
                               xticklabels=S2_GRID, yticklabels=S1_GRID_UNI)
     plt.savefig(ppj("OUT_FIGURES", "heatmap_{}.png".format(SIM_NAME)))
+    plt.clf()
