@@ -61,11 +61,6 @@ def build(ctx):
   	 source='fused_lasso_solution_path_plot.py',
      target=ctx.path_to(ctx, 'OUT_FIGURES', 'plot_solutionpath_fused_lasso.png')
     )
-    ctx(
-     features='run_py_script',
-  	 source='signal_lasso_plot.py',
-     target=ctx.path_to(ctx, 'OUT_FIGURES', 'signal_lasso_plot.png')
-    )
 
     for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
             ctx(

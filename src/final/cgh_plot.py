@@ -7,7 +7,7 @@ from src.model_code.fused_lasso_primal import fused_lasso_primal
 
 if __name__ == "__main__":
 
-    #Set penalty constants and CGH data and estimate fused lasso results.
+    # Set penalty constants, load CGH data and estimate fused lasso.
     CGH_DATA = np.loadtxt(ppj("IN_DATA", "cgh.txt"))
     BETA_HAT = fused_lasso_primal(CGH_DATA, np.identity(len(CGH_DATA)),
                                   160, 15)

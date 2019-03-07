@@ -1,5 +1,8 @@
-"""
-Plot for each of the four settings the application of the three estimators to one dataset of the setting. Arrange the images in a two by two manner.
+"""Plot beta estimations for all settings and estimators.
+
+For each combination of the four settings and three estimators create plots of
+the estimated betas for one simulation step. Arrange the plots in a two by two
+manner for each setting.
 
 """
 import pickle

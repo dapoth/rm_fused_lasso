@@ -1,3 +1,4 @@
+"""Generate DAG file."""
 import functools
 from pathlib import Path
 import graphviz as gv
