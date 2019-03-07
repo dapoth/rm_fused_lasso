@@ -15,7 +15,7 @@ def setup_param_lasso():
     out_dual['y'] = [0.25, 3]
     out_dual['X'] = np.identity(2)
     out_dual['lambda1'] = 1
-    out_dual['lambda2'] = 0
+    out_dual['lambda2'] = 0.000001
 
     out_primal = {}
     out_primal['y'] = [0.25, 3]
