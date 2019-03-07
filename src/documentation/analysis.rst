@@ -7,8 +7,8 @@ Main model simulations
 Documentation of the code in *src.analysis*. It contains a simulation study and a Monte Carlo simulation.
 
 
-Fused Lasso example
-===================
+Fused lasso applied to simulated datasets
+==========================================
 
 At first the optimal penalty constants s1 and s2 are computed via cross-validation over a two-dimensional grid. 
 
@@ -25,7 +25,7 @@ Then the three estimators lasso, fusion and fused lasso are computed for the fou
 Monte Carlo
 ============
 
-For the setting Large_blocks a Monte Carlo simulation is conducted. The distribution of four different specific coefficients is analysed.
+For the setting **Large_blocks** (see :ref:`data_management`) a Monte Carlo simulation is conducted. The distribution of four different specific coefficients is analysed.
 A coefficient:
 
 * in the center of a block

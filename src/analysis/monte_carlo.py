@@ -15,7 +15,7 @@ if __name__ == "__main__":
                               encoding="utf-8"))
 
     """Plot distribution."""
-    BETA = ANALYSIS[1][:, 1]   #true_beta[:, 1]  # nimm ein echtes beta
+    BETA = ANALYSIS[1][:, 1]   #true_beta[:, 1]
     S1_OPT = ANALYSIS[2][0]
     S2_OPT = ANALYSIS[2][1]
 

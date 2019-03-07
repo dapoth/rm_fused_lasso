@@ -1,3 +1,7 @@
+"""
+Plot for each of the four settings the application of the three estimators to one dataset of the setting. Arrange the images in a two by two manner.
+
+"""
 import pickle
 import matplotlib.pyplot as plt
 from bld.project_paths import project_paths_join as ppj

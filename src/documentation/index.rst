@@ -13,9 +13,9 @@ Welcome to the Fused Lasso project's documentation!
     introduction
     original_data
     data_management
+    model_specs
+    model_code
     analysis
     final
     paper
-    model_code
-    model_specs
     references

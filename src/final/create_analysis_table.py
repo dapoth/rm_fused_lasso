@@ -1,4 +1,4 @@
-"""Load simulation results fromu analysis and save them as table."""
+"""Load simulation results from analysis and save them as a table."""
 import pickle
 import pandas as pd
 from bld.project_paths import project_paths_join as ppj
