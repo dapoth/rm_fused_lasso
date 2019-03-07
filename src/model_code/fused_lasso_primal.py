@@ -2,7 +2,7 @@ import cvxpy as cp
 import numpy as np
 
 def fused_lasso_primal(y, X, s1, s2):
-    """Compute fused lasso estimates for given penalty constraints s1 and s2.
+    """Compute fused lasso estimates of the primal problem for given penalty constraints s1 and s2.
 
     Args:
         | y (np.ndarray): 1d array of dependent variables
