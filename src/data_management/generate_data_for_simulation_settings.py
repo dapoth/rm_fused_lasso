@@ -1,9 +1,9 @@
-"""
-Generate data for all four settings with the help of the generate_data function
-and the model parameters for each seetting as specified in the JSON files.
+"""Generate data for all four settings.
+
+Generate data with the generate_data function and model parameters for each
+setting as specified in the json files.
 
 """
-
 import pickle
 import sys
 import json
@@ -12,16 +12,14 @@ from bld.project_paths import project_paths_join as ppj
 from functions_for_data_generation import generate_data
 
 
-
-
 if __name__ == "__main__":
-    #reg_name = sys.argv[1]
+
     SIN_NAME = sys.argv[1]
     SIM = json.load(open(ppj("IN_MODEL_SPECS", SIN_NAME + ".json"),
                          encoding="utf-8"))
-
     np.random.seed(420)
-    ##### Load Model specs
+
+    # Load data from json file.
     N_SIMULATIONS = SIM['num_simulations']
     N_FEATURES = SIM['p']
     N_OBS = SIM['n']
@@ -32,10 +30,10 @@ if __name__ == "__main__":
     LEVELS = SIM['levels']
     SPIKES = SIM['spikes']
 
+    # Generate data with loaded information.
     [BETA, X, EPSILON, Y] = generate_data(N_SIMULATIONS, N_OBS, N_FEATURES,
                                           N_BLOCKS, LENGTH_BLOCKS, HEIGHT_BLOCKS,
                                           HEIGHT_SPIKE, LEVELS, SPIKES)
-
     DATASET = [BETA, X, EPSILON, Y]
 
     with open(ppj("OUT_DATA", "data_{}.pickle".format(SIN_NAME)), "wb") as out_file:
