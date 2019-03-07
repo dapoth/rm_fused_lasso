@@ -1,4 +1,4 @@
-"""Plot heatmaps for calculated mean squared errors of gridCV over s1 and s2."""
+"""Plot heatmaps for calculated mean squared errors of GridCV over s1 and s2."""
 import sys
 import pickle
 import json

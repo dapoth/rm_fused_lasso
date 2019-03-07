@@ -1,4 +1,4 @@
-"""Plot the solution path of the fused lasso estimator for fixed s1."""
+"""Plot the solution path of the fused lasso estimator for fixed lambda1."""
 import cvxpy as cp
 import numpy as np
 import matplotlib.pyplot as plt
