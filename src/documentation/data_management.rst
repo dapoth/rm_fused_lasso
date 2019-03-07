@@ -17,15 +17,14 @@ These settings were chosen to demonstrate the performance of the fused lasso in 
 Generate data for all simulations
 ==================================
 
-.. automodule:: src.data_management.generate_data
+.. automodule:: src.data_management.functions_for_data_generation
     :members:
 
-    
+
 Tests
 ======
 
 We perform tests for the generate_beta function and the generate_data function. For the generate_beta function we test that it produces the right amount of nonzero coefficients and raises an error, when one tries to run the function with invalid input (there are too many blocks for the number of regressors). Further we test that the dimensions of the output of generate_data are correct, so we have valid datasets for the analysis.
 
-.. automodule:: src.data_management.test_data_generation
+.. automodule:: src.data_management.test_functions_for_data_generation
     :members:
-    

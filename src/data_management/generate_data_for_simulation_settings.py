@@ -9,8 +9,7 @@ import sys
 import json
 import numpy as np
 from bld.project_paths import project_paths_join as ppj
-#from src.model_code.generate_data import generate_data
-from generate_data import generate_data
+from functions_for_data_generation import generate_data
 
 
 

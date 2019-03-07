@@ -12,12 +12,12 @@ def build(ctx):
             target=ctx.path_to(ctx, 'OUT_DATA', 'data_{}.pickle'.format(sim)),
             append=sim
         )
-     
-     
-    abspath = os.path.join(ctx.path.abspath(),'test_data_generation.py')
+
+
+    abspath = os.path.join(ctx.path.abspath(),'test_functions_for_data_generation.py')
     ctx(
         features='run_py_script',
-        source='test_data_generation.py',
-        deps='generate_data.py',
+        source='test_functions_for_data_generation.py',
+        deps='functions_for_data_generation.py',
         append=abspath
     )

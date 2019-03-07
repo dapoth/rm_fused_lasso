@@ -75,7 +75,7 @@ def expected_beta():
 def test_lasso_signal_dual(setup_param_lasso, expected_beta):
     expected_beta_lasso_signal = expected_beta["values_signal"]["lasso"]
     calculated_beta_dual = fused_lasso_lagrange(**setup_param_lasso["data_dual"])
-    assert_allclose(expected_beta_lasso_signal, calculated_beta_dual, atol=1e-2)
+    assert_allclose(expected_beta_lasso_signal, calculated_beta_dual, atol=2e-2)
 
 
 def test_lasso_signal_primal(setup_param_lasso, expected_beta):
@@ -91,7 +91,7 @@ def test_lasso_general_dual(setup_param_lasso, expected_beta):
     expected_beta_lasso_general = expected_beta["values_general"]["lasso"]
     calculated_beta_dual = fused_lasso_lagrange(**setup_param_lasso["data_dual"])
     assert_allclose(expected_beta_lasso_general, calculated_beta_dual,
-                    atol=1e-2)
+                    atol=2e-2)
 
 
 def test_lasso_general_primal(setup_param_lasso, expected_beta):
@@ -109,7 +109,7 @@ def test_fused_lasso_signal_dual(setup_param_fused_lasso, expected_beta):
     calculated_beta_dual = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
                                                                       "dual"])
     assert_allclose(expected_beta_fused_lasso_signal, calculated_beta_dual,
-                    atol=1e-2)
+                    atol=2e-2)
 
 
 def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
@@ -120,7 +120,7 @@ def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
     calculated_beta_dual = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
                                                                       "dual"])
     assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual,
-                    atol=1e-2)
+                    atol=2e-2)
 
 
 # Test the functionality of the flestimator.
@@ -130,7 +130,7 @@ def test_flestimator(setup_param_flestimator, expected_beta):
     expected_beta_fused_lasso_signal = expected_beta["values_signal"]['fused_'
                                                                       'lasso']
     assert_allclose(expected_beta_fused_lasso_signal, beta_hat,
-                    atol=1e-2)
+                    atol=2e-2)
 
 
 # Test that the function does not work with incorrect input.
