@@ -39,6 +39,6 @@ def fused_lasso_solution_path(response, explanatory_var):
         plt.plot(gamma2_vals, [xi[i] for xi in x2_values])
     plt.xlabel(r'$\lambda_2$', fontsize=16)
     plt.ylabel(r'$\hat{\beta}_{i}$', fontsize=16)
-    plt.title('Neighbouring to the block')
+    plt.title(r'Entries of $\hat{\beta}$ vs. $\lambda_1$')
 
     plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_fused_lasso.png"))
