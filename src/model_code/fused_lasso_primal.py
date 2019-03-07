@@ -5,10 +5,10 @@ def fused_lasso_primal(y, X, s1, s2):
     """Compute fused lasso estimates for given penalty constraints s1 and s2.
 
     Args:
-        y (np.ndarray): 1d array of dependent variables
-        X (np.ndarray): 2d array of independent variables
-        s1 (float): constraint on ||b||_1
-        s2 (float): constraint on the absolute jumps in beta
+        | y (np.ndarray): 1d array of dependent variables
+        | X (np.ndarray): 2d array of independent variables
+        | s1 (float): constraint on ||b||_1
+        | s2 (float): constraint on the absolute jumps in beta
 
     Returns:
         beta.value (np.ndarray)

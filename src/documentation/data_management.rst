@@ -5,7 +5,7 @@ Data management
 ***************
 
 
-Documentation of the code in *src.data_management*. In this section are all the relevant codes for the generation of the simulation data. From the JSON files in :ref:`model_specs` all the relevant model parameters are extracted to generate four different datasets.
+Documentation of the code in *src.data_management*. In this section are all the codes for the generation of the simulation data. From the JSON files in :ref:`model_specs` all the relevant model parameters are extracted to generate four different datasets.
 
 1. Large_blocks
 2. Small_blocks
