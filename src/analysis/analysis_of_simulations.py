@@ -28,6 +28,7 @@ if __name__ == "__main__":
     RESIDUALS = SIMULATED_DATA[4]
 
     N_FEATURES = SIM_DICT["p"]
+    N_OBS = SIM_DICT["n"]
     N_BLOCKS = SIM_DICT['number_of_blocks']
     LENGTH_BLOCKS = SIM_DICT['length_blocks']
     HEIGHT = SIM_DICT['amplitude']
@@ -37,7 +38,7 @@ if __name__ == "__main__":
 
     SIMULATION_RESULTS = []
 
-    MSE = np.sum(np.square(RESIDUALS))
+    MSE = 1/N_OBS*np.sum(np.square(RESIDUALS), axis=0)
 
     MEAN_MSE = np.mean(MSE)
     STD_MSE = np.std(MSE)
@@ -57,38 +58,38 @@ if __name__ == "__main__":
     SIMULATION_RESULTS.append(np.std(CORRECT_ZERO))
 
     # count the spikes
-    SPIKE_COUNT = []
-    if SIM_DICT["spikes"] >= 1:
-        for i in range(N_SIMULATIONS):
-
-            count = 0
-            for j in range(N_FEATURES):  # 0 bis 499
-                if j == (N_FEATURES-1):
-                    break
-
-                if ((j == 0) and (TRUE_BETA[1, i] == 0) and
-                        (BETA_HAT[j, i] > HEIGHT / 2) and (TRUE_BETA[0, i] > 0)):
-                    count = count + 1
-
-                if ((j == (N_FEATURES-1)) and (BETA_HAT[(N_FEATURES-1), i] > 2) and
-                        (TRUE_BETA[N_FEATURES-2, i] == 0) and (TRUE_BETA[N_FEATURES-1, i] > 0)):
-                    count = count + 1
-
-                if ((TRUE_BETA[j-1, i] == 0) and (TRUE_BETA[j+1, i] == 0) and
-                        (BETA_HAT[j, i] > HEIGHT/2) and (TRUE_BETA[j, i] > 0)):
-                    count = count + 1
-
-            SPIKE_COUNT.append(count)
-        SPIKE_COUNT = np.array(SPIKE_COUNT) / SPIKES
-        SIMULATION_RESULTS.append(np.mean(SPIKE_COUNT))
-        SIMULATION_RESULTS.append(np.std(SPIKE_COUNT))
-
-    else:
-        SIMULATION_RESULTS.append('--')
-        SIMULATION_RESULTS.append('--')
+    # SPIKE_COUNT = []
+    # if SIM_DICT["spikes"] >= 1:
+    #     for i in range(N_SIMULATIONS):
+    #
+    #         count = 0
+    #         for j in range(N_FEATURES):  # 0 bis 499
+    #             if j == (N_FEATURES-1):
+    #                 break
+    #
+    #             if ((j == 0) and (TRUE_BETA[1, i] == 0) and
+    #                     (BETA_HAT[j, i] > HEIGHT / 2) and (TRUE_BETA[0, i] > 0)):
+    #                 count = count + 1
+    #
+    #             if ((j == (N_FEATURES-1)) and (BETA_HAT[(N_FEATURES-1), i] > 2) and
+    #                     (TRUE_BETA[N_FEATURES-2, i] == 0) and (TRUE_BETA[N_FEATURES-1, i] > 0)):
+    #                 count = count + 1
+    #
+    #             if ((TRUE_BETA[j-1, i] == 0) and (TRUE_BETA[j+1, i] == 0) and
+    #                     (BETA_HAT[j, i] > HEIGHT/2) and (TRUE_BETA[j, i] > 0)):
+    #                 count = count + 1
+    #
+    #         SPIKE_COUNT.append(count)
+    #     SPIKE_COUNT = np.array(SPIKE_COUNT) / SPIKES
+    #     SIMULATION_RESULTS.append(np.mean(SPIKE_COUNT))
+    #     SIMULATION_RESULTS.append(np.std(SPIKE_COUNT))
+    #
+    # else:
+    #     SIMULATION_RESULTS.append('--')
+    #     SIMULATION_RESULTS.append('--')
 
     # to avoid dividing by zero in the spike setting since in that case number of blocks is 0
-    if REG_NAME == 'spikes':
+    if SIM_NAME == 'spikes':
         SIMULATION_RESULTS.append('--')
         SIMULATION_RESULTS.append('--')
 
@@ -98,7 +99,7 @@ if __name__ == "__main__":
                                 ((BETA_HAT >= 0.75*LEVELS) & (BETA_HAT <= 1.25*LEVELS)
                                  & (TRUE_BETA == LEVELS)), axis=0)
 
-        PERCENT_BLOCKS = np.array(COUNTER_BLOCKS) / 1 *  (LENGTH_BLOCKS * N_BLOCKS)
+        PERCENT_BLOCKS = np.array(COUNTER_BLOCKS / (LENGTH_BLOCKS * N_BLOCKS))
         SIMULATION_RESULTS.append(np.mean(PERCENT_BLOCKS))
         SIMULATION_RESULTS.append(np.std(PERCENT_BLOCKS))
 

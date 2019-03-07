@@ -49,14 +49,14 @@ if __name__ == "__main__":
 
     if REG_NAME == 'lasso':
         LASSO_GRID = {
-            's1': list(np.linspace(S1_MIN, S1_MAX, GRID_DENSITY))
+            's1': list(np.linspace(S1_MIN, SIM_DICT["s1_max_lasso"], GRID_DENSITY))
         }
         FUSION_GRID = {
             's2': list(np.linspace(1190, 1200, 1))
         }
 
         TWO_D_GRID = [{
-            's1': list(np.linspace(S1_MIN, S1_MAX, GRID_DENSITY)),
+            's1': list(np.linspace(S1_MIN, SIM_DICT["s1_max_lasso"], GRID_DENSITY)),
             's2': list(np.linspace(1190, 1200, 1))
         }]
 
@@ -65,11 +65,11 @@ if __name__ == "__main__":
             's1': list(np.linspace(1190, 1200, 1))
         }
         FUSION_GRID = {
-            's2': list(np.linspace(S2_MIN, S2_MAX, GRID_DENSITY))
+            's2': list(np.linspace(S2_MIN, SIM_DICT["s2_max_fusion"], GRID_DENSITY))
         }
         TWO_D_GRID = [{
             's1': list(np.linspace(1190, 1200, 1)),
-            's2': list(np.linspace(S2_MIN, S2_MAX, GRID_DENSITY))
+            's2': list(np.linspace(S2_MIN, SIM_DICT["s2_max_fusion"], GRID_DENSITY))
         }]
 
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     CLF = GridSearchCV(fle(LASSO_GRID, FUSION_GRID), TWO_D_GRID,
                        scoring='neg_mean_squared_error',
                        n_jobs=-1, iid=False, refit=True,
-                       cv=3, verbose=0, pre_dispatch='2*n_jobs',
+                       cv=5, verbose=0, pre_dispatch='2*n_jobs',
                        error_score='raise-deprecating',
                        return_train_score='warn')
 

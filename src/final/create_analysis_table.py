@@ -7,6 +7,9 @@ from bld.project_paths import project_paths_join as ppj
 RESULTS = []
 for sim in 'large_blocks', 'blocks_few_spikes', 'small_blocks', 'spikes':
     for reg in 'lasso', 'fused', 'fusion':
+        # with open("/home/david/uni/rm_fused_lasso/bld/out/analysis/analysis_fused_blocks_few_spikes.pickle", "rb") as in12_file:
+        #     analysis = pickle.load(in12_file)
+        #     analysis
         with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle".format(reg, sim)), "rb") as in12_file:
             analysis = pickle.load(in12_file)
             analysis.append(sim)
@@ -21,9 +24,7 @@ for i in COL_STD_ERR:
         RESULTS_PD.iloc[j, i] = '(' + str(RESULTS_PD.iloc[j, i]) + ')'
 
 # Relabel axis and index.
-IDX_NAME = {0:'Lasso', 1:'Fused', 2: 'Fusion', 3:'Lasso', 4:'Fused', 5: 'Fusion',
-            6:'Lasso', 7:'Fused', 8: 'Fusion', 9:'Lasso', 10:'Fused', 11: 'Fusion'}
-COLUMN_NAME = {0:"sensitivity", 1:"", 2:"specificity", 3:"", 4:"spikes", 5:"",
+COLUMN_NAME = {0: "MSE", 1:"", 2:"sensitivity", 3:"", 4:"specificity", 5:"",
                6:"blocks", 7:"", 8:"Setting", 9:"Method"}
 RESULTS_PD = RESULTS_PD.rename(columns=COLUMN_NAME)
 RESULTS_PD = RESULTS_PD.set_index(["Setting", "Method"])
