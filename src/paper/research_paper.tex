@@ -1154,6 +1154,10 @@ with open(ppj("OUT_ANALYSIS", "analysis_{}_{}.pickle"
 	pickle.dump(container_analysis, out_file)
 \end{python}
 
+
+%\lstset{title={tests}}
+% \pythonexternal{rm_fused_lasso/src/model_code/fused_lasso_dual.py}
+
 \section{Proofs}
 
 \subsection{Convexity of solution set for fixed $\lambda$}
@@ -1334,3 +1338,4 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 %    For the Lasso criterion  
 %    $$ \min_{b\in\RR^p}S_\lambda(b)=\frac{1}{n}(y_i-X_i^Tb)^2+\lambda||b||_1,\qquad \lambda>0$$
 %    there exists $ b_\lambda\in\argmin_{b\in R^p}S_\lambda(b)$.\footnote{Proof: For }
+
