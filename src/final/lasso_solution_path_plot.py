@@ -1,3 +1,4 @@
+"""Plot the solution path of the lasso estimator."""
 import numpy as np
 from src.model_code.lasso_solution_path import lasso_solution_path
 from bld.project_paths import project_paths_join as ppj

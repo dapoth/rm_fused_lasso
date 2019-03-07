@@ -30,4 +30,4 @@ First we call data_management. Here the data for the simulation is generated and
 
 The estimators as well as the data generation are tested by means of unit tests.
 
-After estimation we analyze the results in :ref:`model_analysis`. On the basis of this analysis plots and a table are constructed in :ref:`final` and saved under bld.out.figures. They are also included in the paper, which is created in :ref:`paper`.
+After estimation we analyze the results in :ref:`analysis`. On the basis of this analysis plots and a table are constructed in :ref:`final` and saved under bld.out.figures. They are also included in the paper, which is created in :ref:`paper`.

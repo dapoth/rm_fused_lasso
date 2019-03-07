@@ -8,10 +8,14 @@ Visualisation and results formatting
 Documentation of the code in *src.final*. The folder generates the plots and the table of the results of the simulation.
 
 
-CGH Data
-=================
+Estimators applied to one dataset of each of the four settings.
+================================================================
 
-Apply the fused lasso estimator to the CGH data contained in :ref:`original_data` and plot it.
+.. automodule:: src.final.plot_different_estimators
+    :members:
+
+Fused lasso signal approximator applied to CGH Data
+====================================================
 
 .. automodule:: src.final.cgh_plot
     :members:
@@ -19,10 +23,10 @@ Apply the fused lasso estimator to the CGH data contained in :ref:`original_data
 Table with the results from the simulation
 ===========================================
 
-The table reports the mean squared error of the corresponding estimator, the specificity (proportion of true zeros detected), the sensitivity (proportion of true non-zeros detected) and the percentage of blocks detected as well as standard errors.
-
 .. automodule:: src.final.create_analysis_table
     :members:
+    
+The table reports the mean squared error of the corresponding estimator, the specificity (proportion of true zeros detected), the sensitivity (proportion of true non-zeros detected) and the percentage of blocks detected as well as standard errors.
     
 Create solution paths for lasso and fused lasso
 ================================================

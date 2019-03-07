@@ -1,6 +1,6 @@
 """
 For each of the four settings and for the lasso, fusion estimator and fused
-lasso compute the mean sqaured error, the standard errors and the proportion of
+lasso compute the mean squared error, the standard errors and the proportion of
 correctly estimated blocks and zeros.
 
 """
