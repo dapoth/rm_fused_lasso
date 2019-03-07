@@ -17,7 +17,7 @@ The estimator is implemented both as a solution to the lagrange function and as 
 Fused lasso estimator of the lagrange problem
 ==============================================
 
-.. automodule:: src.model_code.fused_lasso_dual
+.. automodule:: src.model_code.fused_lasso_lagrange
     :members:
     
     

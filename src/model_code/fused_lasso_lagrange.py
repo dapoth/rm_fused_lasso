@@ -1,7 +1,7 @@
 import cvxpy as cp
 import numpy as np
 
-def fused_lasso_dual(y, X, lambda1, lambda2):
+def fused_lasso_lagrange(y, X, lambda1, lambda2):
     """Solves for given data and penalty constants the fused lasso dual form.
 
     Args:
