@@ -52,23 +52,23 @@ if __name__ == "__main__":
             's1': list(np.linspace(S1_MIN, SIM_DICT["s1_max_lasso"], GRID_DENSITY))
         }
         FUSION_GRID = {
-            's2': list(np.linspace(1190, 1200, 1))
+            's2': list(np.linspace(11900, 12000, 1))
         }
 
         TWO_D_GRID = [{
             's1': list(np.linspace(S1_MIN, SIM_DICT["s1_max_lasso"], GRID_DENSITY)),
-            's2': list(np.linspace(1190, 1200, 1))
+            's2': list(np.linspace(11900, 12000, 1))
         }]
 
     if REG_NAME == 'fusion':
         LASSO_GRID = {
-            's1': list(np.linspace(1190, 1200, 1))
+            's1': list(np.linspace(11900, 12000, 1))
         }
         FUSION_GRID = {
             's2': list(np.linspace(S2_MIN, SIM_DICT["s2_max_fusion"], GRID_DENSITY))
         }
         TWO_D_GRID = [{
-            's1': list(np.linspace(1190, 1200, 1)),
+            's1': list(np.linspace(11900, 12000, 1)),
             's2': list(np.linspace(S2_MIN, SIM_DICT["s2_max_fusion"], GRID_DENSITY))
         }]
 

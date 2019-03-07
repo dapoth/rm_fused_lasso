@@ -16,23 +16,13 @@
 \usepackage{booktabs}
 \usepackage{placeins}
 \usepackage{subcaption}
-%\usepackage{singlespacing}{setspace}
-%\usepackage[colorlinks,
-%pdfpagelabels,
-%pdfstartview = FitH,
-%bookmarksopen = true,
-%bookmarksnumbered = true,
-%linkcolor = black,
-%plainpages = false,
-%hypertexnames = false,
-%citecolor = black] {hyperref}    %This package enables links to sections from table of contents etc.
+\usepackage{hyperref}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\sgn}{sgn}
-\bibliographystyle{alpha}
 \usepackage[pdf]{graphviz}
 
 
@@ -88,7 +78,7 @@ showstringspaces=false            %
 \begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
 	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
 
-	\center % Centre everything on the page
+	\center % Center everything on the page
 
 	%------------------------------------------------
 	%  Headings
@@ -131,10 +121,6 @@ showstringspaces=false            %
 			Prof. Dr. Dominik \textsc{Liebl} % Supervisor's name
 		\end{flushright}
 	\end{minipage}
-
-	% If you don't want a supervisor, uncomment the two lines below and comment the code above
-	%{\large\textit{Author}}\\
-	%John \textsc{Smith} % Your name
 
 	%------------------------------------------------
 	%	Date
@@ -181,7 +167,7 @@ Methods for dealing with high-dimensional data are increasingly relevant in near
 
 When analyzing high-dimensional data traditional methods as ordinary least squares turn out not to be appropriate. With traditional methods one is likely to encounter infeasible computation times, non-unique solutions and overfitting. Without constraints the OLS estimator would for example fit the data perfectly for $p$ equal to $N$, resulting in weak out-of-sample forecasts. The reason is that the fit captures the noise of the given sample and not only the true underlying model of regressors and outcome. In such a case we say the model is overfit.
 In order to analyze high-dimensional data “regularization” becomes necessary. This means the estimators need to be constrained in their degrees of freedom in order to avoid overfitting \citep{belloni2014}.
-%complexity regularization will be necessary.  We focus here on regularizationwith the l1-penalty.
+%complexity regularization will be necessary.  We focus here on regularization with the l1-penalty.
 
 We examine one of the established methods for dealing with this kind of set-up, the Least Absolute Shrinkage and Selection Operator, short lasso and a modification of it, the fused lasso. Both are outputs of a penalized least squares regression.
 
@@ -293,7 +279,7 @@ The objective function of the lasso estimator is given by
 \begin{equation}
 S_{\lambda}(b) := \sum_{i=1}^{n}(y_i-x_i'b)^2+\lambda||b||_1.
 \end{equation}
-This function is not differentiable at zero since the absolute value is not. Still we know the following: $b$ is a global minimum of $S_\lambda$ iff it is a local minimum due to convexity of $S_\lambda$. If we denote by $s_j^{-}$ the left partial derivative of $b$ with respect to the $j-$th coordinate and by $s_j^{+}$ the right one, we get the following conditions. If $b$ is a minimum of $S_\lambda(b)$ then for all $j$:
+This function is not differentiable at zero since the absolute value is not. Still we know the following: $b$ is a global minimum of $S_\lambda$, iff it is a local minimum due to convexity of $S_\lambda$. If we denote by $s_j^{-}$ the left partial derivative of $b$ with respect to the $j-$th coordinate and by $s_j^{+}$ the right one, we get the following conditions. If $b$ is a minimum of $S_\lambda(b)$ then for all $j$:
 \begin{align*}
 	s_j^{-} &\leq 0 \\
 	s_j^{+} &\geq 0.
@@ -726,7 +712,7 @@ We observe that for both coefficients inside the block it seems like the estimat
 \begin{table}
 	\centering
 	\scriptsize
-	\input{../../out/figures/mytable.tex}	
+	%\input{../../out/figures/mytable.tex}
 	\caption{Results of the simulation study.}
 \end{table}
 \section{Real Data Application} \label{sec: real data}
@@ -753,7 +739,7 @@ Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 =
 \FloatBarrier
 \section{Conclusion}
 
-W have studied two specific penalized regressions for high-dimensional data. The lasso for sparse settings and the fused lasso for sparse block settings. We showed that the fused lasso outperforms lasso in cases for which fused lasso was designed.
+We have studied two specific penalized regressions for high-dimensional data. The lasso for sparse settings and the fused lasso for sparse block settings. We showed that the fused lasso outperforms lasso in cases for which fused lasso was designed.
 The choice of appropriate penalty constants is challenging and can be seen as a weakness of the fused lasso.
 Our approach to the problem is cross-validation on a two dimensional grid. Due to complexity of the fused lasso minimization problem only few asymptotic results are available. However the results for the fused lasso signal approximator provide ideas for the general case. Our work could be extended to the two-dimensional fused lasso and to other model generalizations.
 %\begin{enumerate}
@@ -1295,19 +1281,20 @@ As $\lambda_1$ was chosen arbitrarily in the proof it holds for all $\lambda_1 >
 		\caption{Fusion estimator applied to the four settings.}
 	\end{figure}
 
-\begin{figure}[h]
-\includegraphics[width=\textwidth]{../../out/figures/plot_lasso.png}
-\caption{Lasso estimator applied to the four settings.}
-\end{figure}
+	\begin{figure}[h]
+		\includegraphics[width=\textwidth]{../../out/figures/plot_lasso.png}
+		\caption{Lasso estimator applied to the four settings.}
+	\end{figure}
 
-\begin{figure}[h]
-	\includegraphics[width=\textwidth]{../../out/figures/monte_carlo_fused_large_blocks.png}
-	\caption{Results of Monte-Carlo simulation..}
-\end{figure}
+	\begin{figure}[h]
+		\includegraphics[width=\textwidth]{../../out/figures/monte_carlo_fused_large_blocks.png}
+		\caption{Results of Monte-Carlo simulation..}
+	\end{figure}
 
 
 \clearpage
 
+\bibliographystyle{ecta}
 \bibliography{refs}
 
 \end{document}
