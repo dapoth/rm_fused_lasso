@@ -1,15 +1,7 @@
 import functools
-
 from pathlib import Path
-
 import graphviz as gv
-
 from waflib import Utils
-
-
-
-
-
 
 graph = functools.partial(gv.Graph, format="png")
 digraph = functools.partial(gv.Digraph, format="png")

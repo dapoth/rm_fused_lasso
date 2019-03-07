@@ -1,16 +1,18 @@
 {
     "n": 40,
-    "p": 201,
+    "p": 200,
     "number_of_blocks": 3,
     "amplitude": 3,
     "length_blocks": 9,
     "spikes": 3,
     "spike_level": 7,
-    "levels": 1,
-    "s1_min": 1,
-    "s1_max": 250,
+    "levels": 0,
+    "s1_min": 45,
+    "s1_max": 125,
+    "s1_max_lasso": 100,
     "s2_min": 1,
-    "s2_max": 250,
+    "s2_max": 80,
+    "s2_max_fusion": 70,
     "num_simulations": 200,
     "grid_density": 20
 }
