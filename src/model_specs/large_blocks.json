@@ -8,11 +8,11 @@
     "spike_level": 0,
     "levels": 1,
     "s1_min": 45,
-    "s1_max": 110,
-    "s1_max_lasso": 90,
+    "s1_max": 100,
+    "s1_max_lasso": 50,
     "s2_min": 1,
-    "s2_max": 40,
-    "s2_max_fusion": 30,
+    "s2_max": 20,
+    "s2_max_fusion": 10,
     "num_simulations": 200,
     "grid_density": 20
 }
