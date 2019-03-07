@@ -5,10 +5,10 @@ def fused_lasso_dual(y, X, lambda1, lambda2):
     """Solves for given data and penalty constants the fused lasso dual form.
 
     Args:
-        y (np.ndarray): 1d array of dependent variables
-        X (np.ndarray): 2d array of independent variables
-        s1 (float): constraint on ||b||_1
-        s2 (float): constraint on the absolute jumps in beta
+        | y (np.ndarray): 1d array of dependent variables
+        | X (np.ndarray): 2d array of independent variables
+        | s1 (float): constraint on ||b||_1
+        | s2 (float): constraint on the absolute jumps in beta
 
     Returns:
         beta.value (np.ndarray)

@@ -12,17 +12,17 @@ def generate_beta(num_features, number_blocks, length_blocks, block_height,
     randomly setting *number_blocks* of them non-zero.
 
     Args:
-        num_features (int): number of features
-        number_blocks (int): non overlapping feature blocks to create
-        length_blocks (int): the length of feature blocks to create
-        block_height (int): height of basis feature blocks
-        spike_height (int): height of spikes
-        levels (boolean): indicate whether blocks should two different
-            possible heights
-        spikes (int): number of spikes to be added
+        | num_features (int): number of features
+        | number_blocks (int): non overlapping feature blocks to create
+        | length_blocks (int): the length of feature blocks to create
+        | block_height (int): height of basis feature blocks
+        | spike_height (int): height of spikes
+        | levels (boolean): indicate whether blocks should have two 
+            different possible heights
+        | spikes (int): number of spikes to be added
 
     Returns:
-        generated_blocks (np.ndarray)
+        | generated_blocks (np.ndarray)
 
     """
     max_blocks = math.floor(num_features / length_blocks)
@@ -74,20 +74,20 @@ def generate_data(num_simulations, num_observations, num_features, num_blocks,
     """Generate block sparse data samples to perform fused lasso simulations.
 
     Args:
-        num_features (int): number of features in each simulation step
-        num_blocks (int): non overlapping feature blocks to create
-        length_blocks (int): the length of feature blocks to create
-        block_height (int): height of basis feature blocks
-        spike_height (int): height of spikes
-        levels (boolean): indicate whether blocks should two different
-            possible heights
-        spikes (int): number of spikes to be added
+        | num_features (int): number of features in each simulation step
+        | num_blocks (int): non overlapping feature blocks to create
+        | length_blocks (int): the length of feature blocks to create
+        | block_height (int): height of basis feature blocks
+        | spike_height (int): height of spikes
+        | levels (boolean): indicate whether blocks should have two 
+            different possible heights
+        | spikes (int): number of spikes to be added
 
     Returns:
-        beta (np.ndarray)
-        X (np.ndarray)
-        epsilon (np.ndarray)
-        y (np.ndarray)
+        | beta (np.ndarray)
+        | X (np.ndarray)
+        | epsilon (np.ndarray)
+        | y (np.ndarray)
 
     """
     beta = np.zeros([num_features, num_simulations])
