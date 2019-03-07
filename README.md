@@ -13,4 +13,4 @@ Once everything is installed, clone the repository and open a shell in its main 
 3. ``python waf.py install``
 
 The build step will take a few minutes as a lot of estimations are performed during the cross-validations.
-Once the step is completed, you will find plots and the table of simulation results in the bld directory. Also the estimators are stored in the bld directory.
+Once the step is completed, you will find plots and the table of simulation results in the bld directory. Also the estimators are stored in the bld directory as pickle files. Furthermore there will be a full project documentation as a PDF file and also as an html website with details on the different folders.
