@@ -37,8 +37,8 @@ Fused lasso estimator as a class
 Tests for the fused lasso
 ==========================
 
-We performed unit tests for the three estimators. We checked that the estimators compute the correct results in a setting, where *X* is the identity matrix and where *X* is  not a diagonal matrix. Expected test results were computed either by hand (for the case where *X* is the identity matrix) and with the help of the Penalized package for R (see :cite:`goeman2018l1`) in the case, where *X* is not the identity matrix. 
-As the flestimator calls the fused_lasso_primal function we checked that it does so correctly in a test too.
+We performed unit tests for the three estimators. We checked that the estimators compute the correct results in a setting, where *X* is the identity matrix and where *X* is  not a diagonal matrix. Expected test results were computed either by hand (for the case where *X* is the identity matrix) or with the help of the Penalized package for R (see :cite:`goeman2018l1`) in the case, where *X* is not the identity matrix. 
+As the flestimator calls the fused_lasso_primal function we checked that it does so correctly in a test too. Furthermore we checked that the functions raise an error, when inappropriate inputs are passed.
 
 .. automodule:: src.model_code.test_fused_lasso
     :members:

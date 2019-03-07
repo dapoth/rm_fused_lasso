@@ -10,11 +10,11 @@ from src.model_code.flestimator import FusedLassoEstimator as fle
 
 @pytest.fixture
 def setup_param_lasso():
-    out_dual = {}
-    out_dual['y'] = [0.25, 3]
-    out_dual['X'] = np.identity(2)
-    out_dual['lambda1'] = 1
-    out_dual['lambda2'] = 0.000001
+    out_lagrange = {}
+    out_lagrange['y'] = [0.25, 3]
+    out_lagrange['X'] = np.identity(2)
+    out_lagrange['lambda1'] = 1
+    out_lagrange['lambda2'] = 0.000001
 
     out_primal = {}
     out_primal['y'] = [0.25, 3]
@@ -22,17 +22,17 @@ def setup_param_lasso():
     out_primal['s1'] = 2.5
     out_primal['s2'] = 1000
 
-    out = {"data_dual": out_dual, "data_primal": out_primal}
+    out = {"data_lagrange": out_lagrange, "data_primal": out_primal}
     return out
 
 
 @pytest.fixture
 def setup_param_fused_lasso():
-    out_dual = {}
-    out_dual['y'] = [0.1, 3, 3]
-    out_dual['X'] = np.identity(3)
-    out_dual['lambda1'] = 1
-    out_dual['lambda2'] = 1
+    out_lagrange = {}
+    out_lagrange['y'] = [0.1, 3, 3]
+    out_lagrange['X'] = np.identity(3)
+    out_lagrange['lambda1'] = 1
+    out_lagrange['lambda2'] = 1
 
     out_primal = {}
     out_primal['y'] = [0.1, 3, 3]
@@ -40,7 +40,7 @@ def setup_param_fused_lasso():
     out_primal['s1'] = 4.600003
     out_primal['s2'] = 2.149997
 
-    out = {"data_dual": out_dual, "data_primal": out_primal}
+    out = {"data_lagrange": out_lagrange, "data_primal": out_primal}
     return out
 
 @pytest.fixture
@@ -72,10 +72,10 @@ def expected_beta():
 
 # Test the functionality of the lasso estimator, which one receives by setting
 # lambda2=0 or s2 to a very high number.
-def test_lasso_signal_dual(setup_param_lasso, expected_beta):
+def test_lasso_signal_lagrange(setup_param_lasso, expected_beta):
     expected_beta_lasso_signal = expected_beta["values_signal"]["lasso"]
-    calculated_beta_dual = fused_lasso_lagrange(**setup_param_lasso["data_dual"])
-    assert_allclose(expected_beta_lasso_signal, calculated_beta_dual, atol=1e-2)
+    calculated_beta_lagrange = fused_lasso_lagrange(**setup_param_lasso["data_lagrange"])
+    assert_allclose(expected_beta_lasso_signal, calculated_beta_lagrange, atol=1e-2)
 
 
 def test_lasso_signal_primal(setup_param_lasso, expected_beta):
@@ -86,11 +86,11 @@ def test_lasso_signal_primal(setup_param_lasso, expected_beta):
                     atol=2e-2)
 
 
-def test_lasso_general_dual(setup_param_lasso, expected_beta):
-    setup_param_lasso["data_dual"]['X'] = np.array([[1, 0.5], [0.5, 1]])
+def test_lasso_general_lagrange(setup_param_lasso, expected_beta):
+    setup_param_lasso["data_lagrange"]['X'] = np.array([[1, 0.5], [0.5, 1]])
     expected_beta_lasso_general = expected_beta["values_general"]["lasso"]
-    calculated_beta_dual = fused_lasso_lagrange(**setup_param_lasso["data_dual"])
-    assert_allclose(expected_beta_lasso_general, calculated_beta_dual,
+    calculated_beta_lagrange = fused_lasso_lagrange(**setup_param_lasso["data_lagrange"])
+    assert_allclose(expected_beta_lasso_general, calculated_beta_lagrange,
                     atol=1e-2)
 
 
@@ -98,28 +98,28 @@ def test_lasso_general_primal(setup_param_lasso, expected_beta):
     setup_param_lasso["data_primal"]['X'] = np.array([[1, 0.5], [0.5, 1]])
     setup_param_lasso["data_primal"]['s1'] = 2.09999
     expected_beta_lasso_general = expected_beta["values_general"]['lasso']
-    calculated_beta_dual = fused_lasso_primal(**setup_param_lasso["data_primal"])
-    assert_allclose(expected_beta_lasso_general, calculated_beta_dual, atol=2e-2)
+    calculated_beta_lagrange = fused_lasso_primal(**setup_param_lasso["data_primal"])
+    assert_allclose(expected_beta_lasso_general, calculated_beta_lagrange, atol=2e-2)
 
 
 # Test the functionality of the fused lasso estimator.
-def test_fused_lasso_signal_dual(setup_param_fused_lasso, expected_beta):
+def test_fused_lasso_signal_lagrange(setup_param_fused_lasso, expected_beta):
     expected_beta_fused_lasso_signal = expected_beta["values_signal"]['fused_'
                                                                       'lasso']
-    calculated_beta_dual = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
-                                                                      "dual"])
-    assert_allclose(expected_beta_fused_lasso_signal, calculated_beta_dual,
+    calculated_beta_lagrange = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
+                                                                      "lagrange"])
+    assert_allclose(expected_beta_fused_lasso_signal, calculated_beta_lagrange,
                     atol=1e-2)
 
 
-def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
+def test_fused_lasso_general_lagrange(setup_param_fused_lasso, expected_beta):
     expected_beta_fused_lasso_general = expected_beta["values_general"]['fused_'
                                                                         'lasso']
-    setup_param_fused_lasso["data_dual"]['X'] = np.array([[1, 0.5, 0],
+    setup_param_fused_lasso["data_lagrange"]['X'] = np.array([[1, 0.5, 0],
                                                          [0, 1, 0.5], [0.5, 0, 1]])
-    calculated_beta_dual = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
-                                                                      "dual"])
-    assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual,
+    calculated_beta_lagrange = fused_lasso_lagrange(**setup_param_fused_lasso["data_"
+                                                                      "lagrange"])
+    assert_allclose(expected_beta_fused_lasso_general, calculated_beta_lagrange,
                     atol=1e-2)
 
 
@@ -135,21 +135,21 @@ def test_flestimator(setup_param_flestimator, expected_beta):
 
 # Test that the function does not work with incorrect input.
 def test_fused_lasso_lagrange_negative_penalty(setup_param_lasso):
-    setup_param_lasso["data_dual"]['lambda1'] = -1
+    setup_param_lasso["data_lagrange"]['lambda1'] = -1
     with pytest.raises(ValueError):
-        fused_lasso_lagrange(**setup_param_lasso["data_dual"])
+        fused_lasso_lagrange(**setup_param_lasso["data_lagrange"])
 
 
 def test_fused_lasso_lagrange_wrong_dimensions(setup_param_lasso):
-    setup_param_lasso["data_dual"]['y'] = [1, 2, 3]
+    setup_param_lasso["data_lagrange"]['y'] = [1, 2, 3]
     with pytest.raises(TypeError):
-        fused_lasso_lagrange(**setup_param_lasso["data_dual"])
+        fused_lasso_lagrange(**setup_param_lasso["data_lagrange"])
 
 
 def test_fused_lasso_lagrange_wrong_dimension_penalty(setup_param_lasso):
-    setup_param_lasso["data_dual"]['lambda1'] = [1, 2]
+    setup_param_lasso["data_lagrange"]['lambda1'] = [1, 2]
     with pytest.raises(TypeError):
-        fused_lasso_lagrange(**setup_param_lasso["data_dual"])
+        fused_lasso_lagrange(**setup_param_lasso["data_lagrange"])
 
 def test_fused_lasso_primal_negative_penalty(setup_param_lasso):
     setup_param_lasso["data_primal"]['s1'] = -1
