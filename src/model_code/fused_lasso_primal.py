@@ -2,7 +2,7 @@ import cvxpy as cp
 import numpy as np
 
 def fused_lasso_primal(y, X, s1, s2):
-    """Compute fused lasso estimates of the primal problem for given penalty constraints s1 and s2.
+    """Compute fused lasso estimates of the primal problem for given s1 and s2.
 
     Args:
         | y (np.ndarray): 1d array of dependent variables
@@ -11,14 +11,14 @@ def fused_lasso_primal(y, X, s1, s2):
         | s2 (float): constraint on the absolute jumps in beta
 
     Returns:
-        beta.value (np.ndarray)
+        | beta.value (np.ndarray)
 
     """
     if len(y) != len(X):
-        raise TypeError("The length of y must be equal to the number of rows of x.")
+        raise TypeError("The length of y must be equal to the number of rows of X.")
 
     if np.size(s1) > 1 or np.size(s2) > 1:
-        raise TypeError("The penalty constants need to have length one.")
+        raise TypeError("The penalty constants need to be a scalar.")
 
     if s1 < 0 or s2 < 0:
         raise ValueError("The penalty constants need to be nonnnegative.")
