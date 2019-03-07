@@ -27,8 +27,6 @@ def generate_beta(num_features, number_blocks, length_blocks, block_height,
 
     """
 
-    np.random.seed(420)
-
     max_blocks = math.floor(num_features / length_blocks)
     if max_blocks < number_blocks:
         raise TypeError("""The number of blocks must not exceed the maximal number
@@ -94,7 +92,6 @@ def generate_data(num_simulations, num_observations, num_features, num_blocks,
         | y (np.ndarray)
 
     """
-    np.random.seed(420)
 
     beta = np.zeros([num_features, num_simulations])
     for sim in range(num_simulations):

@@ -15,7 +15,7 @@ The implementation of the fused lasso :cite:`fused` includes the implementation 
 Fused lasso estimator of the lagrange problem
 ==============================================
 
-.. automodule:: src.model_code.fused_lasso_dual
+.. automodule:: src.model_code.fused_lasso_lagrange
     :members:
     
     

@@ -90,8 +90,8 @@ if __name__ == "__main__":
 
     # to avoid dividing by zero in the spike setting since in that case number of blocks is 0
     if SIM_NAME == 'spikes':
-        SIMULATION_RESULTS.append('--')
-        SIMULATION_RESULTS.append('--')
+        SIMULATION_RESULTS.append(np.NAN)
+        SIMULATION_RESULTS.append(np.NAN)
 
     else:
         COUNTER_BLOCKS = np.sum(((BETA_HAT >= 0.50*HEIGHT) & (BETA_HAT <= 1.5*HEIGHT)

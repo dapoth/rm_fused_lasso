@@ -21,6 +21,7 @@ if __name__ == "__main__":
     SIM = json.load(open(ppj("IN_MODEL_SPECS", SIN_NAME + ".json"),
                          encoding="utf-8"))
 
+    np.random.seed(420)
     ##### Load Model specs
     N_SIMULATIONS = SIM['num_simulations']
     N_FEATURES = SIM['p']
