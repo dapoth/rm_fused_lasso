@@ -1,7 +1,7 @@
 import cvxpy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-from bld.project_paths import project_paths_join as ppj
+#from bld.project_paths import project_paths_join as ppj
 
 
 def lasso_solution_path(y,X):
@@ -40,7 +40,5 @@ def lasso_solution_path(y,X):
     plt.ylabel(r'$\hat{\beta}_{i}$', fontsize=16)
     plt.xscale('log')
     plt.title(r'Entries of $\hat{\beta}$ vs. $\lambda_1$')
-
-    plt.savefig(ppj("OUT_FIGURES", "plot_solutionpath_lasso.png"))
-
-    return
+    
+    return plt

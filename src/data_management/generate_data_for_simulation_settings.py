@@ -14,31 +14,28 @@ from generate_data import generate_data
 
 np.random.seed(12345)
 
-
-
 if __name__ == "__main__":
     #reg_name = sys.argv[1]
-    sim_name = sys.argv[1]
-    sim = json.load(open(ppj("IN_MODEL_SPECS", sim_name + ".json"),
-                    encoding="utf-8"))
-
-
+    SIN_NAME = sys.argv[1]
+    SIM = json.load(open(ppj("IN_MODEL_SPECS", SIN_NAME + ".json"),
+                         encoding="utf-8"))
 
     ##### Load Model specs
-    num_simulations = sim['num_simulations']
-    p = sim['p']
-    n = sim['n']
-    number_blocks = sim['number_of_blocks']
-    length_blocks = sim['length_blocks']
-    amplitude = sim['amplitude']
-    spike_level = sim['spike_level']
-    levels = sim['levels']
-    spikes = sim['spikes']
+    N_SIMULATIONS = SIM['num_simulations']
+    N_FEATURES = SIM['p']
+    N_OBS = SIM['n']
+    N_BLOCKS = SIM['number_of_blocks']
+    LENGTH_BLOCKS = SIM['length_blocks']
+    HEIGHT_BLOCKS = SIM['amplitude']
+    HEIGHT_SPIKE = SIM['spike_level']
+    LEVELS = SIM['levels']
+    SPIKES = SIM['spikes']
 
-    [beta, X, epsilon, Y] = generate_data(num_simulations,n,p, number_blocks,
-                                                          length_blocks, amplitude,  spike_level, levels, spikes)
+    [BETA, X, EPSILON, Y] = generate_data(N_SIMULATIONS, N_OBS, N_FEATURES,
+                                          N_BLOCKS, LENGTH_BLOCKS, HEIGHT_BLOCKS,
+                                          HEIGHT_SPIKE, LEVELS, SPIKES)
 
-    dataset = [beta, X, epsilon, Y]
+    DATASET = [BETA, X, EPSILON, Y]
 
-    with open(ppj("OUT_DATA", "data_{}.pickle".format(sim_name)), "wb") as out_file:
-        pickle.dump(dataset, out_file)
+    with open(ppj("OUT_DATA", "data_{}.pickle".format(SIN_NAME)), "wb") as out_file:
+        pickle.dump(DATASET, out_file)

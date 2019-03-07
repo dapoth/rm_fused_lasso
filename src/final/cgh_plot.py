@@ -1,5 +1,4 @@
 """Calculate fused lasso estimates for CGH data and plot them."""
-import json
 import matplotlib.pyplot as plt
 import numpy as np
 from bld.project_paths import project_paths_join as ppj

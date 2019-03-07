@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
+import sys
 import numpy as np
 from numpy.testing import assert_allclose
 import pytest
-import sys
 from src.model_code.fused_lasso_dual import fused_lasso_dual
 from src.model_code.fused_lasso_primal import fused_lasso_primal
 from src.model_code.flestimator import FusedLassoEstimator as fle
@@ -21,7 +20,7 @@ def setup_param_lasso():
     out_primal['y'] = [0.25, 3]
     out_primal['X'] = np.identity(2)
     out_primal['s1'] = 2.5
-    out_primal['s2'] = 100000
+    out_primal['s2'] = 1000
 
     out = {"data_dual": out_dual, "data_primal": out_primal}
     return out
@@ -49,11 +48,11 @@ def setup_param_flestimator():
     out_penalties = {}
     out_penalties['s1'] = 4.600003
     out_penalties['s2'] = 2.149997
-    
+
     out_data = {}
     out_data['y'] = [0.1, 3, 3]
     out_data['X'] = np.identity(3)
-    
+
     out = {"penalties": out_penalties, "data": out_data}
     return out
 
@@ -84,7 +83,7 @@ def test_lasso_signal_primal(setup_param_lasso, expected_beta):
     calculated_beta_primal = fused_lasso_primal(**setup_param_lasso["data_"
                                                                     "primal"])
     assert_allclose(expected_beta_lasso_signal, calculated_beta_primal,
-                    atol=1e-2)
+                    atol=2e-2)
 
 
 def test_lasso_general_dual(setup_param_lasso, expected_beta):
@@ -100,7 +99,7 @@ def test_lasso_general_primal(setup_param_lasso, expected_beta):
     setup_param_lasso["data_primal"]['s1'] = 2.09999
     expected_beta_lasso_general = expected_beta["values_general"]['lasso']
     calculated_beta_dual = fused_lasso_primal(**setup_param_lasso["data_primal"])
-    assert_allclose(expected_beta_lasso_general, calculated_beta_dual, atol=1e-2)
+    assert_allclose(expected_beta_lasso_general, calculated_beta_dual, atol=2e-2)
 
 
 # Test the functionality of the fused lasso estimator.
@@ -116,8 +115,8 @@ def test_fused_lasso_signal_dual(setup_param_fused_lasso, expected_beta):
 def test_fused_lasso_general_dual(setup_param_fused_lasso, expected_beta):
     expected_beta_fused_lasso_general = expected_beta["values_general"]['fused_'
                                                                         'lasso']
-    setup_param_fused_lasso["data_dual"]['X'] = np.array([[1, 0.5, 0], [0, 1,
-                                                         0.5], [0.5, 0, 1]])
+    setup_param_fused_lasso["data_dual"]['X'] = np.array([[1, 0.5, 0],
+                                                         [0, 1, 0.5], [0.5, 0, 1]])
     calculated_beta_dual = fused_lasso_dual(**setup_param_fused_lasso["data_"
                                                                       "dual"])
     assert_allclose(expected_beta_fused_lasso_general, calculated_beta_dual,
@@ -132,7 +131,7 @@ def test_flestimator(setup_param_flestimator, expected_beta):
                                                                       'lasso']
     assert_allclose(expected_beta_fused_lasso_signal, beta_hat,
                     atol=1e-2)
-    
+
 
 # Test that the function does not work with incorrect input.
 def test_fused_lasso_dual_negative_penalty(setup_param_lasso):
@@ -173,4 +172,3 @@ def test_fused_lasso_primal_wrong_dimension_penalty(setup_param_lasso):
 if __name__== '__main__':
     status = pytest.main([sys.argv[1]])
     sys.exit(status)
-

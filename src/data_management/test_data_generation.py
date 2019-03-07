@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import numpy
 from src.data_management.generate_data import generate_beta
 from src.data_management.generate_data import generate_data
 import pytest
 import sys
+from src.data_management.generate_data import generate_beta
+
 
 @pytest.fixture
 def setup_beta_generation():
