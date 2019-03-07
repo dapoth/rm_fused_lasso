@@ -17,6 +17,9 @@
 \usepackage{placeins}
 \usepackage{subcaption}
 \usepackage{hyperref}
+\usepackage[nameinlink]{cleveref}
+	\Crefname{table}{table}{tables}
+	\Crefname{table}{Table}{Tables}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
@@ -158,10 +161,7 @@ showstringspaces=false            %
 
 \pagenumbering{arabic}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
-\section{Introduction}
-
-
-
+\section{Introduction} \label{chap:intro}
 
 Methods for dealing with high-dimensional data are increasingly relevant in nearly all sciences among these empirical economics. This is due to the often high-dimensional nature of data nowadays. In particular data where the number of regressors $p$ by far exceeds the number of observations $N$.
 
@@ -178,12 +178,12 @@ Recent literature even combines the extensions for example  \citet{bleakley2011g
 The aim of this paper is to give a brief overview of lasso and fused lasso, to analyze their properties in a simulation study and to apply fused lasso on a real data application.
 
 %Structure
-The paper is organized as follows. In section 2 we introduce lasso, define its optimization problem and investigate some interesting properties. In section 3 we present the fused lasso as an extension of the lasso, describe its behavior and properties. We provide some insights on the solution method. This is followed by a sketch of the fused lasso signal approximator, which is later used for our real data application. Asymptotic results for both lasso and fused lasso are outlined in section 4. We propose a python implementation of the fused lasso estimator in section 5. In section 6 we present a simulation study comparing the performance of the fused lasso with the lasso and another penalized regression. An application of the fused lasso to genomic data is discussed in section 7.
+The paper is organized as follows. In \cref{chap: las} we introduce lasso, define its optimization problem and investigate some interesting properties. In \cref{chap: fused} we present the fused lasso as an extension of the lasso, describe its behavior and properties. We provide some insights on the solution method. This is followed by a sketch of the fused lasso signal approximator, which is later used for our real data application. Asymptotic results for both lasso and fused lasso are outlined in \cref{chap: asymptotics}. We propose a python implementation of the fused lasso estimator in \cref{implementation}. In \cref{simulation} we present a simulation study comparing the performance of the fused lasso with the lasso and another penalized regression. An application of the fused lasso to genomic data is discussed in \cref{sec: real data}.
 %We start by introducing the lasso. We define the optimization problem and give some properties thereof. After that we take a closer look at the estimator itself and show some basic properties and give intuitive explanations for the more advanced properties. We will also state some asymptotic results. The end of this chapter will give an idea on how to compute the estimator. The next chapter will then focus on the fused lasso which will be handled in a similar way as the lasso. We will compare both estimators in simulation studies and apply the fused lasso to real data.
 
 \newpage
 
-\section{Lasso}
+\section{Lasso} \label{chap: las}
 \subsection{Definition and set-up}
 We consider the linear regression model
 
@@ -220,7 +220,7 @@ The parameter $\lambda$ is user-specified. It controls the amount of regularizat
 	\hat{\beta}_{0}^{l}\in\argmin_{b \in\rm \mathbb{R}^p} \left  \{   \sum_{i=1}^{N}(y_{i}-x_{i}'b)^2\right \},
 \end{equation*}
 which would be equal to the OLS solution in a setting with $p\leq N$.\footnote{If the OLS estimator is mentioned, a setting with $p\leq N$ is assumed.}
-When $\lambda$ goes to infinity the resulting estimator will be a zero vector. This is best illustrated in a so-called solution path. A solution path shows for each $\lambda$ in a given range the corresponding estimator. Figure \ref{fig:sollasso} illustrates the complexity reduction of the model for increasing $\lambda$. The size of the penalty constant incorporates prior information on the true coefficient vector $\beta$, in particular how sparse it is.
+When $\lambda$ goes to infinity the resulting estimator will be a zero vector. This is best illustrated in a so-called solution path. A solution path shows for each $\lambda$ in a given range the corresponding estimator. \Cref{fig:sollasso} illustrates the complexity reduction of the model for increasing $\lambda$. The size of the penalty constant incorporates prior information on the true coefficient vector $\beta$, in particular how sparse it is.
 The penalty constant is often chosen by a model selection procedure such as cross-validation \citep{sparsity}.
 
 %Not only the complexity of the model is controlled by the penalty constant, but also the amount of shrinkage of the estimates in comparison to an OLS solution.
@@ -230,13 +230,13 @@ The penalty constant is often chosen by a model selection procedure such as cros
 \subsection{Properties of the solution}
 
 In this section we want to analyze the properties of the lasso estimator, including existence and uniqueness and the advantages and drawbacks of the estimator.\\
-For $p \leq N$ and $\text{rank}(X) = p$ there is always a unique solution to (\ref{LassoLambda}) since in this case the sum of squared residuals is a strictly convex function of $\beta$.\\
+For $p \leq N$ and $\text{rank}(X) = p$ there is always a unique solution to \cref{LassoLambda}, since in this case the sum of squared residuals is a strictly convex function of $\beta$.\\
 In order to state the uniqueness result in the high-dimensional case, we need the following definition of general position. We say that the columns of $X \in \mathbb{R}^{N\times p}$ are in general position if the affine span of any $k$ points $\sigma_1X_{i_1}$ \ldots $\sigma_{k}X_{i_k}$, for $k \leq \min \{N,p\}$ and for arbitrary signs $\sigma_1, \ldots \sigma_{k} \in \{-1,1\}$, does not contain any element of $\{\pm X_i:i\neq i_1, . . . i_{k} \}$.
 
 \begin{theorem}
 	\begin{enumerate}
 		\item []
-		\item \textbf{Existence} A solution of the minimization problem in (\ref{LassoLambda}) always exists.
+		\item \textbf{Existence} A solution of the minimization problem in \cref{LassoLambda} always exists.
 		\item \textbf{Uniqueness} \citep{tibshirani2013lasso} If the columns of the design matrix $X$ are in general position and no $N$ columns of the design matrix $X$ are linearly dependent, then for any $y$ and $\lambda > 0$ the lasso solution is unique.
 	\end{enumerate}
 \end{theorem}
@@ -256,7 +256,7 @@ When the predictor variables are drawn from a continuous distribution, the regre
 \end{theorem}
 The sparsity also makes the lasso a useful tool for model selection. Especially in the high-dimensional setting, this property prevails.  This lasso property is crucial, because standard model selection criteria like BIC do not adapt to the high-dimensional model space and tend to select a model with spurious covariates as \citet{broman2002model} displayed. Subset selection is neither well suited for high-dimensional cases, since it is computationally infeasible for large $p$ \citep{hastie2017extended}. An interesting development in this area could be the work of \citet{bertsimas2016best}, who adapt subset selection such that it can be solved for $p$ in the 1000s and $N$ in the 100s.\\
 
-The reason for the sparsity property is visualized in figure \ref{lassopenalty}.
+The reason for the sparsity property is visualized in \cref{Fused-Signal}.
 The elliptic lines in the picture are the contour lines of the sum of squared residuals and  $\hat{\beta}$ is the OLS estimator.
 The further we move away from the OLS solution the larger the bias of our estimator in the sample.
 Feasible estimators for our problem are those within the square, the region determined by the $\ell_1$-penalty.
@@ -268,7 +268,7 @@ This is often a corner of the set which corresponds to one component of the $\be
 Lasso was designed for model selection and often has good predictive properties \citep{belloni2014}. However inference about model parameters such as regression coefficients has to be treated carefully. Lasso shrinks the non-zero regression coefficients. Furthermore the selection of relevant regressors is influenced by random noise and correlation between regressors.
 
 If there is information on the regressor structure, for example the regressors can be ordered in a meaningful way or there are groups, we would like to include this information in the estimation. Examples can be found in time series, biology, image reconstruction and many more.
-Lasso does not exploit the extra information when estimating. This gives rise to modifications of the lasso. In particular the fused lasso, which is introduced in chapter \eqref{chap: fused}.
+Lasso does not exploit the extra information when estimating. This gives rise to modifications of the lasso. In particular the fused lasso, which is introduced in \cref{chap: fused}.
 
 \subsection{Solution methods}
 
@@ -306,16 +306,16 @@ Reordering of terms gives the following conditions for the Lasso solution, the K
 	\end{align*}
 \end{theorem}
 
-This often leads to numerous components of the estimators dropping to zero as described in Theorem \eqref{theo: sparsity_lasso}. \newline
+This often leads to numerous components of the estimators dropping to zero as described in \cref{theo: sparsity_lasso}. \newline
 
 \bigskip
 
 \begin{theorem}(Piecewise linearity)\label{th: convexitylassosolution}
-	Let $\hat{\beta}_{\lambda}$ and $\hat{\beta}_\mu$ be solutions of the minimization problem in (\ref{LassoLambda}) for $\lambda$ respectively $\mu$. Assume the two estimators have the same sign structure, then for any
+	Let $\hat{\beta}_{\lambda}$ and $\hat{\beta}_\mu$ be solutions of the minimization problem in \cref{LassoLambda} for $\lambda$ respectively $\mu$. Assume the two estimators have the same sign structure, then for any
 	$\alpha\in[0,1]$ the linear combination $\alpha\hat{\beta}_{\lambda}+ (1-\alpha)\hat{\beta}_\mu$ is a solution to the minimization problem with penalty constant $\alpha \lambda + (1-\alpha) \mu$.
 \end{theorem}
 
-This property can be helpful for calculating solution paths of the lasso. When one has calculated the lasso solution for two different penalty terms, where the estimators have the same sign structure, one does not need to solve the optimization problem for the penalties in between any more, but can simply use the formula for the estimator as in theorem \eqref{th: convexitylassosolution}.
+This property can be helpful for calculating solution paths of the lasso. When one has calculated the lasso solution for two different penalty terms, where the estimators have the same sign structure, one does not need to solve the optimization problem for the penalties in between any more, but can simply use the formula for the estimator as in \cref{th: convexitylassosolution}.
 
 \subsubsection{Coordinate descent} \label{Sec: Coordinate Lasso}
 For fixed $\lambda_1$ the lasso estimator can be calculated by the coordinate descent algorithm.
@@ -324,7 +324,7 @@ We can use coordinate descent because the objective function has the structure w
 \begin{equation}
 g(\beta_1,...,\beta_p)+\sum_{j=1}^Ph_j(\beta_j) \nonumber
 \end{equation}
-where $g:\mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in (\ref{LassoLambda}). Note that each $h_j(\beta_j)$ function only depends on one coefficient.
+where $g:\mathbb{R}^p \to \mathbb{R}$, differentiable and convex and $h_j(\beta_j)$ are convex. Set $g(\beta_1,...,\beta_p)=\sum_{i=1}^{N}(y_{i}-x_{i}'\beta)^2$ and $h_j(\beta_j)=|\beta_j|$ for all j, then the above expression becomes the lasso objective function as in \cref{LassoLambda}. Note that each $h_j(\beta_j)$ function only depends on one coefficient.
 \cite[chapter 5]{sparsity}
 
 \subsection{Lasso Signal Approximator}
@@ -361,9 +361,9 @@ Lasso would not capitalize on the structural information within the features for
 
 \subsection{The penalty constants} \label{subsec: penalties}
 In contrast to the lasso case, we have two penalty constants. $\lambda_1$ is the coefficient on the lasso penalty and encourages sparsity of the coefficients. $\lambda_2$ is the coefficient on the fusion penalty and for increasing $\lambda_2$, more and more $\beta_j$ get fused to equal values. Specifically, $\lambda_2=0$ will throw us back into the lasso problem. For $\lambda_2\to\infty$, the objective function will be minimized at a vector $\beta$ that fulfills $\sum_{j=2}^p|\beta_j- \beta_{j-1}|=0$, such that all coefficients are equal. For $\lambda_1=0$ we obtain the so-called fusion estimator.\\
-Since both penalty terms are in the objective function, the choice of one penalty constant also influences the optimal choice of the other. Unfortunately the exact impact of that influence is not always intuitive, as can be seen in section \ref{simulation}. However one restriction for the choice of the penalty constants can be obtained. Since both penalty terms enter positively in the objective function, the penalty constants should not be as strict, as those of the lasso or of a fused regression.\\
+Since both penalty terms are in the objective function, the choice of one penalty constant also influences the optimal choice of the other. Unfortunately the exact impact of that influence is not always intuitive, as can be seen in \cref{simulation}. However one restriction for the choice of the penalty constants can be obtained. Since both penalty terms enter positively in the objective function, the penalty constants should not be as strict, as those of the lasso or of a fused regression.\\
 
-As for the lasso, the penalty constants have to be chosen by the researcher. Choosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes the true $\beta$ vector to be very sparse or that $\beta_j$ blocks are large. One possible approach for choosing the penalty constants, is cross-validation on a two dimensional grid, which we pursue in section \ref{implementation}.
+As for the lasso, the penalty constants have to be chosen by the researcher. Choosing the penalty constants incorporates prior information to the estimation. Harsh penalties only makes sense if one believes the true $\beta$ vector to be very sparse or that $\beta_j$ blocks are large. One possible approach for choosing the penalty constants, is cross-validation on a two dimensional grid, which we pursue in section \cref{implementation}.
 
 \subsection{Properties of the solution}
 
@@ -372,7 +372,7 @@ Similar to the Lasso, we can define the following properties of the Fused Lasso 
 \begin{theorem}
 	\begin{enumerate}
 		\item[]
-		\item \textbf{Existence} A solution of the minimization problem in (\ref{eq: fusedlasso}) always exists.
+		\item \textbf{Existence} A solution of the minimization problem in \cref{eq: fusedlasso} always exists.
 		\item \textbf{Uniqueness} \citep{fused} If the regressors are in general position and no $N$ columns of the design matrix $X$ are linearly dependent, the fused lasso estimator is unique.
 	\end{enumerate}
 \end{theorem}
@@ -384,7 +384,7 @@ The proof of existence can be found in the appendix, the one for uniqueness is d
 \end{theorem}
 
 The sparsity of blocks property corresponds to a piecewise constant solution since it allows only a few jumps in coefficients. Also only a few blocks are unequal to zero.
-This makes the model easily interpretable. The piecewise constant solution simply corresponds to an averaging of the features. We will see an example illustrating this property in section \eqref{sec: real data}. \\
+This makes the model easily interpretable. The piecewise constant solution simply corresponds to an averaging of the features. We will see an example illustrating this property in \cref{sec: real data}. \\
 
 If the true model is piecewise constant the fused lasso will perform much better than the lasso in terms of model selection. As lasso tends to select only one of two regressors if they are highly correlated it does not perform well in catching the block structure of the coefficients. In contrast to that the fused lasso promotes the estimator to have a block structure. \\
 
@@ -403,7 +403,7 @@ With the same argument as above for the lasso, computing the fused lasso estimat
 
 \subsubsection{Characterization of the solution}
 
-In theorem \eqref{theo: Kuhntucker} we have seen that we can characterize the solution of the lasso with the Karush-Kuhn-Tucker conditions. Deriving the Karush-Kuhn-Tucker conditions for the fused lasso problem is difficult. We can alternatively make use of a related approach to finding the solution, namely subdifferential calculus.
+In \ref{theo: Kuhntucker} we have seen that we can characterize the solution of the lasso with the Karush-Kuhn-Tucker conditions. Deriving the Karush-Kuhn-Tucker conditions for the fused lasso problem is difficult. We can alternatively make use of a related approach to finding the solution, namely subdifferential calculus.
 Subderivatives generalize the concept of derivatives to convex functions which are not necessarily differentiable.
 As our objective function is convex the theory is applicable. We do not want to go deeply into the theory, but look at it in our concrete case of the absolute value.
 If a function is differentiable at a point, then the subderivative equals the derivative. Thus in the case of the absolute value the subderivative is the sign function everywhere except at zero.
@@ -428,7 +428,7 @@ $t_j \in [-1,1] $ if $\hat{\beta}^{fl}_j = \hat{\beta}^{fl}_{j-1}$.
 In the differentiable case these are first order conditions as usual. In the case where $\hat{\beta}^{fl}_j = 0$ or $\hat{\beta}^{fl}_j = \hat{\beta}^{fl}_{j-1}$ the equations need to be interpreted as follows. Any $b\in \mathbb{R}^p$ such that there exists $r_j\in [-1,1]$ respectively $t_j \in [-1,1]$ for all $j$ such that all the equations hold is a solution to the minimization problem. (see for example \citep[Proposition B.24]{bertsekas1997nonlinear})
 
 \subsubsection{Coordinate Descent}
-In section \ref{Sec: Coordinate Lasso} we saw that the conditions for coordinate descent to be a suitable solution method are fulfilled for the lasso. In contrast to the lasso problem the penalty term in the fused lasso problem is not separable in the single coefficients due to the second penalty. This makes the computation more complicated and coordinate descent is not an appropriate method any more as we will see now. The reason is that the separated non differentiable functions $h$ do not only depend on a single coefficient but on two. We illustrate the problem with an example. Consider the fused signal approximator case, where we can set $\lambda_1 = 0$ (compare lemma \ref{sa: soft thresholding}).
+In \cref{Sec: Coordinate Lasso} we saw that the conditions for coordinate descent to be a suitable solution method are fulfilled for the lasso. In contrast to the lasso problem the penalty term in the fused lasso problem is not separable in the single coefficients due to the second penalty. This makes the computation more complicated and coordinate descent is not an appropriate method any more as we will see now. The reason is that the separated non differentiable functions $h$ do not only depend on a single coefficient but on two. We illustrate the problem with an example. Consider the fused signal approximator case, where we can set $\lambda_1 = 0$ (compare \cref{sa: soft thresholding}).
 %Assume we have $p=100$ and coordinate descent sets the coefficients successfully to their optimal value.
 Assume that the previous iteration step set $\hat{\beta}_1=\hat{\beta}_2$ and we are in the new iteration step, where we minimize over $\beta_1$. Observe any change in $\beta_1$ introduces an increase of the absolute value of the difference of $\hat{\beta}_1$ and $\hat{\beta}_2$. Let us consider a situation in which it would be optimal to increase $\hat{\beta}_1$ a little to get rid of some squared differences in the model fit, but the difference in the absolute value is larger, so it is optimal for $\hat{\beta}_1$ to stay as in the previous iteration step. Assume we face the same problem in the iteration step for $\beta_2$, that means increasing it a little would be better for model fit, but it isn't done because of the combined penalty.
 in such a scenario coordinate descent gets stuck. Therefore we have to use algorithms like gradient descent because they can move $\beta_1$ and $\beta_2$ simultaneously, so that here both increase slightly, so that the squared error gets smaller and the absolute difference stays 0.
@@ -459,7 +459,7 @@ A special case of the fused lasso occurs when the predictor matrix is the $N \ti
  \label{Fused-Signal}	\end{equation}
 
 We can interpret the estimator as an approximator of an unknown signal which has a block structure with few nonzero blocks. The signal is corrupted by an additive noise. (cf. \citep{rinaldoproperties})
-There is a connection between the fusion estimate and the fused lasso, which is described in lemma \eqref{sa: soft thresholding}.
+There is a connection between the fusion estimate and the fused lasso, which is described in \cref{sa: soft thresholding}.
 
 %\begin{lemma}[Soft thresholding property] \label{sa: soft thresholding} (cf. \cite{sparsity})
 %	For any $\lambda_1' > \lambda_1$, we have
@@ -487,7 +487,7 @@ Another useful property of the fused lasso estimator (only) in this easy setting
 \end{lemma}
 This theorem says that if for some penalty constant neighbouring coefficients get the same value then for all harsher penalties they will also do. Consequently for increasing $\lambda$ more and more coefficients are grouped together until there is only one group left. This is useful for the construction of the solution path.
 
-\section{Asymptotics}
+\section{Asymptotics} \label{chap: asymptotics}
 
 \label{sec:asymptoticslasso}
 In this chapter we want to analyze asymptotics for the lasso and fused lasso. In general asymptotics for methods aimed at high-dimensional data is difficult. The reason is that for a meaningful analysis, besides $N$ also $p$ needs to go to infinity and it even has to grow faster than $N$. Else at some point, $N$ would be bigger than $p$ and so we would not be in a high-dimensional setting any more.
@@ -536,7 +536,7 @@ We begin by defining \\
 
 
 \begin{theorem}
-	Assume (E) and a structure of $\beta$ as in \eqref{eq: beta_fused_signal}. If the conditions on $\lambda_{1,n}$ and $\lambda_{2,n}$, on the minimal size of blocks, the smallest amplitude of blocks and the smallest difference between blocks as spelled out in \citep{rinaldoproperties} are fulfilled then for the set
+	Assume (E) and a structure of $\beta$ as in \cref{eq: beta_fused_signal}. If the conditions on $\lambda_{1,n}$ and $\lambda_{2,n}$, on the minimal size of blocks, the smallest amplitude of blocks and the smallest difference between blocks as spelled out in \citep{rinaldoproperties} are fulfilled then for the set
 	\begin{equation}
 		R_{1,n} = \{JS_0 = \hat{JS}\} \cap \{\forall j\in JS_0: \sgn(v_j) = \sgn(\hat{v}_j)\},
 	\end{equation}
@@ -551,11 +551,11 @@ This result is obtained as follows: First one derives the conditions under which
 	\item The penalty constant needs to be smaller than a specific value, which depends on the smallest jump and smallest block. If the smallest block or jump is small, $\lambda_{2,n}$ must not be too large in order not to fuse blocks that are not fused in $\beta$.
 \end{enumerate}
 
-In section \eqref{sec: fused_signal} we have seen that the fused lasso signal approximator is the soft-thresholded fusion estimate. Thus we know that under the conditions for consistently estimating the blocks and extrema for the fusion estimate also the fused lasso consistently recovers them. This is due to soft thresholding not changing the true block partition. Further we want to know under which additional conditions not only the true local minima and maxima can be detected, but also the true block sparsity pattern can be achieved. We can qualitatively summarize the conditions as
+In \cref{sec: fused_signal} we have seen that the fused lasso signal approximator is the soft-thresholded fusion estimate. Thus we know that under the conditions for consistently estimating the blocks and extrema for the fusion estimate also the fused lasso consistently recovers them. This is due to soft thresholding not changing the true block partition. Further we want to know under which additional conditions not only the true local minima and maxima can be detected, but also the true block sparsity pattern can be achieved. We can qualitatively summarize the conditions as
 \begin{enumerate}
 	\item The penalty constant $\lambda_{1,n}$ needs to increase with a specific rate.
 	\item The magnitude of the smallest nonzero block value cannot decrease to zero too fast. This guarantees some asymptotic distinguishability between zero and non-zero blocks.
-	\item Since the two penalty constants influence each other (see section \eqref{subsec: penalties}) they need to be in a certain ratio for each $n$ to enable the detection of the true blocks.
+	\item Since the two penalty constants influence each other (see \cref{subsec: penalties}) they need to be in a certain ratio for each $n$ to enable the detection of the true blocks.
 \end{enumerate}
 
 Convergence rates for the fused lasso signal approximator are derived in \citep{rinaldoproperties}. They are expressed in terms of the constraining parameters $s_1$ and $s_2$.
@@ -630,9 +630,9 @@ Again the first two summands correspond to the minimum in the OLS case, so also 
 
 If we now consider $\lambda_0^{(1)} > 0$ and $\lambda_0^{(2)} > 0$ we can see from the above considerations that only in some cases the direction of the asymptotic bias is clear. For example if $\beta_1 > 0$ and $\beta_2 > \beta_1$ there is a positive shift of probability, if $\beta_1 > 0$ and $\beta_2 < \beta_1$ the direction of the bias is though not clear.
 
-Note that from equation \eqref{eq: subder} one can also see that when some of the $\beta_j$s are exactly $0$, the limiting distributions put positive probability at $0$ and when $\beta_1 = \beta_2$ probability is centered at the line $u_1 = u_2$.
+Note that from \cref{eq: subder} one can also see that when some of the $\beta_j$s are exactly $0$, the limiting distributions put positive probability at $0$ and when $\beta_1 = \beta_2$ probability is centered at the line $u_1 = u_2$.
 
-\section{Implementation}\label{implementation}
+\section{Implementation} \label{implementation}
 
 A problem when performing simulations with uncommon estimators, like the fused lasso, is that package availability for that estimator can often be scarce. Also it can not be assumed that the available packages are tested or whether their documentation is correct. After some research we decided to implement our own fused lasso estimator.%\footnote{Correctness of the package was checked by our own computations and algorithms of the estimators.}\\
 
@@ -642,7 +642,7 @@ To solve the problem of choosing constraint parameters, we decided to resort to 
 
 We opted to build our fused lasso estimator as an extension of the ``BaseEstimator'' of Sklearn \citep{scikit-learn}. Sklearn provides a basis class for our implementation and interfaces allowing easy implementation of further methods. This way we can resort to the Scikit build-in ``GridsearchCV'' to determine an adequate neighborhood of constraint parameters $s_1,s_2$ over a chosen grid. In addition to this, \citet{fused}  implemented a search strategy to reduce the necessary amount of computations on the grid by omitting certain grid points. This was justified only by ``empirical experimentation'' that was not always reproducible in our tests. Consequently we stuck with the more conservative choice and checked the whole grid. As scoring for the cross-validation we chose the prevalent mean squared error.
 
-\section{Simulation}\label{simulation}
+\section{Simulation} \label{simulation}
 
 \subsection{Estimation in different settings}
 %To provide some comparison between lasso and fused lasso, we performed simulations with both methods on different settings. The data for each simulation setting were generated with $p=200$ and $N=40$. In all simulations we used the same fixed design matrix $X\sim \mathcal{N}(0,\mathcal{I})$. We vary the coefficient structure of the features $\beta$ and $\varepsilon$ in each simulation step to incorporate differently arranged $\beta$. In each simulation setting we tried to chose the structure of the features generation process such that we cover relevant cases.\\
@@ -675,7 +675,7 @@ As mentioned in Section 6 we apply cross-validation on a two dimensional grid to
 
 One of the main goals of our estimators is model selection. That means in order to analyze how well the estimators perform on our simulated data we need to analyze their so called specificity and sensitivity. Specificity means the proportion of the true zero coefficients and sensitivity the proportion of the true non-zero coefficients that are detected by the estimated model.
 
-In table 1 we report the results from the simulation. We see that fused lasso and fusion perform well for
+In \cref{table: mse} we report the results from the simulation. We see that fused lasso and fusion perform well for
 Large\_blocks. However fusion fails to recognize irrelevant $\beta_j$. This
 incapability to recognize irrelevant $\beta_j$ persists for all of our
 simulations. In contrast, fused lasso seems to sense relevant regressors
@@ -709,7 +709,7 @@ We observe that for both coefficients inside the block it seems like the estimat
 %		\item no sparsity
 %	\end{enumerate}
 %\end{enumerate}
-\begin{table}
+\begin{table} \label{table: mse}
 	\centering
 	\scriptsize
 	%\input{../../out/figures/mytable.tex}
@@ -729,7 +729,7 @@ Our data consists of 990 observations, where each observation is the $\log_2$ ra
 If we regress the copy number on the genes, we have $p=n$.
 Also, we expect the underlying vector of true copy numbers $\beta$ to be piecewise constant over contiguous regions of a chromosome.
 The result $\hat{\beta}_j$ of the fused lasso estimation can be interpreted as the estimated DNA copy number for gene $j$. In this setup the penalty constant $s_1$ controls the overall amount of alteration of the  DNA copy number and $s_2$ the frequency of the changes.
-Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in figure \ref{cghdata}. The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
+Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 = 15$ replicates the findings of \citep{spatial}, our result is visualized in \cref{cghdata}. The estimator suggests a main region, where DNA sequence copy number gains have possibly taken place and also wide regions of losses. Note that the fused lasso detects the region of gains although it is narrow.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{../../out/figures/cgh_plot_beta.png}
@@ -737,7 +737,7 @@ Applying the fused lasso estimator with the penalty terms $s_1 = 160$ and $s_2 =
 	\label{cghdata}
 \end{figure}
 \FloatBarrier
-\section{Conclusion}
+\section{Conclusion} \label{chap:conclusion}
 
 We have studied two specific penalized regressions for high-dimensional data. The lasso for sparse settings and the fused lasso for sparse block settings. We showed that the fused lasso outperforms lasso in cases for which fused lasso was designed.
 The choice of appropriate penalty constants is challenging and can be seen as a weakness of the fused lasso.
@@ -1183,7 +1183,7 @@ The idea of the proof is to show that the soft-thresholded estimator solves the 
 	\begin{equation}
 	-(y_j-b_j)+\lambda_1 r_j +\lambda_2 [t_j - t_{j+1}]=0, \footnote{The subgradient equation for $j = 1$ is slightly different (see \eqref{theo:subderivatives_fused}), but all of the arguments follow equivalently.}
 	\end{equation}
-	where $r_j$ and $t_j$ are as in theorem \eqref{theo:subderivatives_fused}.
+	where $r_j$ and $t_j$ are as in \cref{theo:subderivatives_fused}.
 	Assume we calculated a solution for $\lambda_1=0$ and $\lambda_2 > 0$ and denote it by $\hat{\beta}_0$. The soft thresholded version of it is given by $\hat{\beta}_{\lambda_1}=sgn(\hat{\beta}_0)(|\hat{\beta}_0|-\lambda_1)_{\text{+}}$.
 	To this solution correspond specific values for $r_j$ and $t_j$. We denote them by $r_j(0)$ and $t_j(0)$. Since $\lambda_1=0$, we can chose $r_j(0)$ arbitrarily in $[-1,1]$ for all $j$ with $\hat{\beta}_{0,j}=0$ as the subgradient equations hold for all values. For later arguments set $r_j(0)=0$ for all $j$ with $\hat{\beta}_{0,j}=0$. For $j$ with $\hat{\beta}_{0,j} \neq 0$ soft-thresholding has not changed the sign $r_j$ of the coefficient. \\
 	Observe that soft-thresholding also cannot change the ordering of coefficients of neighboring regressors. If one is larger than the other it will be at least as large as the other after soft-thresholding too. In case one of the new neighboring coefficients is unequal to zero thus $t_j(\lambda_1) = t_j(0)$. In case the two coefficients are equal after soft-thresholding we are free to chose $t_j(\lambda) \in [-1,1]$, we chose $t_j(\lambda)=t_j(0)$. So for all $\lambda_1 > 0$ and $j \in 2, \ldots, p$ we have $t_j(\lambda)=t_j(0)$ and we can simply denote it by $t_j$. \\
